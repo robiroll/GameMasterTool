@@ -1,0 +1,17 @@
+@import 'scss/layout';
+@import 'scss/colors';
+
+.card {
+  border: $g1 solid $neutral-2;
+  border-radius: $g1;
+  background: $neutral-4;
+
+  &--title {
+    border-bottom: 4px solid $neutral-2;
+    padding: $g2;
+  }
+
+  &--content {
+    padding: $g2;
+  }
+}

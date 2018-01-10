@@ -1,0 +1,12 @@
+@import 'scss/layout.scss';
+@import 'scss/colors.scss';
+
+.button {
+  display: inline-block;
+  border: 1px solid $accent-1;
+  border-radius: $g1;
+  background: $primary-1;
+  cursor: pointer;
+  padding: $g1 $g2;
+  color: $accent-1;
+}

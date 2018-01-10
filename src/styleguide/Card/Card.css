@@ -1,7 +1,8 @@
 .card {
   border: 8px solid #013340;
   border-radius: 8px;
-  background: #93b8c2; }
+  background: #93b8c2;
+  max-width: 600px; }
   .card--title {
     border-bottom: 4px solid #013340;
     padding: 16px; }

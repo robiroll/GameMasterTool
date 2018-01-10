@@ -1,0 +1,16 @@
+@import 'scss/layout.scss';
+@import 'scss/colors.scss';
+
+.character {
+  &--title {
+    line-height: $g4;
+    color: $neutral-2;
+    font-size: $g3;
+    font-weight: bold;
+  }
+
+  &--name {
+    font-size: $g5;
+    background-color: red;
+  }
+}

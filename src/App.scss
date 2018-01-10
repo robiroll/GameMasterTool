@@ -7,26 +7,19 @@ body {
   font-size: $g2;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
-}
-
-.App-title {
-  font-size: 1.5em;
-}
-
-.App-intro {
-  font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.app {
+  &--header {
+    background-color: $neutral-2;
+    padding: $g3;
+    color: #fff;
   }
-  to {
-    transform: rotate(360deg);
+
+  &--title {
+    text-align: center;
+  }
+
+  &--wrapper {
+    margin: auto;
+    max-width: 960px;
   }
 }

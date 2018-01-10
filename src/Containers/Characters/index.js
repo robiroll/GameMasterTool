@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import CharacterComponent from '../../Components/Character'
+import CharactersComponent from '../../Components/Characters'
 
 const CHARACTERS = [
   {
@@ -43,16 +42,8 @@ const CHARACTERS = [
   }
 ]
 
-export default class Character extends Component {
-  static propTypes = {
-    match: PropTypes.object,
-    currentTurn: PropTypes.number
-  }
-  constructor(props) {
-    super(props)
-    this.character = CHARACTERS.find(char => char.idCharacter === props.match.params.idCharacter)
-  }
+export default class Characters extends Component {
   render() {
-    return <CharacterComponent currentTurn={this.props.currentTurn} data={this.character} />
+    return <CharactersComponent data={CHARACTERS} />
   }
 }

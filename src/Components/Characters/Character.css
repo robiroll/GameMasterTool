@@ -1,0 +1,9 @@
+.character--title {
+  line-height: 32px;
+  color: #013340;
+  font-size: 24px;
+  font-weight: bold; }
+
+.character--name {
+  font-size: 40px;
+  background-color: red; }

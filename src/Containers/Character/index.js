@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import CharacterComponent from '../../Components/Character'
 
 const CHARACTER = {
+  idCharacter: 'pa',
   name: 'Pa le Hobbit',
   lvl: 1,
   ap: 3,

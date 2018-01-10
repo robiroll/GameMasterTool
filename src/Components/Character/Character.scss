@@ -1,5 +1,5 @@
-@import 'scss/layout';
-@import 'scss/colors';
+@import 'scss/layout.scss';
+@import 'scss/colors.scss';
 
 .character {
   &--title {
@@ -11,5 +11,6 @@
 
   &--name {
     font-size: $g5;
+    background-color: red;
   }
 }

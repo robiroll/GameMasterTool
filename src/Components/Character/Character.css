@@ -5,4 +5,5 @@
   font-weight: bold; }
 
 .character--name {
-  font-size: 40px; }
+  font-size: 40px;
+  background-color: red; }

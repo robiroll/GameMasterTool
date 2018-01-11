@@ -1,6 +1,14 @@
 @import 'scss/layout.scss';
 @import 'scss/colors.scss';
 
+.card {
+  margin-top: 20px;
+}
+
+.button + .button {
+  margin-left: 20px;
+}
+
 .character {
   &--title {
     line-height: $g4;

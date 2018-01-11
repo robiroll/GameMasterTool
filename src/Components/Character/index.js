@@ -11,15 +11,17 @@ const Character = ({
     apMax,
     attributes: { strength, dexterity, constitution, intelligence, perception, speed },
     talents,
-    skills,
     equipment,
     inventory
-  }
+  },
+  skills,
+  state,
+  onSkillClick
 }) => (
-  <Card title={`${name} : level ${lvl}`}>
+  <Card title={`${name} : level ${lvl.toLocaleString('fr')}`}>
     <div className="character">
       <div className="character--ap">
-        {ap} / {apMax}
+        {ap - state.usedAP} / {apMax}
       </div>
       <div className="character--title">Attributs</div>
       <div className="character--attributes">
@@ -41,7 +43,13 @@ const Character = ({
       <div className="character--title">Compétences</div>
       <div className="character--skills">
         {skills.map(skill => (
-          <div key={skill.name} className="character--skills--item">
+          <div
+            key={skill.name}
+            className="character--skills--item"
+            onClick={() => {
+              onSkillClick(skill)
+            }}
+          >
             {skill.name}
           </div>
         ))}
@@ -67,7 +75,13 @@ const Character = ({
 )
 
 Character.propTypes = {
-  data: PropTypes.object.isRequired
+  data: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    lvl: PropTypes.number.isRequired
+  }),
+  skills: PropTypes.array.isRequired,
+  stae: PropTypes.object,
+  onSkillClick: PropTypes.func
 }
 
 export default Character

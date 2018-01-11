@@ -1,0 +1,28 @@
+export default {
+  get ap() {
+    return 3;
+  },
+
+  get apMax() {
+    return 5;
+  },
+
+  get attributes() {
+    return {
+      strength: 5,
+      dexterity: 5,
+      constitution: 5,
+      intelligence: 5,
+      perception: 5,
+      speed: 5
+    };
+  },
+
+  get talents() {
+    return ['Negociating'];
+  },
+
+  get languages() {
+    return ['Humain', 'Hobbit'];
+  }
+};

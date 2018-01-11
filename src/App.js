@@ -1,14 +1,21 @@
 import React, { Component } from 'react'
 import { Switch, BrowserRouter, Route } from 'react-router-dom'
-import { createStore } from 'redux'
+import { createStore, combineReducers } from 'redux'
 import { Provider } from 'react-redux'
 import Character from './Containers/Character'
 import Characters from './Containers/Characters'
 import Dashboard from './Containers/Dashboard'
 import './App.css'
 import fight from './redux/reducers/fight'
+import characters from './redux/reducers/characters'
 
-const store = createStore(fight, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+const store = createStore(
+  combineReducers({
+    fight,
+    characters
+  }),
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+)
 
 class App extends Component {
   render() {

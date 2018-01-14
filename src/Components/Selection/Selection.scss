@@ -1,0 +1,12 @@
+@import 'src/scss/layout.scss';
+
+.selection {
+  &--characters {
+    &--char {
+      &--name {
+        cursor: pointer;
+        padding: $g1;
+      }
+    }
+  }
+}

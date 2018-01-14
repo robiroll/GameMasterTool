@@ -9,7 +9,7 @@ export default function fight(state = initialState, action) {
   let newState = {}
   const characters = firebase.database().ref('characters')
   characters.once('value').then(snapshot => {
-    console.log(snapshot.val())
+    // console.log(snapshot.val())
   })
   switch (action.type) {
     case CHAR_GET:

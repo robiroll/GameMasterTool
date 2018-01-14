@@ -1,0 +1,13 @@
+@import 'src/scss/layout.scss';
+
+.order {
+  display: flex;
+
+  &--char {
+    margin-right: $g3;
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}

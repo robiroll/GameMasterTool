@@ -1,7 +1,7 @@
 @import 'scss/layout.scss';
 @import 'scss/colors.scss';
 
-.button {
+%button {
   display: inline-block;
   border: 1px solid $accent-1;
   border-radius: $g1;
@@ -9,4 +9,24 @@
   cursor: pointer;
   padding: $g1 $g2;
   color: $accent-1;
+}
+
+.button {
+  @extend %button;
+
+  &--disabled {
+    position: relative;
+
+    &:after {
+      // @extend %button;
+      position: absolute;
+      top: -1px;
+      right: -1px;
+      bottom: -1px;
+      left: -1px;
+      background: rgba(#fff, 0.8);
+      cursor: not-allowed;
+      content: '';
+    }
+  }
 }

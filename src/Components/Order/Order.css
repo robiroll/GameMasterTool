@@ -1,0 +1,6 @@
+.order {
+  display: flex; }
+  .order--char {
+    margin-right: 24px; }
+    .order--char:last-child {
+      margin-right: 0; }

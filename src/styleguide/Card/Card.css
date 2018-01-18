@@ -1,10 +1,11 @@
 .card {
-  border: 8px solid #013340;
+  border: 2px solid #013340;
   border-radius: 8px;
+  box-shadow: 0 0 20px 4px rgba(1, 51, 64, 0.4);
   background: #93b8c2;
   max-width: 600px; }
   .card--title {
-    border-bottom: 4px solid #013340;
+    border-bottom: 1px solid #013340;
     padding: 16px; }
   .card--content {
     padding: 16px; }

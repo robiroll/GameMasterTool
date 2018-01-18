@@ -1,5 +1,5 @@
 import {
-  TURN_NEXT,
+  ROUND_NEXT,
   FIGHT_START,
   FIGHT_END,
   FIGHT_SELECTION_CHARACTER_ADD,
@@ -14,8 +14,8 @@ import {
   ACTION_USE
 } from './actionTypes'
 
-export const nextTurn = () => ({
-  type: TURN_NEXT
+export const nextRound = () => ({
+  type: ROUND_NEXT
 })
 
 export const startFight = () => ({

@@ -2,17 +2,16 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import DashboardComponent from '../../Components/Dashboard'
 import { connect } from 'react-redux'
-import { nextTurn, startFight, endFight } from '../../redux/actions/fight'
+import { nextRound, startFight, endFight } from '../../redux/actions/fight'
 import { getCharacter } from '../../redux/actions/characters'
 
 class Dashboard extends Component {
   static propTypes = {
-    nextTurn: PropTypes.func.isRequired,
+    nextRound: PropTypes.func.isRequired,
     getCharacter: PropTypes.func.isRequired,
     startFight: PropTypes.func.isRequired,
     endFight: PropTypes.func.isRequired,
-    endCharaterTurn: PropTypes.func.isRequired,
-    turn: PropTypes.number.isRequired,
+    round: PropTypes.number.isRequired,
     characterPlaying: PropTypes.object,
     orderPlaying: PropTypes.array,
     status: PropTypes.any
@@ -20,7 +19,7 @@ class Dashboard extends Component {
 
   state = { isOpen: false }
 
-  onEndTurn = () => this.props.nextTurn()
+  handleNextRound = () => this.props.nextRound()
   onGetChar = idCharacter => this.props.getCharacter(idCharacter)
   handleStartFight = () => {
     this.setState({ isOpen: true })
@@ -34,9 +33,9 @@ class Dashboard extends Component {
   render() {
     return (
       <DashboardComponent
-        currentTurn={this.props.turn}
+        round={this.props.round}
         fightStatus={this.props.status}
-        onEndTurn={this.onEndTurn}
+        onNextRound={this.handleNextRound}
         onGetChar={this.onGetChar}
         onStartFight={this.handleStartFight}
         onEndFight={this.handleEndFight}
@@ -50,15 +49,15 @@ class Dashboard extends Component {
 }
 
 const mapStateToProps = state => ({
-  turn: state.fight.turn,
+  round: state.fight.round,
   orderPlaying: state.fight.orderPlaying,
   characterPlaying: state.fight.characterPlaying,
   status: state.fight.status
 })
 
 const mapDispatchToProps = dispatch => ({
-  nextTurn: () => {
-    dispatch(nextTurn())
+  nextRound: () => {
+    dispatch(nextRound())
   },
   getCharacter: idCharacter => {
     dispatch(getCharacter(idCharacter))

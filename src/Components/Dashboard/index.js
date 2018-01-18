@@ -11,10 +11,10 @@ import './Dashboard.css'
 
 const Dashboard = ({
   isOpen,
-  currentTurn,
+  round,
   fightStatus,
   orderPlaying,
-  onEndTurn,
+  onNextRound,
   onGetChar,
   onStartFight,
   onEndFight,
@@ -27,7 +27,7 @@ const Dashboard = ({
   const isEndFightDisabled = fightStatus !== 'in-progress'
   return (
     <div className="dashboard">
-      <div className="turn">Tour {currentTurn}</div>
+      <div className="turn">Round {round}</div>
       order
       <Order />
       order playing
@@ -44,8 +44,8 @@ const Dashboard = ({
           <Button onClick={onStartFight} disabled={isStartDisabled}>
             start fight
           </Button>
-          <Button onClick={onEndTurn} disabled={isEndTurnDisabled}>
-            next tour
+          <Button onClick={onNextRound} disabled={isEndTurnDisabled}>
+            next round
           </Button>
           <Button onClick={onEndFight} disabled={isEndFightDisabled}>
             end fight
@@ -72,10 +72,10 @@ const Dashboard = ({
 
 Dashboard.propTypes = {
   isOpen: PropTypes.bool,
-  currentTurn: PropTypes.number,
+  round: PropTypes.number,
   fightStatus: PropTypes.any,
   orderPlaying: PropTypes.array,
-  onEndTurn: PropTypes.func,
+  onNextRound: PropTypes.func,
   onGetChar: PropTypes.func,
   onStartFight: PropTypes.func,
   onEndFight: PropTypes.func,

@@ -1,4 +1,3 @@
-import { ACTION_ATTACK, ACTION_MOVE, ACTION_END_TURN, ACTION_DELAY_TURN } from '../redux/actions/actionTypes'
 // TODO: Get characters from firebase
 export default [
   {
@@ -21,19 +20,35 @@ export default [
     class: 'Thief',
     talents: [{ name: 'Maîtrise épée lvl 1' }, { name: 'Furtivité lvl 1' }],
     skills: [{ name: 'Calouflage', cost: 3 }, { name: 'Fuite', cost: 1 }],
-    actions: [
-      { name: 'attack', action: ACTION_ATTACK },
-      { name: 'move', action: ACTION_MOVE },
-      { name: 'end turn', action: ACTION_END_TURN },
-      { name: 'Delay', action: ACTION_DELAY_TURN }
+    equipment: [
+      {
+        slot: 'weapon',
+        item: {
+          name: 'Dague de la mort qui tue',
+          size: 2,
+          damage: 100,
+          bonus: { dexterity: 2, strength: 1 }
+        }
+      },
+      {
+        slot: 'head',
+        item: {
+          name: 'Chapeau de paille',
+          bonus: { dexterity: 1 }
+        }
+      },
+      { slot: 'neck', item: null },
+      { slot: 'back', item: null },
+      { slot: 'waist', item: null },
+      { slot: 'hands', item: null },
+      { slot: 'ring1', item: null },
+      { slot: 'ring2', item: null },
+      { slot: 'legs', item: null },
+      { slot: 'shoulders', item: null },
+      { slot: 'torso', item: null },
+      { slot: 'wrists', item: null },
+      { slot: 'feet', item: null }
     ],
-    equipment: {
-      weapon: {
-        name: 'Dague de la mort qui tue',
-        size: 2,
-        damage: 100
-      }
-    },
     inventory: [{ name: 'Couteau suisse' }]
   },
   {
@@ -56,19 +71,29 @@ export default [
     class: 'Cleric',
     talents: [{ name: 'Maîtrise épée lvl 1' }, { name: 'Furtivité lvl -8000' }],
     skills: [{ name: 'Faire du bruit', cost: 1 }, { name: "Fuite vers l'avant", cost: 1 }],
-    actions: [
-      { name: 'attack', action: ACTION_ATTACK },
-      { name: 'move', ACTION_MOVE },
-      { name: 'end turn', action: ACTION_END_TURN },
-      { name: 'Delay', action: ACTION_DELAY_TURN }
+    equipment: [
+      {
+        slot: 'weapon',
+        item: {
+          name: 'Gourdin',
+          size: 3,
+          damage: 150,
+          bonus: { dexterity: 1, strength: 3 }
+        }
+      },
+      { slot: 'head', item: null },
+      { slot: 'neck', item: null },
+      { slot: 'back', item: null },
+      { slot: 'waist', item: null },
+      { slot: 'hands', item: null },
+      { slot: 'ring1', item: null },
+      { slot: 'ring2', item: null },
+      { slot: 'legs', item: null },
+      { slot: 'shoulders', item: null },
+      { slot: 'torso', item: null },
+      { slot: 'wrists', item: null },
+      { slot: 'feet', item: null }
     ],
-    equipment: {
-      weapon: {
-        name: 'Gourdin',
-        size: 3,
-        damage: 150
-      }
-    },
     inventory: [{ name: 'Couteau suisse' }]
   }
 ]
@@ -94,19 +119,29 @@ export const foes = [
     class: 'Archer',
     talents: [{ name: 'Maîtrise épée lvl 1' }, { name: 'Furtivité lvl 1' }],
     skills: [{ name: 'Calouflage', cost: 1 }, { name: 'Fuite', cost: 1 }],
-    actions: [
-      { name: 'attack', action: ACTION_ATTACK },
-      { name: 'move', ACTION_MOVE },
-      { name: 'end turn', action: ACTION_END_TURN },
-      { name: 'Delay', action: ACTION_DELAY_TURN }
+    equipment: [
+      {
+        slot: 'weapon',
+        item: {
+          name: 'Dague de la mort qui tue',
+          size: 2,
+          damage: 10,
+          bonus: { dexterity: 2, strength: 1 }
+        }
+      },
+      { slot: 'head', item: null },
+      { slot: 'neck', item: null },
+      { slot: 'back', item: null },
+      { slot: 'waist', item: null },
+      { slot: 'hands', item: null },
+      { slot: 'ring1', item: null },
+      { slot: 'ring2', item: null },
+      { slot: 'legs', item: null },
+      { slot: 'shoulders', item: null },
+      { slot: 'torso', item: null },
+      { slot: 'wrists', item: null },
+      { slot: 'feet', item: null }
     ],
-    equipment: {
-      weapon: {
-        name: 'Dague de la mort qui tue',
-        size: 2,
-        damage: 10
-      }
-    },
     inventory: [{ name: 'Couteau suisse' }]
   }
 ]

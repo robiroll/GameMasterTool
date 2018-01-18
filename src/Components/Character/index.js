@@ -2,6 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Card from '../../styleguide/Card'
 import Button from '../../styleguide/Button'
+import { mapKeys } from 'lodash'
+import Equipment from '../Equipment'
 import './Character.css'
 
 const Character = ({
@@ -22,6 +24,21 @@ const Character = ({
   onEndTurn,
   onDelayTurn
 }) => {
+  const weapon = equipment.find(eq => eq.slot === 'weapon').item
+  let bonuses = {
+    strength: 0,
+    dexterity: 0,
+    constitution: 0,
+    intelligence: 0,
+    perception: 0,
+    speed: 0
+  }
+  equipment.map(eq => {
+    if (eq.item)
+      mapKeys(eq.item.bonus, (key, value) => {
+        bonuses[value] += key
+      })
+  })
   return (
     <Card title={`${name} : level ${lvl.toLocaleString('fr')}`}>
       <div className="character">
@@ -30,12 +47,24 @@ const Character = ({
         </div>
         <div className="character--title">Attributs</div>
         <div className="character--attributes">
-          <div className="character--attributes--strength">Force : {strength}</div>
-          <div className="character--attributes--dexterity">Dexterité : {dexterity}</div>
-          <div className="character--attributes--constitution">Constitution : {constitution}</div>
-          <div className="character--attributes--intelligence">Intelligence : {intelligence}</div>
-          <div className="character--attributes--perception">Perception : {perception}</div>
-          <div className="character--attributes--speed">Vitesse : {speed}</div>
+          <div className="character--attributes--strength">
+            Force : {strength} (+{bonuses.strength})
+          </div>
+          <div className="character--attributes--dexterity">
+            Dexterité : {dexterity} (+{bonuses.dexterity})
+          </div>
+          <div className="character--attributes--constitution">
+            Constitution : {constitution} (+{bonuses.constitution})
+          </div>
+          <div className="character--attributes--intelligence">
+            Intelligence : {intelligence} (+{bonuses.intelligence})
+          </div>
+          <div className="character--attributes--perception">
+            Perception : {perception} (+{bonuses.perception})
+          </div>
+          <div className="character--attributes--speed">
+            Vitesse : {speed} (+{bonuses.speed})
+          </div>
         </div>
         <div className="character--title">Talents</div>
         <div className="character--talents">
@@ -64,12 +93,12 @@ const Character = ({
         <div className="character--action">
           <Button
             className="character--action--item"
-            disabled={!(ap - equipment.weapon.size >= 0)}
+            disabled={!(ap - weapon.size >= 0)}
             onClick={() => {
-              onAttack(equipment.weapon)
+              onAttack(weapon)
             }}
           >
-            Attack ({equipment.weapon.size})
+            Attack ({weapon.size})
           </Button>
           <Button
             className="character--action--item"
@@ -96,12 +125,7 @@ const Character = ({
           </div>
         ))}
       </div>
-      <div className="character--title">Équipement</div>
-      <div className="character--equipment">
-        {equipment.weapon.name} <br />
-        - Dégâts : {equipment.weapon.damage} <br />
-        - Taille : {equipment.weapon.size}
-      </div>
+      <Equipment items={equipment} />
     </Card>
   )
 }

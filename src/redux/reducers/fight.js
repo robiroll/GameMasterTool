@@ -1,23 +1,20 @@
 import { findIndex } from 'lodash'
 import {
-  TURN_NEXT,
+  ROUND_NEXT,
   FIGHT_START,
   FIGHT_END,
   FIGHT_SELECTION_CHARACTER_ADD,
   FIGHT_SELECTION_FOE_ADD,
   FIGHT_SELECTION_CHARACTER_REMOVE,
   FIGHT_SELECTION_VALIDATE,
-  FIGHT_CHAR_END_TURN,
-  FIGHT_CHAR_DELAY,
   SKILL_USE,
-  ACTION_USE,
   ACTION_ATTACK,
   ACTION_MOVE,
   ACTION_END_TURN,
   ACTION_DELAY_TURN
 } from '../actions/actionTypes'
 const initialState = {
-  turn: 0,
+  round: 0,
   status: null,
   order: [],
   orderPlaying: [],
@@ -34,13 +31,13 @@ export default function fight(state = initialState, action) {
   let orderItem = null
   let characterPlaying = { ...state.characterPlaying }
   switch (action.type) {
-    case TURN_NEXT:
+    case ROUND_NEXT:
       order.map(char => {
         char.ap += char.apBase
         if (char.ap > char.apMax) char.ap = char.apMax
       })
       return Object.assign({}, state, {
-        turn: state.turn + 1,
+        round: state.round + 1,
         order,
         orderPlaying: order,
         orderDone: [],
@@ -48,7 +45,7 @@ export default function fight(state = initialState, action) {
       })
 
     case FIGHT_START:
-      return Object.assign({}, state, { turn: 1, status: 'selection' })
+      return Object.assign({}, state, { round: 1, status: 'selection' })
 
     case FIGHT_END:
       return Object.assign({}, state, initialState)

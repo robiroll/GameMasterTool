@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import CharacterComponent from '../../Components/Character'
 
 import { connect } from 'react-redux'
-import { nextTurn, useSkill, useAction, attack, move, delayTurn, endTurn } from '../../redux/actions/fight'
+import { useSkill, useAction, attack, move, delayTurn, endTurn } from '../../redux/actions/fight'
 
 import * as Races from '../../World/Races'
 import * as Classes from '../../World/Classes'
@@ -15,14 +15,13 @@ class Character extends Component {
   static propTypes = {
     match: PropTypes.object,
     data: PropTypes.object,
-    currentTurn: PropTypes.number,
+    round: PropTypes.number,
     useSkill: PropTypes.func.isRequired,
     useAction: PropTypes.func.isRequired,
     attack: PropTypes.func.isRequired,
     move: PropTypes.func.isRequired,
     endTurn: PropTypes.func.isRequired,
-    delayTurn: PropTypes.func.isRequired,
-    nextTurn: PropTypes.func.isRequired
+    delayTurn: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -63,12 +62,11 @@ class Character extends Component {
   handleMove = () => this.props.move()
   handleEndTurn = () => this.props.endTurn()
   handleDelayTurn = () => this.props.delayTurn()
-  onEndTurn = () => this.props.nextTurn()
 
   render() {
     return (
       <CharacterComponent
-        currentTurn={this.props.currentTurn}
+        round={this.props.round}
         data={this.character}
         skills={this.character.skills}
         state={this.state}
@@ -84,9 +82,6 @@ class Character extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  nextTurn: () => {
-    dispatch(nextTurn())
-  },
   useSkill: skill => {
     dispatch(useSkill(skill.cost))
   },

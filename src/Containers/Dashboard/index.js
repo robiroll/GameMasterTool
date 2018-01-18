@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import DashboardComponent from '../../Components/Dashboard'
 import { connect } from 'react-redux'
-import { nextTurn, startFight, endFight, endCharaterTurn } from '../../redux/actions/fight'
+import { nextTurn, startFight, endFight } from '../../redux/actions/fight'
 import { getCharacter } from '../../redux/actions/characters'
 
 class Dashboard extends Component {
@@ -13,6 +13,8 @@ class Dashboard extends Component {
     endFight: PropTypes.func.isRequired,
     endCharaterTurn: PropTypes.func.isRequired,
     turn: PropTypes.number.isRequired,
+    characterPlaying: PropTypes.object,
+    orderPlaying: PropTypes.array,
     status: PropTypes.any
   }
 
@@ -29,8 +31,6 @@ class Dashboard extends Component {
   }
   handleCloseSelection = () => this.setState({ isOpen: false })
 
-  handleEndCharaterTurn = idCharacter => this.props.endCharaterTurn(idCharacter)
-
   render() {
     return (
       <DashboardComponent
@@ -41,8 +41,9 @@ class Dashboard extends Component {
         onStartFight={this.handleStartFight}
         onEndFight={this.handleEndFight}
         onCloseSelection={this.handleCloseSelection}
-        onEndCharaterTurn={this.handleEndCharaterTurn}
         isOpen={this.state.isOpen}
+        characterPlaying={this.props.characterPlaying}
+        orderPlaying={this.props.orderPlaying}
       />
     )
   }
@@ -50,6 +51,8 @@ class Dashboard extends Component {
 
 const mapStateToProps = state => ({
   turn: state.fight.turn,
+  orderPlaying: state.fight.orderPlaying,
+  characterPlaying: state.fight.characterPlaying,
   status: state.fight.status
 })
 
@@ -65,10 +68,6 @@ const mapDispatchToProps = dispatch => ({
   },
   endFight: () => {
     dispatch(endFight())
-  },
-
-  endCharaterTurn: idCharacter => {
-    dispatch(endCharaterTurn(idCharacter))
   }
 })
 

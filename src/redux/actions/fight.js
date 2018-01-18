@@ -6,8 +6,12 @@ import {
   FIGHT_SELECTION_FOE_ADD,
   FIGHT_SELECTION_CHARACTER_REMOVE,
   FIGHT_SELECTION_VALIDATE,
-  FIGHT_CHAR_END_TURN,
-  FIGHT_CHAR_DELAY
+  SKILL_USE,
+  ACTION_ATTACK,
+  ACTION_MOVE,
+  ACTION_END_TURN,
+  ACTION_DELAY_TURN,
+  ACTION_USE
 } from './actionTypes'
 
 export const nextTurn = () => ({
@@ -40,12 +44,28 @@ export const validateCharacters = () => ({
   type: FIGHT_SELECTION_VALIDATE
 })
 
-export const endCharaterTurn = idCharacter => ({
-  type: FIGHT_CHAR_END_TURN,
-  payload: idCharacter
+export const useSkill = skill => ({
+  type: SKILL_USE,
+  payload: skill
 })
 
-export const delayCharacterTurn = idCharacter => ({
-  type: FIGHT_CHAR_DELAY,
-  payload: idCharacter
+export const useAction = payload => ({
+  type: ACTION_USE,
+  payload
+})
+export const attack = payload => ({
+  type: ACTION_ATTACK,
+  payload
+})
+export const move = payload => ({
+  type: ACTION_MOVE,
+  payload
+})
+export const endTurn = payload => ({
+  type: ACTION_END_TURN,
+  payload
+})
+export const delayTurn = payload => ({
+  type: ACTION_DELAY_TURN,
+  payload
 })

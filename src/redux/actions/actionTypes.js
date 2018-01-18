@@ -8,8 +8,12 @@ export const FIGHT_SELECTION_VALIDATE = 'FIGHT_SELECTION_VALIDATE'
 export const TURN_NEXT = 'TURN_NEXT'
 
 // fight actions
-export const FIGHT_CHAR_END_TURN = 'FIGHT_CHAR_END_TURN'
-export const FIGHT_CHAR_DELAY = 'FIGHT_CHAR_DELAY'
+export const SKILL_USE = 'SKILL_USE'
+export const ACTION_USE = 'ACTION_USE'
+export const ACTION_ATTACK = 'ACTION_ATTACK'
+export const ACTION_MOVE = 'ACTION_MOVE'
+export const ACTION_END_TURN = 'ACTION_END_TURN'
+export const ACTION_DELAY_TURN = 'ACTION_DELAY_TURN'
 
 // Characters
 export const CHAR_GET = 'CHAR_GET'

@@ -16,4 +16,5 @@ export const ACTION_END_TURN = 'ACTION_END_TURN'
 export const ACTION_DELAY_TURN = 'ACTION_DELAY_TURN'
 
 // Characters
+export const CHAR_ADD = 'CHAR_ADD'
 export const CHAR_GET = 'CHAR_GET'

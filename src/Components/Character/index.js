@@ -2,93 +2,156 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Card from '../../styleguide/Card'
 import Button from '../../styleguide/Button'
-import { mapKeys } from 'lodash'
-import Equipment from '../Equipment'
+// import { mapKeys } from 'lodash'
+// import Equipment from '../Equipment'
 import './Character.css'
 
+const STANDARD_SKILLS = {
+  athletics: ['str', 'dex']
+}
+
 const Character = ({
-  data: {
-    name,
-    lvl,
-    ap,
-    apMax,
-    attributes: { strength, dexterity, constitution, intelligence, perception, speed },
-    talents,
-    equipment,
-    inventory
-  },
-  skills,
+  data: { name, level, ap, apBase, apStart, apMax, attributes, standardSkills, talents, equipment, inventory, skills },
   onUseSkill,
   onAttack,
   onMove,
   onEndTurn,
   onDelayTurn
 }) => {
-  const weapon = equipment.find(eq => eq.slot === 'weapon').item
+  const weapon = equipment.weapon
+  const { str, siz, con, dex, int, pow, cha } = attributes
   let bonuses = {
-    strength: 0,
-    dexterity: 0,
-    constitution: 0,
-    intelligence: 0,
-    perception: 0,
-    speed: 0
+    str: 0,
+    siz: 0,
+    con: 0,
+    dex: 0,
+    int: 0,
+    pow: 0,
+    cha: 0
   }
-  equipment.map(eq => {
-    if (eq.item)
-      mapKeys(eq.item.bonus, (key, value) => {
-        bonuses[value] += key
-      })
+  // let characterSkills = []
+  // let characterEquipment = []
+  // let characterTalents = []
+  // let characterInventory = []
+
+  // TODO: Use Object.entries instead of creating new objects
+  // Skills
+  // for (const key in skills) {
+  //   if (skills.hasOwnProperty(key)) {
+  //     characterSkills.push({ ...skills[key], name: key })
+  //   }
+  // }
+  // equipment
+  // for (const key in equipment) {
+  //   if (equipment.hasOwnProperty(key)) {
+  //     characterEquipment.push({ ...equipment[key], slot: key })
+  //   }
+  // }
+  // Talents
+  // for (const key in talents) {
+  //   if (equipment.hasOwnProperty(key)) {
+  //     characterEquipment.push({ ...equipment[key], slot: key })
+  //   }
+  // }
+  // Inventory
+  // for (const key in equipment) {
+  //   if (equipment.hasOwnProperty(key)) {
+  //     characterEquipment.push({ ...equipment[key], slot: key })
+  //   }
+  // }
+  // total bonuses
+  Object.keys(equipment).map(key => {
+    const eq = equipment[key]
+    if (eq.bonus) Object.keys(eq.bonus).map(bns => (bonuses[bns] += eq.bonus[bns]))
   })
+  // characterEquipment.map(item => {
+  //   for (const key in item.bonus) {
+  //     if (item.bonus.hasOwnProperty(key)) {
+  //       bonuses[key] += item.bonus[key]
+  //     }
+  //   }
+  // })
+
   return (
-    <Card title={`${name} : level ${lvl.toLocaleString('fr')}`}>
+    <Card title={`${name} : level ${level.toLocaleString('fr')}`}>
       <div className="character">
         <div className="character--ap">
-          {ap} / {apMax}
+          {apBase} / {apMax} / {apStart}
         </div>
         <div className="character--title">Attributs</div>
         <div className="character--attributes">
           <div className="character--attributes--strength">
-            Force : {strength} (+{bonuses.strength})
+            Force : {str} (+{bonuses.str})
           </div>
           <div className="character--attributes--dexterity">
-            Dexterité : {dexterity} (+{bonuses.dexterity})
+            Dexterité : {dex} (+{bonuses.dex})
           </div>
           <div className="character--attributes--constitution">
-            Constitution : {constitution} (+{bonuses.constitution})
+            Constitution : {con} (+{bonuses.con})
+          </div>
+          <div className="character--attributes--size">
+            Taille : {siz} (+{bonuses.siz})
           </div>
           <div className="character--attributes--intelligence">
-            Intelligence : {intelligence} (+{bonuses.intelligence})
+            Intelligence : {int} (+{bonuses.int})
           </div>
           <div className="character--attributes--perception">
-            Perception : {perception} (+{bonuses.perception})
+            Power : {pow} (+{bonuses.pow})
           </div>
           <div className="character--attributes--speed">
-            Vitesse : {speed} (+{bonuses.speed})
+            Charisme : {cha} (+{bonuses.cha})
           </div>
         </div>
+        <div className="character--title">Standard Skills</div>
+        <div className="character--standard-skills">
+          {Object.keys(standardSkills).map(key => {
+            const base = standardSkills[key]
+            let total = base
+            if (STANDARD_SKILLS[key])
+              STANDARD_SKILLS[key].map(skill => {
+                total += attributes[skill]
+                total += bonuses[skill]
+              })
+            return (
+              <div key={key}>
+                {key}: {total} (base {base})
+              </div>
+            )
+          })}
+        </div>
         <div className="character--title">Talents</div>
-        <div className="character--talents">
-          {talents.map(talent => (
-            <div key={talent.name} className="character--talents--item">
-              {talent.name}
-            </div>
-          ))}
-        </div>
+        {talents && (
+          <div className="character--talents">
+            {Object.keys(talents).map(key => {
+              const talent = talents[key]
+              return (
+                <div key={key} className="character--talents--item">
+                  {talent.name}
+                </div>
+              )
+            })}
+          </div>
+        )}
         <div className="character--title">Compétences</div>
-        <div className="character--skills">
-          {skills.map(skill => (
-            <Button
-              key={skill.name}
-              className="character--skills--item"
-              disabled={!(ap - skill.cost >= 0)}
-              onClick={() => {
-                onUseSkill(skill)
-              }}
-            >
-              {skill.name} ({skill.cost})
-            </Button>
-          ))}
-        </div>
+        {skills && (
+          <div className="character--skills">
+            {Object.keys(skills).map(key => {
+              const skill = skills[key]
+              return (
+                <Button
+                  key={key}
+                  className="character--skills--item"
+                  disabled={!(ap - skill.cost >= 0)}
+                  onClick={() => {
+                    onUseSkill(skill)
+                  }}
+                >
+                  {skill.name} ({skill.cost})
+                </Button>
+              )
+            })}
+          </div>
+        )}
         <div className="character--title">Actions</div>
         <div className="character--action">
           <Button
@@ -118,14 +181,31 @@ const Character = ({
         </div>
       </div>
       <div className="character--title">Inventaire</div>
-      <div className="character--inventory">
-        {inventory.map(item => (
-          <div key={item.name} className="character--inventory--item">
-            {item.name}
-          </div>
-        ))}
-      </div>
-      <Equipment items={equipment} />
+      {inventory && (
+        <div className="character--inventory">
+          {Object.keys(inventory).map(key => {
+            const item = inventory[key]
+            return (
+              <div key={item.name} className="character--inventory--item">
+                {item.name}
+              </div>
+            )
+          })}
+        </div>
+      )}
+      <div className="character--title">Équipement</div>
+      {equipment && (
+        <div className="character--equipment">
+          {Object.keys(equipment).map(key => {
+            const item = equipment[key]
+            return (
+              <div key={key} className="character--equipment--item">
+                {item.name}
+              </div>
+            )
+          })}
+        </div>
+      )}
     </Card>
   )
 }
@@ -133,9 +213,9 @@ const Character = ({
 Character.propTypes = {
   data: PropTypes.shape({
     name: PropTypes.string.isRequired,
-    lvl: PropTypes.number.isRequired
+    level: PropTypes.number.isRequired,
+    skills: PropTypes.object
   }),
-  skills: PropTypes.array.isRequired,
   stae: PropTypes.object,
   onSkillClick: PropTypes.func,
   onUseSkill: PropTypes.func,

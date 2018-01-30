@@ -1,5 +1,12 @@
 @import 'src/scss/layout.scss';
+@import 'src/scss/colors.scss';
 
 .dashboard {
   margin: $g3;
+
+  &--characters {
+    margin-top: $g3;
+    border-top: 1px solid $neutral-4;
+    padding-top: $g3;
+  }
 }

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 
 const Equipment = ({ item }) => {
   let infos = []
+  // TODO: Use Object.entries instead of creating new objects
   for (let prop in item) {
     if (item.hasOwnProperty(prop) && prop !== 'name' && prop !== 'bonus') {
       infos.push(

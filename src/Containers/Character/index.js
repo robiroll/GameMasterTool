@@ -13,8 +13,9 @@ import CHARACTERS from '../../World/Characters'
 
 class Character extends Component {
   static propTypes = {
+    characters: PropTypes.object,
     match: PropTypes.object,
-    data: PropTypes.object,
+    data: PropTypes.string,
     round: PropTypes.number,
     useSkill: PropTypes.func.isRequired,
     useAction: PropTypes.func.isRequired,
@@ -26,17 +27,17 @@ class Character extends Component {
 
   constructor(props) {
     super(props)
-    this.character = props.data || CHARACTERS.find(char => char.idCharacter === props.match.params.idCharacter) // We might need to do a `new Character`. As of now, I'm testing without it
+    this.character = props.characters[props.data] || props.characters[props.match.params.idCharacter]
 
     this.state = { usedAP: 0 }
 
-    this.setSkills()
+    // this.setSkills()
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.data) {
-      this.character = nextProps.data
-      this.setSkills()
+      this.character = nextProps.characters[nextProps.data]
+      // this.setSkills()
     }
   }
 
@@ -64,6 +65,8 @@ class Character extends Component {
   handleDelayTurn = () => this.props.delayTurn()
 
   render() {
+    const { data, characters } = this.props
+    // console.log(this.character)
     return (
       <CharacterComponent
         round={this.props.round}
@@ -78,6 +81,12 @@ class Character extends Component {
         onDelayTurn={this.handleDelayTurn}
       />
     )
+  }
+}
+
+const mapStateToProps = state => {
+  return {
+    characters: state.firebase.data.characters
   }
 }
 
@@ -102,4 +111,4 @@ const mapDispatchToProps = dispatch => ({
   }
 })
 
-export default connect(null, mapDispatchToProps)(Character)
+export default connect(mapStateToProps, mapDispatchToProps)(Character)

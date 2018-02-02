@@ -3,7 +3,6 @@ import {
   FIGHT_START,
   FIGHT_END,
   FIGHT_SELECTION_CHARACTER_ADD,
-  FIGHT_SELECTION_FOE_ADD,
   FIGHT_SELECTION_CHARACTER_REMOVE,
   FIGHT_SELECTION_VALIDATE,
   SKILL_USE,
@@ -27,11 +26,6 @@ export const endFight = () => ({
 
 export const selectCharacter = idCharacter => ({
   type: FIGHT_SELECTION_CHARACTER_ADD,
-  payload: idCharacter
-})
-
-export const selectFoe = idCharacter => ({
-  type: FIGHT_SELECTION_FOE_ADD,
   payload: idCharacter
 })
 

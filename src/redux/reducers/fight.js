@@ -1,10 +1,9 @@
-import { findIndex } from 'lodash'
+import { indexOf } from 'lodash'
 import {
   ROUND_NEXT,
   FIGHT_START,
   FIGHT_END,
   FIGHT_SELECTION_CHARACTER_ADD,
-  FIGHT_SELECTION_FOE_ADD,
   FIGHT_SELECTION_CHARACTER_REMOVE,
   FIGHT_SELECTION_VALIDATE,
   SKILL_USE,
@@ -23,13 +22,11 @@ const initialState = {
   characterPlaying: null
 }
 export default function fight(state = initialState, action) {
-  let foes = [...state.foes]
-  let foe = {}
   let order = [...state.order]
   let orderPlaying = [...state.orderPlaying]
   let orderDone = [...state.orderDone]
   let orderItem = null
-  let characterPlaying = { ...state.characterPlaying }
+  let characterPlaying = null
   switch (action.type) {
     case ROUND_NEXT:
       order.map(char => {
@@ -54,23 +51,17 @@ export default function fight(state = initialState, action) {
       order.push(action.payload)
       return Object.assign({}, state, { order })
 
-    case FIGHT_SELECTION_FOE_ADD:
-      Object.assign(foe, action.payload)
-      foes.push(foe)
-      order.push(foe)
-      return Object.assign({}, state, { order, foes })
-
     case FIGHT_SELECTION_CHARACTER_REMOVE:
-      order = order.filter(char => char.idCharacter !== action.payload)
-      orderPlaying = orderPlaying.filter(char => char.idCharacter !== action.payload)
-      orderDone = orderDone.filter(char => char.idCharacter !== action.payload)
+      order = order.filter(idCharacter => idCharacter !== action.payload)
+      orderPlaying = orderPlaying.filter(idCharacter => idCharacter !== action.payload)
+      orderDone = orderDone.filter(idCharacter => idCharacter !== action.payload)
       return Object.assign({}, state, { order, orderPlaying, orderDone })
 
     case FIGHT_SELECTION_VALIDATE:
       return Object.assign({}, state, { status: 'in-progress', orderPlaying: order, characterPlaying: order[0] })
 
     case SKILL_USE:
-      characterPlaying = { ...characterPlaying, ap: characterPlaying.ap - action.payload }
+      // characterPlaying = { ...characterPlaying, ap: characterPlaying.ap - action.payload }
       return Object.assign({}, state, { characterPlaying })
 
     case ACTION_ATTACK:
@@ -82,8 +73,8 @@ export default function fight(state = initialState, action) {
       return Object.assign({}, state, { characterPlaying })
 
     case ACTION_END_TURN:
-      order.splice(findIndex(order, { idCharacter: characterPlaying.idCharacter }), 1, characterPlaying)
-      orderPlaying = orderPlaying.filter(char => char.idCharacter !== characterPlaying.idCharacter)
+      order.splice(indexOf(order, characterPlaying), 1, characterPlaying)
+      orderPlaying = orderPlaying.filter(idCharacter => idCharacter !== characterPlaying)
       orderDone.push(characterPlaying)
       characterPlaying = orderPlaying[0]
       return Object.assign({}, state, { order, orderPlaying, orderDone, characterPlaying })

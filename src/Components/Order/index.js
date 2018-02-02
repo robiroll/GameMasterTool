@@ -3,14 +3,14 @@ import PropTypes from 'prop-types'
 import Button from '../../styleguide/Button'
 import './Order.css'
 
-const Order = ({ characters, status, removeCharacter }) => (
+const Order = ({ order, characters, status, removeCharacter }) => (
   <div className="order">
-    {characters.map(char => {
+    {order.map(idCharacter => {
       return (
-        <div key={char.idCharacter} className="order--char">
-          {char.name}
+        <div key={idCharacter} className="order--char">
+          {characters[idCharacter].name}
           {(status === 'playing' || status === 'selection') && (
-            <Button onClick={() => removeCharacter(char.idCharacter)}>X</Button>
+            <Button onClick={() => removeCharacter(idCharacter)}>X</Button>
           )}
         </div>
       )
@@ -19,7 +19,8 @@ const Order = ({ characters, status, removeCharacter }) => (
 )
 
 Order.propTypes = {
-  characters: PropTypes.array,
+  order: PropTypes.array,
+  characters: PropTypes.object,
   status: PropTypes.string,
   removeCharacter: PropTypes.func
 }

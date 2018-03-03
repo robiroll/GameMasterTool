@@ -1,6 +1,6 @@
-import { CHAR_GET } from './actionTypes'
+import { CHAR_ADD } from './actionTypes'
 
-export const getCharacter = id => ({
-  type: CHAR_GET,
+export const addCharacter = id => ({
+  type: CHAR_ADD,
   payload: id
 })

@@ -2,13 +2,18 @@
 @import 'scss/colors.scss';
 
 %button {
+  position: relative;
   display: inline-block;
-  border: 1px solid $accent-1;
   border-radius: $g1;
   background: $primary-1;
   cursor: pointer;
   padding: $g1 $g2;
   color: $accent-1;
+  overflow: hidden;
+
+  &:hover {
+    background: darken($primary-1, 10%);
+  }
 }
 
 .button {
@@ -18,16 +23,24 @@
     position: relative;
 
     &:after {
-      // @extend %button;
       position: absolute;
-      top: -1px;
-      right: -1px;
-      bottom: -1px;
-      left: -1px;
-      border-radius: $g1;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
       background: rgba(#fff, 0.8);
       cursor: not-allowed;
       content: '';
     }
+  }
+
+  &--progress {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    background: rgba($neutral-1, 0.3);
+    cursor: not-allowed;
   }
 }

@@ -3,12 +3,9 @@ import {
   FIGHT_START,
   FIGHT_END,
   FIGHT_SELECTION_CHARACTER_ADD,
-  FIGHT_SELECTION_FOE_ADD,
   FIGHT_SELECTION_CHARACTER_REMOVE,
   FIGHT_SELECTION_VALIDATE,
   SKILL_USE,
-  ACTION_ATTACK,
-  ACTION_MOVE,
   ACTION_END_TURN,
   ACTION_DELAY_TURN,
   ACTION_USE
@@ -30,11 +27,6 @@ export const selectCharacter = idCharacter => ({
   payload: idCharacter
 })
 
-export const selectFoe = idCharacter => ({
-  type: FIGHT_SELECTION_FOE_ADD,
-  payload: idCharacter
-})
-
 export const removeCharacter = idCharacter => ({
   type: FIGHT_SELECTION_CHARACTER_REMOVE,
   payload: idCharacter
@@ -51,14 +43,6 @@ export const useSkill = skill => ({
 
 export const useAction = payload => ({
   type: ACTION_USE,
-  payload
-})
-export const attack = payload => ({
-  type: ACTION_ATTACK,
-  payload
-})
-export const move = payload => ({
-  type: ACTION_MOVE,
   payload
 })
 export const endTurn = payload => ({

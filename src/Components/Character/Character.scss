@@ -17,4 +17,50 @@
     font-size: $g5;
     background-color: red;
   }
+
+  &--skill {
+    position: relative;
+
+    &--icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 $g2;
+      border-radius: 50%;
+      border: 1px solid $accent-3;
+      padding: $g1;
+      width: $g2;
+      height: $g2;
+      background: $accent-4;
+    }
+
+    &--infos {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      border-radius: $g1;
+      background: $white;
+      width: 200px;
+      padding: $g1;
+      box-shadow: 0 0 20px 4px rgba($neutral-1, 0.2);
+      font-size: 12px;
+    }
+
+    &:hover {
+      .character--skill--infos {
+        display: block;
+      }
+    }
+  }
+
+  &--skills {
+    display: flex;
+
+    &--action {
+      display: flex;
+      flex-direction: column;
+    }
+  }
 }

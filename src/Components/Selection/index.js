@@ -1,42 +1,42 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Button from '../../styleguide/Button'
-import characters, { foes as enemies } from '../../World/Characters'
 import './Selection.css'
 
-const Selection = ({ selectCharacter, selectFoe, validateCharacters, isValidateDisabled, order, foes }) => (
+const Selection = ({ characters, selectCharacter, validateCharacters, isValidateDisabled, order }) => (
   <div className="selection">
-    <div className="selection--characters">
-      {characters.map(char => {
-        const disabled = !!order.find(item => item.idCharacter === char.idCharacter)
+    Heroes
+    {Object.keys(characters)
+      .filter(id => characters[id].kind === 'hero')
+      .map(key => {
+        const char = characters[key]
+        const disabled = !!order.find(item => item === key)
         return (
-          <div key={char.idCharacter} className="selection--characters--char">
+          <div key={key} className="selection--characters">
             <div className="selection--characters--char--name">
-              <Button onClick={() => selectCharacter(char)} disabled={disabled}>
+              <Button onClick={() => selectCharacter(key)} disabled={disabled}>
                 {char.name}
               </Button>
             </div>
           </div>
         )
       })}
-    </div>
-    <div className="selection--characters">
-      {enemies.map(char => {
+    Foes
+    {Object.keys(characters)
+      .filter(id => characters[id].kind === 'foe')
+      .map(key => {
+        const char = characters[key]
+        const disabled = !!order.find(item => item === key)
         return (
-          <div key={char.idCharacter} className="selection--characters--char">
+          <div key={key} className="selection--characters">
             <div className="selection--characters--char--name">
-              <Button
-                onClick={() =>
-                  selectFoe(Object.assign({}, char, { idCharacter: `${char.idCharacter}-${foes.length}` }))
-                }
-              >
+              <Button onClick={() => selectCharacter(key)} disabled={disabled}>
                 {char.name}
               </Button>
             </div>
           </div>
         )
       })}
-    </div>
     <Button onClick={validateCharacters} disabled={isValidateDisabled}>
       validate chars
     </Button>
@@ -44,12 +44,11 @@ const Selection = ({ selectCharacter, selectFoe, validateCharacters, isValidateD
 )
 
 Selection.propTypes = {
+  characters: PropTypes.object,
   selectCharacter: PropTypes.func,
-  selectFoe: PropTypes.func,
   validateCharacters: PropTypes.func,
   isValidateDisabled: PropTypes.bool,
-  order: PropTypes.array,
-  foes: PropTypes.array
+  order: PropTypes.array
 }
 
 export default Selection

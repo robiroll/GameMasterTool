@@ -1,21 +1,32 @@
 .button {
+  position: relative;
   display: inline-block;
-  border: 1px solid #d95b43;
   border-radius: 8px;
   background: #ecd078;
   cursor: pointer;
   padding: 8px 16px;
-  color: #d95b43; }
+  color: #d95b43;
+  overflow: hidden; }
+  .button:hover {
+    background: #e6c04b; }
 
 .button--disabled {
   position: relative; }
   .button--disabled:after {
     position: absolute;
-    top: -1px;
-    right: -1px;
-    bottom: -1px;
-    left: -1px;
-    border-radius: 8px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     background: rgba(255, 255, 255, 0.8);
     cursor: not-allowed;
     content: ''; }
+
+.button--progress {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  background: rgba(0, 29, 41, 0.3);
+  cursor: not-allowed; }

@@ -10,3 +10,37 @@
 .character--name {
   font-size: 40px;
   background-color: red; }
+
+.character--skill {
+  position: relative; }
+  .character--skill--icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 16px;
+    border-radius: 50%;
+    border: 1px solid #542437;
+    padding: 8px;
+    width: 16px;
+    height: 16px;
+    background: #53777a; }
+  .character--skill--infos {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    border-radius: 8px;
+    background: #fff;
+    width: 200px;
+    padding: 8px;
+    box-shadow: 0 0 20px 4px rgba(0, 29, 41, 0.2);
+    font-size: 12px; }
+  .character--skill:hover .character--skill--infos {
+    display: block; }
+
+.character--skills {
+  display: flex; }
+  .character--skills--action {
+    display: flex;
+    flex-direction: column; }

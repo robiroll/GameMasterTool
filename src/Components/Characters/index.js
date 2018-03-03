@@ -6,26 +6,16 @@ import Modal from 'react-modal'
 import Button from '../../styleguide/Button'
 import './Character.css'
 
-const Characters = ({ data, character, isOpen, onAddCharacter, onOpen, onClose, onChange, onChangeAttributes }) => {
-  let characters = []
-  for (let key in data) {
-    if (data.hasOwnProperty(key)) {
-      characters.push(key)
-    }
-  }
-  // TODO: Use Object.entries instead of creating new objects
-  // return (
-  //   <div className="characters">
-  //     <Button onClick={onOpen}>Create Character</Button>
-  //     <Modal isOpen={isOpen}>
-  //       <CharacterSheet onAddCharacter={onAddCharacter} onOpen={onOpen} onClose={onClose} onChange={onChange} />
-  //     </Modal>
-  //     {characters.map(char => {
-  //       return <Character key={char.idCharacter} data={char} />
-  //     })}
-  //   </div>
-  // )
-  // console.log('characters ids', characters)
+const Characters = ({
+  data,
+  character,
+  isOpen,
+  onAddCharacter,
+  onOpen,
+  onClose,
+  onChange,
+  onChangeAttributes
+}) => {
   return (
     <div className="characters">
       <Button onClick={onOpen}>Create Character</Button>
@@ -39,7 +29,7 @@ const Characters = ({ data, character, isOpen, onAddCharacter, onOpen, onClose, 
           character={character}
         />
       </Modal>
-      {characters.map(char => {
+      {Object.keys(data).map(char => {
         return <Character key={char} data={char} />
       })}
     </div>

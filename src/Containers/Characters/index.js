@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 import CharactersComponent from '../../Components/Characters'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { firebaseConnect } from 'react-redux-firebase'
+import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase'
+import initialState from './config.js'
 
 // import CHARACTERS from '../../World/Characters'
 
@@ -14,55 +15,30 @@ class Characters extends Component {
   }
 
   state = {
-    isOpen: true,
-    character: {
-      kind: 'hero',
-      level: 1,
-      race: 'hobbit',
-      class: 'thief',
-      attributes: {
-        str: 3,
-        con: 3,
-        siz: 3,
-        dex: 3,
-        int: 3,
-        pow: 8,
-        cha: 8
-      },
-      standardSkills: {
-        athletics: 0,
-        boating: 0,
-        brawn: 0
-      },
-      talents: [],
-      skills: [],
-      equipment: {
-        weapon: { type: 'str', name: 'Mains nues', size: 1, damage: 0 },
-        torso: { armor: 1 }
-      },
-      inventory: {
-        lifePotion: {
-          name: 'Potion de vie',
-          quantity: 1,
-          cost: 2,
-          recovery: 20
-        }
-      }
-    }
+    isOpen: false,
+    character: initialState
   }
 
   handleAddCharacter = () => {
     const { character } = this.state
-    const { attributes, standardSkills } = character
-    const { str, dex, int, pow, cha, siz, con } = attributes
-    const { athletics } = standardSkills
+    const { attributes, standardSkills, proSkills } = character
+    const { str, dex, int, pow, siz, con } = attributes
+    // const { athletics } = standardSkills
     // const standardSkills = {}
+    const hpBase = (str + con * 2 + siz * 3) * 2
     const changes = {
-      apBase: Math.round((str + dex + int) / 6),
-      apStart: Math.round((pow + siz) / 4 + 2),
-      apMax: Math.round((con + siz) / 4 + 5)
+      apBase: Math.ceil((str + dex + int) / 6),
+      apStart: Math.ceil((pow + siz) / 4 + 2),
+      apMax: Math.ceil((con + siz) / 4 + 5),
+      hpBase,
+      hp: hpBase + (siz + con) * 2
     }
-    const char = Object.assign({}, character, { attributes, standardSkills }, changes)
+    const char = Object.assign(
+      {},
+      character,
+      { attributes, standardSkills, proSkills },
+      changes
+    )
     this.props.firebase.push('characters', char)
     this.handleClose()
   }
@@ -77,13 +53,19 @@ class Characters extends Component {
   handleChangeAttribute = (e, attr) => {
     const { id, value } = e.target
     const character = Object.assign({}, this.state.character)
-    const attributes = Object.assign({}, character[attr], { [id]: Number(value) })
+    const attributes = Object.assign({}, character[attr], {
+      [id]: Number(value)
+    })
     // const standardSkills = Object.assign({}, character.standardSkills, { [id]: Number(value) })
     character[attr] = attributes
     this.setState({ character })
   }
 
   render() {
+    // data={this.props.characters}
+    const { characters } = this.props
+    if (!isLoaded(characters)) return 'loading characters...'
+    if (isEmpty(characters)) return 'characters list is empty'
     return (
       <CharactersComponent
         data={this.props.characters}
@@ -103,4 +85,7 @@ const mapStateToProps = state => ({
   characters: state.firebase.data.characters
 })
 
-export default compose(firebaseConnect(['characters']), connect(mapStateToProps))(Characters)
+export default compose(
+  firebaseConnect(['characters']),
+  connect(mapStateToProps)
+)(Characters)

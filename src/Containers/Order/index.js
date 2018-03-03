@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import { removeCharacter } from '../../redux/actions/fight'
 import OrderComponent from '../../Components/Order'
 
+// import CHARACTERS from '../../World/Characters'
+
 class Order extends Component {
   static propTypes = {
     status: PropTypes.string,
@@ -18,7 +20,10 @@ class Order extends Component {
   }
   render() {
     const { status, order, orderPlaying, orderDone, characters } = this.props
-    const orderDisplay = status === 'playing' ? orderPlaying : status === 'done' ? orderDone : order
+    const orderDisplay =
+      status === 'playing'
+        ? orderPlaying
+        : status === 'done' ? orderDone : order
     return (
       <OrderComponent
         status={status}

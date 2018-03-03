@@ -1,92 +1,30 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import Button from '../../styleguide/Button'
-const FIELDS = [
-  {
-    id: 'name',
-    type: 'text',
-    label: 'Nom du Personnage'
-  },
-  {
-    id: 'kind',
-    type: 'select',
-    label: 'Type de charactère',
-    options: [{ label: 'Héros', value: 'hero' }, { label: 'Ennemi', value: 'foe' }]
-  },
-  {
-    type: 'children',
-    id: 'attributes',
-    extendedType: 'attributes',
-    children: [
-      {
-        id: 'str',
-        label: 'Force'
-      },
-      {
-        id: 'con',
-        label: 'Constitution'
-      },
-      {
-        id: 'siz',
-        label: 'Taille'
-      },
-      {
-        id: 'dex',
-        label: 'Dexterité'
-      },
-      {
-        id: 'int',
-        label: 'Intelligence'
-      },
-      {
-        id: 'pow',
-        label: 'Puissance'
-      },
-      {
-        id: 'cha',
-        label: 'Charisme'
-      }
-    ]
-  },
-  {
-    type: 'children',
-    id: 'standardSkills',
-    extendedType: 'standardSkills',
-    children: [
-      {
-        id: 'athletics',
-        label: 'Athletics'
-      }
-    ]
-  },
-  {
-    id: 'race',
-    type: 'select',
-    label: 'Race',
-    options: [{ label: 'Hobbit', value: 'hobbit' }, { label: 'Elfe', value: 'elf' }]
-  },
-  {
-    id: 'class',
-    type: 'select',
-    label: 'Classe',
-    options: [
-      { label: 'Voleur', value: 'thief' },
-      { label: 'Guerrier', value: 'warrior' },
-      { label: 'Démoniste', value: 'warlock' }
-    ]
-  }
-]
-const CharacterSheet = ({ character, onAddCharacter, onClose, onChange, onChangeAttributes }) => {
+import fields from './config'
+
+const CharacterSheet = ({
+  character,
+  onAddCharacter,
+  onClose,
+  onChange,
+  onChangeAttributes
+}) => {
   return (
     <div className="character-sheet">
       <form className="character-sheet--form">
-        <div className="character-sheet--form--title">Création de Personnage</div>
-        {FIELDS.map(field => {
+        <h1 className="character-sheet--form--title">Création de Personnage</h1>
+        {fields.map(field => {
           const { type, id, label, options, children, extendedType } = field
+          let total = 0
           switch (type) {
             case 'children':
+              Object.values(character[id]).map(val => (total += val))
               return (
                 <Fragment key={id}>
+                  <h2>
+                    {field.label} ({total})
+                  </h2>
                   {children.map(attr => {
                     const { id, label } = attr
                     return (
@@ -106,17 +44,26 @@ const CharacterSheet = ({ character, onAddCharacter, onClose, onChange, onChange
 
             case 'select':
               return (
-                <select id={id} key={id} className="character-sheet--form--field" onChange={onChange}>
-                  {options.map(option => (
-                    <option
-                      key={option.value}
-                      value={option.value}
-                      selected={`${option.value === character[id] ? 'selected' : ''}`}
-                    >
-                      {option.label}
-                    </option>
-                  ))}
-                </select>
+                <Fragment key={id}>
+                  <select
+                    id={id}
+                    key={id}
+                    className="character-sheet--form--field"
+                    onChange={onChange}
+                  >
+                    {options.map(option => (
+                      <option
+                        key={option.value}
+                        value={option.value}
+                        selected={`${
+                          option.value === character[id] ? 'selected' : ''
+                        }`}
+                      >
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                </Fragment>
               )
             default:
               return (
@@ -127,7 +74,9 @@ const CharacterSheet = ({ character, onAddCharacter, onClose, onChange, onChange
               )
           }
         })}
-        <Button onClick={onAddCharacter}>Valider la création de Personnage</Button>
+        <Button onClick={onAddCharacter}>
+          Valider la création de Personnage
+        </Button>
       </form>
       <Button onClick={onClose}>Close modal</Button>
     </div>

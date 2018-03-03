@@ -6,8 +6,6 @@ import {
   FIGHT_SELECTION_CHARACTER_REMOVE,
   FIGHT_SELECTION_VALIDATE,
   SKILL_USE,
-  ACTION_ATTACK,
-  ACTION_MOVE,
   ACTION_END_TURN,
   ACTION_DELAY_TURN,
   ACTION_USE
@@ -45,14 +43,6 @@ export const useSkill = skill => ({
 
 export const useAction = payload => ({
   type: ACTION_USE,
-  payload
-})
-export const attack = payload => ({
-  type: ACTION_ATTACK,
-  payload
-})
-export const move = payload => ({
-  type: ACTION_MOVE,
   payload
 })
 export const endTurn = payload => ({

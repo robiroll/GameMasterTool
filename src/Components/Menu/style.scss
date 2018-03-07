@@ -1,0 +1,71 @@
+@import 'scss/layout.scss';
+@import 'scss/colors.scss';
+
+.menu {
+  &--header {
+    background-color: $neutral-2;
+    padding: $g1;
+    color: #fff;
+
+    &--title {
+      text-align: center;
+    }
+  }
+
+  &--links {
+    display: flex;
+    padding-bottom: 1px;
+    background: $accent-3;
+
+    li {
+      flex-grow: 1;
+
+      &.menu--category {
+        flex-grow: 0;
+      }
+    }
+
+    .divider {
+      width: 3px;
+      background: $accent-2;
+    }
+  }
+
+  &--link {
+    padding: $g1 $g2;
+    background: $accent-1;
+    color: $white;
+    text-align: center;
+
+    &:hover {
+      background: darken($accent-1, 10%);
+    }
+
+    &--active {
+      position: relative;
+
+      &:hover {
+        background: $accent-1;
+      }
+
+      &:before {
+        position: absolute;
+        display: block;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        height: 3px;
+        background: $primary-1;
+        content: '';
+      }
+    }
+  }
+
+  &--category {
+    padding: $g1 $g2;
+    background: $accent-4;
+    color: $white;
+    text-align: center;
+    width: 150px;
+  }
+}

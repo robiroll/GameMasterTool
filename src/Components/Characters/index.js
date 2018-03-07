@@ -6,16 +6,7 @@ import Modal from 'react-modal'
 import Button from '../../styleguide/Button'
 import './Character.css'
 
-const Characters = ({
-  data,
-  character,
-  isOpen,
-  onAddCharacter,
-  onOpen,
-  onClose,
-  onChange,
-  onChangeAttributes
-}) => {
+const Characters = ({ data, character, isOpen, onAddCharacter, onOpen, onClose, onChange, onChangeAttributes }) => {
   return (
     <div className="characters">
       <Button onClick={onOpen}>Create Character</Button>
@@ -30,7 +21,7 @@ const Characters = ({
         />
       </Modal>
       {Object.keys(data).map(char => {
-        return <Character key={char} data={char} />
+        return <Character key={char} idCharacter={char} characters={data} />
       })}
     </div>
   )

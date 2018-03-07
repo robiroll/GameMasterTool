@@ -127,6 +127,10 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+a {
+  text-decoration: none;
+  color: inherit;
+}
 
 @import './scss/colors.scss';
 @import './scss/layout.scss';
@@ -138,21 +142,4 @@ body {
   color: $neutral-1;
   font-size: $g2;
   font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
-}
-
-.app {
-  &--header {
-    background-color: $neutral-2;
-    padding: $g1;
-    color: #fff;
-  }
-
-  &--title {
-    text-align: center;
-  }
-
-  &--wrapper {
-    margin: auto;
-    max-width: 960px;
-  }
 }

@@ -5,23 +5,13 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firebaseConnect } from 'react-redux-firebase'
 
-import {
-  useSkill,
-  useAction,
-  delayTurn,
-  endTurn
-} from '../../redux/actions/fight'
-
-import * as Races from '../../World/Races'
-import * as Classes from '../../World/Classes'
-import * as Skills from '../../World/Skills'
+import { useSkill, useAction, delayTurn, endTurn } from '../../redux/actions/fight'
 
 class Character extends Component {
   static propTypes = {
     firebase: PropTypes.object,
     characters: PropTypes.object,
-    match: PropTypes.object,
-    data: PropTypes.string,
+    idCharacter: PropTypes.string,
     round: PropTypes.number,
     useSkill: PropTypes.func.isRequired,
     useAction: PropTypes.func.isRequired,
@@ -31,45 +21,26 @@ class Character extends Component {
 
   constructor(props) {
     super(props)
-    // this.character =
-    //   props.characters[props.data] ||
-    //   props.characters[props.match.params.idCharacter]
-    this.state = { usedAP: 0, hp: props.characters[props.data].hp }
-
-    // this.setSkills()
+    const { idCharacter, characters } = props
+    const hp = characters ? characters[idCharacter].hp : 0
+    this.state = { usedAP: 0, hp }
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.data) {
-  //     this.character = nextProps.characters[nextProps.data]
-  //     // this.setSkills()
-  //   }
-  // }
-
-  setSkills() {
-    this.skills = this.character.skills.reduce((list, curr) => {
-      const skill = Skills[curr.name] ? Skills[curr.name] : curr // Debug while MVP not ready
-      list.push(skill)
-      return list
-    }, [])
-  }
-
-  get race() {
-    return Races[this.character.race]
-  }
-
-  get class() {
-    return Classes[this.character.class]
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.characters) {
+      const { idCharacter } = nextProps
+      this.setState({ hp: nextProps.characters[idCharacter].hp })
+    }
   }
 
   updateCharacter = changes => {
-    const { data, firebase } = this.props
-    firebase.update(`characters/${data}`, changes)
+    const { firebase, idCharacter } = this.props
+    firebase.update(`characters/${idCharacter}`, changes)
   }
 
   handleUseSkill = (name, skill) => {
-    const { data, characters } = this.props
-    const character = characters[data]
+    const { characters, idCharacter } = this.props
+    const character = characters[idCharacter]
     const cooldowns = Object.assign({}, character.cooldowns, {
       [name]: skill.cooldown
     })
@@ -80,28 +51,27 @@ class Character extends Component {
   }
   handleUseAction = action => this.props.useAction(action)
   handleAttack = weapon => {
-    const { data, characters } = this.props
-    const character = characters[data]
+    const { characters, idCharacter } = this.props
+    const character = characters[idCharacter]
     this.updateCharacter({ ap: character.ap - weapon.size })
   }
   handleMove = () => {
-    const { data, characters } = this.props
-    const character = characters[data]
+    const { characters, idCharacter } = this.props
+    const character = characters[idCharacter]
     this.updateCharacter({ ap: character.ap - 1 })
-    // firebase.update(`characters/${data}`, { ap: character.ap - 1 })
   }
   handleEndTurn = () => this.props.endTurn()
   handleDelayTurn = () => this.props.delayTurn()
-  handleChangeHp = e => this.setState({ hp: Number(e.target.value) })
-  handleUpdateHp = () =>
-    this.props.firebase.update(`characters/${this.props.data}`, {
-      hp: this.state.hp
-    })
+  handleChangeHp = e => {
+    this.setState({ hp: Number(e.target.value) })
+  }
+  handleUpdateHp = () => {
+    this.updateCharacter({ hp: this.state.hp })
+  }
 
   render() {
-    const { data, characters } = this.props
-    const character = characters[data]
-    // console.log(this.character)
+    const { characters, idCharacter } = this.props
+    const character = characters[idCharacter]
     return (
       <CharacterComponent
         round={this.props.round}
@@ -143,8 +113,4 @@ const mapDispatchToProps = dispatch => ({
     dispatch(delayTurn())
   }
 })
-export default compose(
-  firebaseConnect(['characters']),
-  connect(mapStateToProps, mapDispatchToProps)
-)(Character)
-// export default connect(mapStateToProps, mapDispatchToProps)(Character)
+export default compose(firebaseConnect(['characters']), connect(mapStateToProps, mapDispatchToProps))(Character)

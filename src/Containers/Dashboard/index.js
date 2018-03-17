@@ -3,14 +3,8 @@ import PropTypes from 'prop-types'
 import DashboardComponent from '../../Components/Dashboard'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase'
-import {
-  nextRound,
-  startFight,
-  endFight,
-  selectCharacter,
-  validateCharacters
-} from '../../redux/actions/fight'
+import { firebaseConnect } from 'react-redux-firebase'
+import { nextRound, startFight, endFight, selectCharacter, validateCharacters } from '../../redux/actions/fight'
 
 class Dashboard extends Component {
   static propTypes = {
@@ -86,17 +80,7 @@ class Dashboard extends Component {
   handleCloseSelection = () => this.setState({ isOpen: false })
 
   render() {
-    const {
-      round,
-      status,
-      characterPlaying,
-      orderPlaying,
-      characters
-    } = this.props
-    // const { round, status, characterPlaying, orderPlaying } = this.props
-    // const {characters} = CHARACTERS
-    if (!isLoaded(characters)) return 'loading characters...'
-    if (isEmpty(characters)) return 'characters list is empty'
+    const { round, status, characterPlaying, orderPlaying, characters } = this.props
     return (
       <DashboardComponent
         round={round}

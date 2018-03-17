@@ -27,6 +27,11 @@ const Menu = ({ characters, active }) => {
             <div className="menu--link">Characters</div>
           </Link>
         </li>
+        <li>
+          <Link to="/skills">
+            <div className="menu--link">Skills</div>
+          </Link>
+        </li>
       </ul>
       <ul className="menu--links">
         <li className="menu--category">Heroes</li>
@@ -34,12 +39,8 @@ const Menu = ({ characters, active }) => {
         {Object.keys(heroes).map(char => {
           return (
             <li key={char}>
-              <Link to={`/${char}`}>
-                <div
-                  className={`menu--link${
-                    active === char ? ' menu--link--active' : ''
-                  }`}
-                >
+              <Link to={`/characters/${char}`}>
+                <div className={`menu--link${active === char ? ' menu--link--active' : ''}`}>
                   {characters[char].name}
                 </div>
               </Link>
@@ -53,12 +54,8 @@ const Menu = ({ characters, active }) => {
         {Object.keys(foes).map(char => {
           return (
             <li key={char}>
-              <Link to={`/${char}`}>
-                <div
-                  className={`menu--link${
-                    active === char ? ' menu--link--active' : ''
-                  }`}
-                >
+              <Link to={`/characters/${char}`}>
+                <div className={`menu--link${active === char ? ' menu--link--active' : ''}`}>
                   {characters[char].name}
                 </div>
               </Link>

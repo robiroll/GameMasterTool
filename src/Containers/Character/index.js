@@ -11,6 +11,7 @@ class Character extends Component {
   static propTypes = {
     firebase: PropTypes.object,
     characters: PropTypes.object,
+    skills: PropTypes.object,
     idCharacter: PropTypes.string,
     round: PropTypes.number,
     useSkill: PropTypes.func.isRequired,
@@ -22,6 +23,7 @@ class Character extends Component {
   constructor(props) {
     super(props)
     const { idCharacter, characters } = props
+    console.log(characters)
     const hp = characters ? characters[idCharacter].hp : 0
     this.state = { usedAP: 0, hp }
   }
@@ -70,13 +72,13 @@ class Character extends Component {
   }
 
   render() {
-    const { characters, idCharacter } = this.props
+    const { characters, idCharacter, skills } = this.props
     const character = characters[idCharacter]
     return (
       <CharacterComponent
         round={this.props.round}
         data={character}
-        skills={character.skills}
+        skills={skills}
         state={this.state}
         onUseSkill={this.handleUseSkill}
         onUseAction={this.handleUseAction}
@@ -95,6 +97,7 @@ class Character extends Component {
 const mapStateToProps = state => {
   return {
     characters: state.firebase.data.characters,
+    skills: state.firebase.data.skills,
     round: state.fight.round
   }
 }
@@ -113,4 +116,6 @@ const mapDispatchToProps = dispatch => ({
     dispatch(delayTurn())
   }
 })
-export default compose(firebaseConnect(['characters']), connect(mapStateToProps, mapDispatchToProps))(Character)
+export default compose(firebaseConnect(['characters', 'skills']), connect(mapStateToProps, mapDispatchToProps))(
+  Character
+)

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import CharactersComponent from '../../Components/Characters'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase'
+import { firebaseConnect } from 'react-redux-firebase'
 import initialState from './config.js'
 
 // import CHARACTERS from '../../World/Characters'
@@ -33,12 +33,7 @@ class Characters extends Component {
       hpBase,
       hp: hpBase + (siz + con) * 2
     }
-    const char = Object.assign(
-      {},
-      character,
-      { attributes, standardSkills, proSkills },
-      changes
-    )
+    const char = Object.assign({}, character, { attributes, standardSkills, proSkills }, changes)
     this.props.firebase.push('characters', char)
     this.handleClose()
   }
@@ -62,10 +57,6 @@ class Characters extends Component {
   }
 
   render() {
-    // data={this.props.characters}
-    const { characters } = this.props
-    if (!isLoaded(characters)) return 'loading characters...'
-    if (isEmpty(characters)) return 'characters list is empty'
     return (
       <CharactersComponent
         data={this.props.characters}
@@ -85,7 +76,4 @@ const mapStateToProps = state => ({
   characters: state.firebase.data.characters
 })
 
-export default compose(
-  firebaseConnect(['characters']),
-  connect(mapStateToProps)
-)(Characters)
+export default compose(firebaseConnect(['characters']), connect(mapStateToProps))(Characters)

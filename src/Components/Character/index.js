@@ -4,11 +4,7 @@ import Card from '../../styleguide/Card'
 import Button from '../../styleguide/Button'
 import './Character.css'
 
-import {
-  standardSkills as standardSkillsBonuses,
-  proSkills as proSkillsBonuses,
-  combatSkills as skills
-} from './config'
+import { standardSkills as standardSkillsBonuses, proSkills as proSkillsBonuses } from './config'
 
 const Character = ({
   data: {
@@ -36,7 +32,8 @@ const Character = ({
   onDelayTurn,
   onUpdateHp,
   onChangeHp,
-  hpToUpdate
+  hpToUpdate,
+  skills
 }) => {
   const weapon = equipment.weapon
   const { str, siz, con, dex, int, pow, cha } = attributes
@@ -54,13 +51,10 @@ const Character = ({
 
   Object.keys(equipment).map(key => {
     const eq = equipment[key]
-    if (eq.bonus)
-      Object.keys(eq.bonus).map(bns => (bonuses[bns] += eq.bonus[bns]))
+    if (eq.bonus) Object.keys(eq.bonus).map(bns => (bonuses[bns] += eq.bonus[bns]))
   })
   let totalStats = {}
-  Object.keys(attributes).map(
-    attr => (totalStats[attr] = bonuses[attr] + attributes[attr])
-  )
+  Object.keys(attributes).map(attr => (totalStats[attr] = bonuses[attr] + attributes[attr]))
   return (
     <Card title={`${name} : level ${level.toLocaleString('fr')}`}>
       <div className="character">
@@ -159,23 +153,14 @@ const Character = ({
           <div className="character--skills">
             {Object.keys(combatSkills).map(key => {
               const skill = skills[key]
-              let success = 0
-              let successString = ''
-              skill.success.map(sk => {
-                success += totalStats[sk]
-                successString += `${sk} + `
-              })
-              success += combatSkills[key]
-              successString += combatSkills[key]
+              const success = totalStats[skill.attr1] + totalStats[skill.attr2] + combatSkills[key]
+              let successString = `${skill.attr1} + ${skill.attr2} + ${combatSkills[key]}`
               return (
                 <Fragment key={key}>
                   <div className="character--skills--action">
                     <Button
                       className="character--skills--item"
-                      disabled={
-                        !(ap - skill.cost >= 0) ||
-                        (cooldowns && cooldowns[key] > 0)
-                      }
+                      disabled={!(ap - skill.cost >= 0) || (cooldowns && cooldowns[key] > 0)}
                       onClick={() => {
                         onUseSkill(key, skill)
                       }}
@@ -193,11 +178,11 @@ const Character = ({
                   <div className="character--skill">
                     <div className="character--skill--icon">i</div>
                     <ul className="character--skill--infos">
+                      <li>damage: {skill.damage}</li>
                       <li>CD: {skill.cooldown}</li>
                       <li>cost: {skill.cost}</li>
                       <li>distance: {skill.distance}</li>
                       <li>range: {skill.range}</li>
-                      <li>damage: {skill.damage}</li>
                       <li>description: {skill.description}</li>
                       <li>
                         success: {success} ({successString})
@@ -271,7 +256,7 @@ Character.propTypes = {
   data: PropTypes.shape({
     name: PropTypes.string.isRequired,
     level: PropTypes.number.isRequired,
-    skills: PropTypes.object
+    combatSkills: PropTypes.object
   }),
   round: PropTypes.number,
   stae: PropTypes.object,
@@ -283,7 +268,8 @@ Character.propTypes = {
   onDelayTurn: PropTypes.func,
   onUpdateHp: PropTypes.func,
   onChangeHp: PropTypes.func,
-  hpToUpdate: PropTypes.number
+  hpToUpdate: PropTypes.number,
+  skills: PropTypes.object
 }
 
 export default Character

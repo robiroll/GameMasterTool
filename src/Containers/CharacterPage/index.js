@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import Character from '../Character'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase'
+import { firebaseConnect } from 'react-redux-firebase'
 
 class CharacterPage extends Component {
   static propTypes = {
@@ -13,8 +13,6 @@ class CharacterPage extends Component {
 
   render() {
     const { match, characters } = this.props
-    if (!isLoaded(characters)) return 'loading characters...'
-    if (isEmpty(characters)) return 'characters list is empty'
     const idCharacter = match.params.idCharacter
     return <Character idCharacter={idCharacter} characters={characters} />
   }

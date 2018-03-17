@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase'
+import { firebaseConnect } from 'react-redux-firebase'
 import MenuComponent from '../../Components/Menu'
 
 class Menu extends Component {
@@ -13,8 +13,6 @@ class Menu extends Component {
 
   render() {
     const { characters, active } = this.props
-    if (!isLoaded(characters)) return 'loading characters...'
-    if (isEmpty(characters)) return 'characters list is empty'
     return <MenuComponent characters={characters} active={active} />
   }
 }

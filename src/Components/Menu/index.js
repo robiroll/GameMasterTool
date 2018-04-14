@@ -32,6 +32,11 @@ const Menu = ({ characters, active }) => {
             <div className="menu--link">Skills</div>
           </Link>
         </li>
+        <li>
+          <Link to="/items">
+            <div className="menu--link">Items</div>
+          </Link>
+        </li>
       </ul>
       <ul className="menu--links">
         <li className="menu--category">Heroes</li>

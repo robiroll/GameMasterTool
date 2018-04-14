@@ -32,10 +32,16 @@ const Character = ({
   onDelayTurn,
   onUpdateHp,
   onChangeHp,
+  onEquip,
+  onUnequip,
+  onUseItem,
+  onDropItem,
   hpToUpdate,
   skills
 }) => {
-  const weapon = equipment.weapon
+  let weapons = []
+  if (equipment && equipment.weapon1) weapons.push(equipment.weapon1)
+  if (equipment && equipment.weapon2) weapons.push(equipment.weapon2)
   const { str, siz, con, dex, int, pow, cha } = attributes
   let bonuses = {
     str: 0,
@@ -49,10 +55,11 @@ const Character = ({
   const hpMax = hpBase + (siz + con) * 2
   const movement = Math.ceil((str + dex) / 5 + 3)
 
-  Object.keys(equipment).map(key => {
-    const eq = equipment[key]
-    if (eq.bonus) Object.keys(eq.bonus).map(bns => (bonuses[bns] += eq.bonus[bns]))
-  })
+  if (equipment)
+    Object.keys(equipment).map(key => {
+      const eq = equipment[key]
+      if (eq.bonus) Object.keys(eq.bonus).map(bns => (bonuses[bns] += eq.bonus[bns]))
+    })
   let totalStats = {}
   Object.keys(attributes).map(attr => (totalStats[attr] = bonuses[attr] + attributes[attr]))
   return (
@@ -196,15 +203,21 @@ const Character = ({
         )}
         <div className="character--title">Actions</div>
         <div className="character--action">
-          <Button
-            className="character--action--item"
-            disabled={!(ap - weapon.size >= 0)}
-            onClick={() => {
-              onAttack(weapon)
-            }}
-          >
-            Attack + {weapon.damage} ({weapon.size})
-          </Button>
+          {weapons.length > 0 &&
+            weapons.map(weapon => {
+              return (
+                <Button
+                  key={weapon.name}
+                  className="character--action--item"
+                  disabled={!(ap - weapon.size >= 0)}
+                  onClick={() => {
+                    onAttack(weapon)
+                  }}
+                >
+                  Attack + {weapon.damage} ({weapon.size})
+                </Button>
+              )
+            })}
           <Button
             className="character--action--item"
             disabled={!(ap > 0)}
@@ -227,9 +240,17 @@ const Character = ({
         <div className="character--inventory">
           {Object.keys(inventory).map(key => {
             const item = inventory[key]
+            const { name, quantity } = item
             return (
-              <div key={item.name} className="character--inventory--item">
-                {item.name}
+              <div key={key} className="character--inventory--item">
+                {name} {quantity && <span>({quantity})</span>}
+                {item.type === 'equipment' && <Button onClick={() => onEquip(key, item)}>Equip ({item.slot})</Button>}
+                {(item.type === 'usable' || item.type === 'permanent') && (
+                  <Button onClick={() => onUseItem(key, item)} disabled={item.quantity <= 0}>
+                    Use item ({item.apCost})
+                  </Button>
+                )}
+                <Button onClick={() => onDropItem(key)}>x</Button>
               </div>
             )
           })}
@@ -242,7 +263,7 @@ const Character = ({
             const item = equipment[key]
             return (
               <div key={key} className="character--equipment--item">
-                {item.name}
+                {item.name} {item.type === 'equipment' && <Button onClick={() => onUnequip(key, item)}>Unequip</Button>}
               </div>
             )
           })}
@@ -268,6 +289,10 @@ Character.propTypes = {
   onDelayTurn: PropTypes.func,
   onUpdateHp: PropTypes.func,
   onChangeHp: PropTypes.func,
+  onEquip: PropTypes.func,
+  onUnequip: PropTypes.func,
+  onUseItem: PropTypes.func,
+  onDropItem: PropTypes.func,
   hpToUpdate: PropTypes.number,
   skills: PropTypes.object
 }

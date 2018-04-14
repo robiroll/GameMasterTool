@@ -9,6 +9,7 @@ import fight from './redux/reducers/fight'
 import CharacterPage from './Containers/CharacterPage'
 import Characters from './Containers/Characters'
 import Skills from './Containers/Skills'
+import Items from './Containers/Items'
 import Dashboard from './Containers/Dashboard'
 import Layout from './Layout'
 import './App.css'
@@ -54,6 +55,7 @@ class App extends Component {
                   <Route exact path="/characters" component={Characters} />
                   <Route exact path="/skills" component={Skills} />
                   <Route exact path="/characters/:idCharacter" component={CharacterPage} />
+                  <Route exact path="/items" component={Items} />
                 </Layout>
               </Switch>
             </BrowserRouter>

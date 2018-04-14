@@ -12,6 +12,7 @@ class Character extends Component {
     firebase: PropTypes.object,
     characters: PropTypes.object,
     skills: PropTypes.object,
+    items: PropTypes.object,
     idCharacter: PropTypes.string,
     round: PropTypes.number,
     useSkill: PropTypes.func.isRequired,
@@ -23,7 +24,6 @@ class Character extends Component {
   constructor(props) {
     super(props)
     const { idCharacter, characters } = props
-    console.log(characters)
     const hp = characters ? characters[idCharacter].hp : 0
     this.state = { usedAP: 0, hp }
   }
@@ -70,6 +70,69 @@ class Character extends Component {
   handleUpdateHp = () => {
     this.updateCharacter({ hp: this.state.hp })
   }
+  handleEquip = (key, item) => {
+    const { firebase, characters, idCharacter } = this.props
+    const char = characters[idCharacter]
+    const path = `characters/${idCharacter}`
+    if (char.equipment) {
+      const unequippedItem = char.equipment[item.slot]
+      firebase.push(`${path}/inventory`, unequippedItem)
+    }
+    if (item.slot === 'weapon') {
+      if (!char.equipment) {
+        firebase.set(`${path}/equipment/weapon1`, item)
+        firebase.remove(`${path}/inventory/${key}`)
+      } else {
+        const { weapon1, weapon2 } = char.equipment
+        if (!weapon1 && !weapon2) {
+          firebase.set(`${path}/equipment/weapon1`, item)
+          firebase.remove(`${path}/inventory/${key}`)
+        }
+        if (weapon1) {
+          if (weapon1.weaponHands === '1handed' && item.weaponHands !== '2handed') {
+            firebase.set(`${path}/equipment/weapon2`, item)
+            firebase.remove(`${path}/inventory/${key}`)
+          }
+        }
+        if (weapon2) {
+          if (weapon2.weaponHands === '1handed' && item.weaponHands !== '2handed') {
+            firebase.set(`${path}/equipment/weapon1`, item)
+            firebase.remove(`${path}/inventory/${key}`)
+          }
+        }
+      }
+    } else if (item.slot === 'ring') {
+      if (!char.equipment) {
+        firebase.set(`${path}/equipment/ring1`, item)
+        firebase.remove(`${path}/inventory/${key}`)
+      } else {
+        const { ring1, ring2 } = char.equipment
+        if (!ring1) {
+          firebase.set(`${path}/equipment/ring1`, item)
+          firebase.remove(`${path}/inventory/${key}`)
+        } else if (!ring2) {
+          firebase.set(`${path}/equipment/ring2`, item)
+          firebase.remove(`${path}/inventory/${key}`)
+        }
+      }
+    } else {
+      firebase.set(`${path}/equipment/${item.slot}`, item)
+      firebase.remove(`${path}/inventory/${key}`)
+    }
+  }
+  handleUnequip = (key, item) => {
+    const { firebase, idCharacter } = this.props
+    firebase.remove(`characters/${idCharacter}/equipment/${key}`)
+    firebase.push(`characters/${idCharacter}/inventory`, item)
+  }
+  handleUseItem = (key, item) => {
+    const { firebase, idCharacter } = this.props
+    firebase.update(`characters/${idCharacter}/inventory/${key}`, { quantity: item.quantity - 1 })
+  }
+  handleDropItem = key => {
+    const { firebase, idCharacter } = this.props
+    firebase.remove(`characters/${idCharacter}/inventory/${key}`)
+  }
 
   render() {
     const { characters, idCharacter, skills } = this.props
@@ -89,6 +152,10 @@ class Character extends Component {
         onChangeHp={this.handleChangeHp}
         onUpdateHp={this.handleUpdateHp}
         hpToUpdate={this.state.hp}
+        onEquip={this.handleEquip}
+        onUnequip={this.handleUnequip}
+        onUseItem={this.handleUseItem}
+        onDropItem={this.handleDropItem}
       />
     )
   }
@@ -98,6 +165,7 @@ const mapStateToProps = state => {
   return {
     characters: state.firebase.data.characters,
     skills: state.firebase.data.skills,
+    items: state.firebase.data.items,
     round: state.fight.round
   }
 }
@@ -116,6 +184,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(delayTurn())
   }
 })
-export default compose(firebaseConnect(['characters', 'skills']), connect(mapStateToProps, mapDispatchToProps))(
-  Character
-)
+export default compose(
+  firebaseConnect(['characters', 'skills', 'items']),
+  connect(mapStateToProps, mapDispatchToProps)
+)(Character)

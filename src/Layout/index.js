@@ -11,17 +11,20 @@ class Layout extends Component {
     children: PropTypes.node.isRequired,
     // firebase
     characters: PropTypes.object,
-    skills: PropTypes.object
+    skills: PropTypes.object,
+    items: PropTypes.object
   }
   static contextTypes = {
     router: PropTypes.object
   }
   render() {
-    const { children, characters, skills } = this.props
+    const { children, characters, skills, items } = this.props
     if (!isLoaded(characters)) return 'loading characters...'
     if (isEmpty(characters)) return 'characters list is empty'
     if (!isLoaded(skills)) return 'loading skills...'
     if (isEmpty(skills)) return 'skills list is empty'
+    if (!isLoaded(items)) return 'loading skills...'
+    if (isEmpty(items)) return 'skills list is empty'
     return (
       <div className="layout">
         <Menu active={this.context.router.route.location.pathname.substr(1)} />
@@ -32,8 +35,9 @@ class Layout extends Component {
 }
 
 const mapStateToProps = state => ({
-  characters: state.firebase.data.skills,
-  skills: state.firebase.data.skills
+  characters: state.firebase.data.characters,
+  skills: state.firebase.data.skills,
+  items: state.firebase.data.items
 })
 
-export default compose(firebaseConnect(['characters', 'skills']), connect(mapStateToProps))(Layout)
+export default compose(firebaseConnect(['characters', 'skills', 'items']), connect(mapStateToProps))(Layout)

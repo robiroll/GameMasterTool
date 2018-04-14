@@ -1,6 +1,5 @@
 export default {
   kind: 'hero',
-  level: 1,
   race: 'hobbit',
   class: 'thief',
   attributes: {

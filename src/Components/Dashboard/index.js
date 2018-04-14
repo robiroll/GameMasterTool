@@ -27,8 +27,7 @@ const Dashboard = ({
   order
 }) => {
   const isStartDisabled = fightStatus !== null
-  const isEndTurnDisabled =
-    orderPlaying.length > 0 || fightStatus !== 'in-progress'
+  const isEndTurnDisabled = orderPlaying.length > 0 || fightStatus !== 'in-progress'
   const isEndFightDisabled = fightStatus !== 'in-progress'
   return (
     <div className="dashboard">
@@ -66,7 +65,7 @@ const Dashboard = ({
       </div>
       {characterPlaying && (
         <div className="dashboard--characters--content">
-          <Character data={characterPlaying} onUseSkill={onUseSkill} />
+          <Character idCharacter={characterPlaying} onUseSkill={onUseSkill} />
         </div>
       )}
     </div>

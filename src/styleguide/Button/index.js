@@ -5,14 +5,9 @@ import './Button.css'
 const Button = ({ children, onClick, disabled, progress }) => {
   const handleClick = !disabled ? onClick : undefined
   return (
-    <div
-      className={`button${disabled ? ' button--disabled' : ''}`}
-      onClick={handleClick}
-    >
+    <div className={`button${disabled ? ' button--disabled' : ''}`} onClick={handleClick}>
       {children}
-      {!!progress && (
-        <div className="button--progress" style={{ width: `${progress}%` }} />
-      )}
+      {!!progress && <div className="button--progress" style={{ width: `${progress}%` }} />}
     </div>
   )
 }

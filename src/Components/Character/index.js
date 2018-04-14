@@ -4,11 +4,7 @@ import Card from '../../styleguide/Card'
 import Button from '../../styleguide/Button'
 import './Character.css'
 
-import {
-  standardSkills as standardSkillsBonuses,
-  proSkills as proSkillsBonuses,
-  combatSkills as skills
-} from './config'
+import { standardSkills as standardSkillsBonuses, proSkills as proSkillsBonuses } from './config'
 
 const Character = ({
   data: {
@@ -36,9 +32,16 @@ const Character = ({
   onDelayTurn,
   onUpdateHp,
   onChangeHp,
-  hpToUpdate
+  onEquip,
+  onUnequip,
+  onUseItem,
+  onDropItem,
+  hpToUpdate,
+  skills
 }) => {
-  const weapon = equipment.weapon
+  let weapons = []
+  if (equipment && equipment.weapon1) weapons.push(equipment.weapon1)
+  if (equipment && equipment.weapon2) weapons.push(equipment.weapon2)
   const { str, siz, con, dex, int, pow, cha } = attributes
   let bonuses = {
     str: 0,
@@ -52,15 +55,13 @@ const Character = ({
   const hpMax = hpBase + (siz + con) * 2
   const movement = Math.ceil((str + dex) / 5 + 3)
 
-  Object.keys(equipment).map(key => {
-    const eq = equipment[key]
-    if (eq.bonus)
-      Object.keys(eq.bonus).map(bns => (bonuses[bns] += eq.bonus[bns]))
-  })
+  if (equipment)
+    Object.keys(equipment).map(key => {
+      const eq = equipment[key]
+      if (eq.bonus) Object.keys(eq.bonus).map(bns => (bonuses[bns] += eq.bonus[bns]))
+    })
   let totalStats = {}
-  Object.keys(attributes).map(
-    attr => (totalStats[attr] = bonuses[attr] + attributes[attr])
-  )
+  Object.keys(attributes).map(attr => (totalStats[attr] = bonuses[attr] + attributes[attr]))
   return (
     <Card title={`${name} : level ${level.toLocaleString('fr')}`}>
       <div className="character">
@@ -159,23 +160,14 @@ const Character = ({
           <div className="character--skills">
             {Object.keys(combatSkills).map(key => {
               const skill = skills[key]
-              let success = 0
-              let successString = ''
-              skill.success.map(sk => {
-                success += totalStats[sk]
-                successString += `${sk} + `
-              })
-              success += combatSkills[key]
-              successString += combatSkills[key]
+              const success = totalStats[skill.attr1] + totalStats[skill.attr2] + combatSkills[key]
+              let successString = `${skill.attr1} + ${skill.attr2} + ${combatSkills[key]}`
               return (
                 <Fragment key={key}>
                   <div className="character--skills--action">
                     <Button
                       className="character--skills--item"
-                      disabled={
-                        !(ap - skill.cost >= 0) ||
-                        (cooldowns && cooldowns[key] > 0)
-                      }
+                      disabled={!(ap - skill.cost >= 0) || (cooldowns && cooldowns[key] > 0)}
                       onClick={() => {
                         onUseSkill(key, skill)
                       }}
@@ -193,11 +185,11 @@ const Character = ({
                   <div className="character--skill">
                     <div className="character--skill--icon">i</div>
                     <ul className="character--skill--infos">
+                      <li>damage: {skill.damage}</li>
                       <li>CD: {skill.cooldown}</li>
                       <li>cost: {skill.cost}</li>
                       <li>distance: {skill.distance}</li>
                       <li>range: {skill.range}</li>
-                      <li>damage: {skill.damage}</li>
                       <li>description: {skill.description}</li>
                       <li>
                         success: {success} ({successString})
@@ -211,15 +203,21 @@ const Character = ({
         )}
         <div className="character--title">Actions</div>
         <div className="character--action">
-          <Button
-            className="character--action--item"
-            disabled={!(ap - weapon.size >= 0)}
-            onClick={() => {
-              onAttack(weapon)
-            }}
-          >
-            Attack + {weapon.damage} ({weapon.size})
-          </Button>
+          {weapons.length > 0 &&
+            weapons.map(weapon => {
+              return (
+                <Button
+                  key={weapon.name}
+                  className="character--action--item"
+                  disabled={!(ap - weapon.size >= 0)}
+                  onClick={() => {
+                    onAttack(weapon)
+                  }}
+                >
+                  Attack + {weapon.damage} ({weapon.size})
+                </Button>
+              )
+            })}
           <Button
             className="character--action--item"
             disabled={!(ap > 0)}
@@ -242,9 +240,17 @@ const Character = ({
         <div className="character--inventory">
           {Object.keys(inventory).map(key => {
             const item = inventory[key]
+            const { name, quantity } = item
             return (
-              <div key={item.name} className="character--inventory--item">
-                {item.name}
+              <div key={key} className="character--inventory--item">
+                {name} {quantity && <span>({quantity})</span>}
+                {item.type === 'equipment' && <Button onClick={() => onEquip(key, item)}>Equip ({item.slot})</Button>}
+                {(item.type === 'usable' || item.type === 'permanent') && (
+                  <Button onClick={() => onUseItem(key, item)} disabled={item.quantity <= 0}>
+                    Use item ({item.apCost})
+                  </Button>
+                )}
+                <Button onClick={() => onDropItem(key)}>x</Button>
               </div>
             )
           })}
@@ -257,7 +263,7 @@ const Character = ({
             const item = equipment[key]
             return (
               <div key={key} className="character--equipment--item">
-                {item.name}
+                {item.name} {item.type === 'equipment' && <Button onClick={() => onUnequip(key, item)}>Unequip</Button>}
               </div>
             )
           })}
@@ -271,7 +277,7 @@ Character.propTypes = {
   data: PropTypes.shape({
     name: PropTypes.string.isRequired,
     level: PropTypes.number.isRequired,
-    skills: PropTypes.object
+    combatSkills: PropTypes.object
   }),
   round: PropTypes.number,
   stae: PropTypes.object,
@@ -283,7 +289,12 @@ Character.propTypes = {
   onDelayTurn: PropTypes.func,
   onUpdateHp: PropTypes.func,
   onChangeHp: PropTypes.func,
-  hpToUpdate: PropTypes.number
+  onEquip: PropTypes.func,
+  onUnequip: PropTypes.func,
+  onUseItem: PropTypes.func,
+  onDropItem: PropTypes.func,
+  hpToUpdate: PropTypes.number,
+  skills: PropTypes.object
 }
 
 export default Character

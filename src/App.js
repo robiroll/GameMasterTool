@@ -1,30 +1,18 @@
 import React, { Component } from 'react'
 import { Switch, BrowserRouter, Route } from 'react-router-dom'
-import { createStore, combineReducers, compose, applyMiddleware } from 'redux'
+import { createStore, combineReducers, compose } from 'redux'
 import { reactReduxFirebase, firebaseReducer } from 'react-redux-firebase'
 import firebase from './firebase'
-import thunk from 'redux-thunk'
 import { Provider } from 'react-redux'
-import Character from './Containers/Character'
-import Characters from './Containers/Characters'
-import Dashboard from './Containers/Dashboard'
-import './App.css'
 import fight from './redux/reducers/fight'
-import characters from './redux/reducers/characters'
 
-// let middlewares = [thunk]
-// const store = createStore(
-//   combineReducers({
-//     fight,
-//     characters
-//   }),
-//   applyMiddleware(...middlewares),
-//   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-// )
-// const store = () => {
-// let store = createStore(fight, applyMiddleware(...middlewares))
-// return store
-// }
+import CharacterPage from './Containers/CharacterPage'
+import Characters from './Containers/Characters'
+import Skills from './Containers/Skills'
+import Items from './Containers/Items'
+import Dashboard from './Containers/Dashboard'
+import Layout from './Layout'
+import './App.css'
 
 // react-redux-firebase config
 const rrfConfig = {
@@ -41,8 +29,8 @@ const createStoreWithFirebase = compose(
 // Add firebase to reducers
 const rootReducer = combineReducers({
   firebase: firebaseReducer,
-  fight,
-  characters
+  fight
+  // characters
   // firestore: firestoreReducer // <- needed if using firestore
 })
 
@@ -55,24 +43,20 @@ const store = createStoreWithFirebase(
 )
 
 class App extends Component {
-  constructor(props) {
-    super(props)
-    // console.log(store)
-    // firebaseInit()
-  }
   render() {
     return (
       <Provider store={store}>
         <div className="app">
-          <header className="app--header">
-            <h1 className="app--title">Welcome to RPG</h1>
-          </header>
           <div className="app--wrapper">
             <BrowserRouter>
               <Switch>
-                <Route exact path="/" component={Dashboard} />
-                <Route exact path="/characters" component={Characters} />
-                <Route exact path="/:idCharacter" component={Character} />
+                <Layout>
+                  <Route exact path="/" component={Dashboard} />
+                  <Route exact path="/characters" component={Characters} />
+                  <Route exact path="/skills" component={Skills} />
+                  <Route exact path="/characters/:idCharacter" component={CharacterPage} />
+                  <Route exact path="/items" component={Items} />
+                </Layout>
               </Switch>
             </BrowserRouter>
           </div>

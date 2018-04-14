@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { compose } from 'redux'
 import { connect } from 'react-redux'
+import { firebaseConnect } from 'react-redux-firebase'
 import { removeCharacter } from '../../redux/actions/fight'
 import OrderComponent from '../../Components/Order'
-
-// import CHARACTERS from '../../World/Characters'
 
 class Order extends Component {
   static propTypes = {
@@ -20,10 +20,7 @@ class Order extends Component {
   }
   render() {
     const { status, order, orderPlaying, orderDone, characters } = this.props
-    const orderDisplay =
-      status === 'playing'
-        ? orderPlaying
-        : status === 'done' ? orderDone : order
+    const orderDisplay = status === 'playing' ? orderPlaying : status === 'done' ? orderDone : order
     return (
       <OrderComponent
         status={status}
@@ -48,4 +45,4 @@ const mapDispatchToProps = dispatch => ({
   }
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Order)
+export default compose(firebaseConnect(['characters']), connect(mapStateToProps, mapDispatchToProps))(Order)

@@ -5,23 +5,15 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firebaseConnect } from 'react-redux-firebase'
 
-import {
-  useSkill,
-  useAction,
-  delayTurn,
-  endTurn
-} from '../../redux/actions/fight'
-
-import * as Races from '../../World/Races'
-import * as Classes from '../../World/Classes'
-import * as Skills from '../../World/Skills'
+import { useSkill, useAction, delayTurn, endTurn } from '../../redux/actions/fight'
 
 class Character extends Component {
   static propTypes = {
     firebase: PropTypes.object,
     characters: PropTypes.object,
-    match: PropTypes.object,
-    data: PropTypes.string,
+    skills: PropTypes.object,
+    items: PropTypes.object,
+    idCharacter: PropTypes.string,
     round: PropTypes.number,
     useSkill: PropTypes.func.isRequired,
     useAction: PropTypes.func.isRequired,
@@ -31,45 +23,26 @@ class Character extends Component {
 
   constructor(props) {
     super(props)
-    // this.character =
-    //   props.characters[props.data] ||
-    //   props.characters[props.match.params.idCharacter]
-    this.state = { usedAP: 0, hp: props.characters[props.data].hp }
-
-    // this.setSkills()
+    const { idCharacter, characters } = props
+    const hp = characters ? characters[idCharacter].hp : 0
+    this.state = { usedAP: 0, hp }
   }
 
-  // componentWillReceiveProps(nextProps) {
-  //   if (nextProps.data) {
-  //     this.character = nextProps.characters[nextProps.data]
-  //     // this.setSkills()
-  //   }
-  // }
-
-  setSkills() {
-    this.skills = this.character.skills.reduce((list, curr) => {
-      const skill = Skills[curr.name] ? Skills[curr.name] : curr // Debug while MVP not ready
-      list.push(skill)
-      return list
-    }, [])
-  }
-
-  get race() {
-    return Races[this.character.race]
-  }
-
-  get class() {
-    return Classes[this.character.class]
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.characters) {
+      const { idCharacter } = nextProps
+      this.setState({ hp: nextProps.characters[idCharacter].hp })
+    }
   }
 
   updateCharacter = changes => {
-    const { data, firebase } = this.props
-    firebase.update(`characters/${data}`, changes)
+    const { firebase, idCharacter } = this.props
+    firebase.update(`characters/${idCharacter}`, changes)
   }
 
   handleUseSkill = (name, skill) => {
-    const { data, characters } = this.props
-    const character = characters[data]
+    const { characters, idCharacter } = this.props
+    const character = characters[idCharacter]
     const cooldowns = Object.assign({}, character.cooldowns, {
       [name]: skill.cooldown
     })
@@ -80,33 +53,95 @@ class Character extends Component {
   }
   handleUseAction = action => this.props.useAction(action)
   handleAttack = weapon => {
-    const { data, characters } = this.props
-    const character = characters[data]
+    const { characters, idCharacter } = this.props
+    const character = characters[idCharacter]
     this.updateCharacter({ ap: character.ap - weapon.size })
   }
   handleMove = () => {
-    const { data, characters } = this.props
-    const character = characters[data]
+    const { characters, idCharacter } = this.props
+    const character = characters[idCharacter]
     this.updateCharacter({ ap: character.ap - 1 })
-    // firebase.update(`characters/${data}`, { ap: character.ap - 1 })
   }
   handleEndTurn = () => this.props.endTurn()
   handleDelayTurn = () => this.props.delayTurn()
-  handleChangeHp = e => this.setState({ hp: Number(e.target.value) })
-  handleUpdateHp = () =>
-    this.props.firebase.update(`characters/${this.props.data}`, {
-      hp: this.state.hp
-    })
+  handleChangeHp = e => {
+    this.setState({ hp: Number(e.target.value) })
+  }
+  handleUpdateHp = () => {
+    this.updateCharacter({ hp: this.state.hp })
+  }
+  handleEquip = (key, item) => {
+    const { firebase, characters, idCharacter } = this.props
+    const char = characters[idCharacter]
+    const path = `characters/${idCharacter}`
+    if (char.equipment) {
+      const unequippedItem = char.equipment[item.slot]
+      firebase.push(`${path}/inventory`, unequippedItem)
+    }
+    if (item.slot === 'weapon') {
+      if (!char.equipment) {
+        firebase.set(`${path}/equipment/weapon1`, item)
+        firebase.remove(`${path}/inventory/${key}`)
+      } else {
+        const { weapon1, weapon2 } = char.equipment
+        if (!weapon1 && !weapon2) {
+          firebase.set(`${path}/equipment/weapon1`, item)
+          firebase.remove(`${path}/inventory/${key}`)
+        }
+        if (weapon1) {
+          if (weapon1.weaponHands === '1handed' && item.weaponHands !== '2handed') {
+            firebase.set(`${path}/equipment/weapon2`, item)
+            firebase.remove(`${path}/inventory/${key}`)
+          }
+        }
+        if (weapon2) {
+          if (weapon2.weaponHands === '1handed' && item.weaponHands !== '2handed') {
+            firebase.set(`${path}/equipment/weapon1`, item)
+            firebase.remove(`${path}/inventory/${key}`)
+          }
+        }
+      }
+    } else if (item.slot === 'ring') {
+      if (!char.equipment) {
+        firebase.set(`${path}/equipment/ring1`, item)
+        firebase.remove(`${path}/inventory/${key}`)
+      } else {
+        const { ring1, ring2 } = char.equipment
+        if (!ring1) {
+          firebase.set(`${path}/equipment/ring1`, item)
+          firebase.remove(`${path}/inventory/${key}`)
+        } else if (!ring2) {
+          firebase.set(`${path}/equipment/ring2`, item)
+          firebase.remove(`${path}/inventory/${key}`)
+        }
+      }
+    } else {
+      firebase.set(`${path}/equipment/${item.slot}`, item)
+      firebase.remove(`${path}/inventory/${key}`)
+    }
+  }
+  handleUnequip = (key, item) => {
+    const { firebase, idCharacter } = this.props
+    firebase.remove(`characters/${idCharacter}/equipment/${key}`)
+    firebase.push(`characters/${idCharacter}/inventory`, item)
+  }
+  handleUseItem = (key, item) => {
+    const { firebase, idCharacter } = this.props
+    firebase.update(`characters/${idCharacter}/inventory/${key}`, { quantity: item.quantity - 1 })
+  }
+  handleDropItem = key => {
+    const { firebase, idCharacter } = this.props
+    firebase.remove(`characters/${idCharacter}/inventory/${key}`)
+  }
 
   render() {
-    const { data, characters } = this.props
-    const character = characters[data]
-    // console.log(this.character)
+    const { characters, idCharacter, skills } = this.props
+    const character = characters[idCharacter]
     return (
       <CharacterComponent
         round={this.props.round}
         data={character}
-        skills={character.skills}
+        skills={skills}
         state={this.state}
         onUseSkill={this.handleUseSkill}
         onUseAction={this.handleUseAction}
@@ -117,6 +152,10 @@ class Character extends Component {
         onChangeHp={this.handleChangeHp}
         onUpdateHp={this.handleUpdateHp}
         hpToUpdate={this.state.hp}
+        onEquip={this.handleEquip}
+        onUnequip={this.handleUnequip}
+        onUseItem={this.handleUseItem}
+        onDropItem={this.handleDropItem}
       />
     )
   }
@@ -125,6 +164,8 @@ class Character extends Component {
 const mapStateToProps = state => {
   return {
     characters: state.firebase.data.characters,
+    skills: state.firebase.data.skills,
+    items: state.firebase.data.items,
     round: state.fight.round
   }
 }
@@ -144,7 +185,6 @@ const mapDispatchToProps = dispatch => ({
   }
 })
 export default compose(
-  firebaseConnect(['characters']),
+  firebaseConnect(['characters', 'skills', 'items']),
   connect(mapStateToProps, mapDispatchToProps)
 )(Character)
-// export default connect(mapStateToProps, mapDispatchToProps)(Character)

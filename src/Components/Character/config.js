@@ -1,33 +1,3 @@
-export const combatSkills = {
-  charge: {
-    cooldown: 3,
-    cost: 3,
-    distance: 15,
-    range: 1,
-    damage: 'str + dex + 2d10',
-    description: 'charges to the ennemy',
-    success: ['str', 'dex']
-  },
-  disappear: {
-    cooldown: 5,
-    cost: 5,
-    distance: 0,
-    range: 0,
-    damage: 'none',
-    description: 'vanishes',
-    success: ['int', 'dex']
-  },
-  swing: {
-    cooldown: 4,
-    cost: 8,
-    distance: 0,
-    range: 3,
-    damage: 'str + siz + 1d10',
-    description: 'vanishes',
-    success: ['str', 'siz']
-  }
-}
-
 export const standardSkills = {
   athletics: ['str', 'dex'],
   boating: ['str', 'con'],

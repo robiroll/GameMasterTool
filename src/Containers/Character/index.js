@@ -70,6 +70,13 @@ class Character extends Component {
   handleUpdateHp = () => {
     this.updateCharacter({ hp: this.state.hp })
   }
+  handleChangeAttr = (operation, attr) => () => {
+    const { characters, idCharacter, firebase } = this.props
+    const attrValue = characters[idCharacter].attributes[attr]
+    const newValue = operation === 'add' ? attrValue + 1 : operation === 'remove' && attrValue - 1
+    const changes = { [attr]: newValue }
+    firebase.update(`characters/${idCharacter}/attributes`, changes)
+  }
   handleEquip = (key, item) => {
     const { firebase, characters, idCharacter } = this.props
     const char = characters[idCharacter]
@@ -150,6 +157,7 @@ class Character extends Component {
         onEndTurn={this.handleEndTurn}
         onDelayTurn={this.handleDelayTurn}
         onChangeHp={this.handleChangeHp}
+        onChangeAttr={this.handleChangeAttr}
         onUpdateHp={this.handleUpdateHp}
         hpToUpdate={this.state.hp}
         onEquip={this.handleEquip}

@@ -6,17 +6,27 @@ import './Character.css'
 
 import { standardSkills as standardSkillsBonuses, proSkills as proSkillsBonuses } from './config'
 
+const BONUS_NAME = {
+  str: 'Force',
+  dex: 'Dextérité',
+  int: 'Intelligence',
+  con: 'Constitution',
+  siz: 'Taille',
+  cha: 'Charisme',
+  pow: 'Power'
+}
+
 const Character = ({
   data: {
     cooldowns,
     hp,
-    hpBase,
+    // hpBase,
     name,
     level,
     ap,
-    apBase,
-    apStart,
-    apMax,
+    // apBase,
+    // apStart,
+    // apMax,
     attributes,
     combatSkills,
     standardSkills,
@@ -32,6 +42,7 @@ const Character = ({
   onDelayTurn,
   onUpdateHp,
   onChangeHp,
+  onChangeAttr,
   onEquip,
   onUnequip,
   onUseItem,
@@ -52,7 +63,6 @@ const Character = ({
     pow: 0,
     cha: 0
   }
-  const hpMax = hpBase + (siz + con) * 2
   const movement = Math.ceil((str + dex) / 5 + 3)
 
   if (equipment)
@@ -62,6 +72,11 @@ const Character = ({
     })
   let totalStats = {}
   Object.keys(attributes).map(attr => (totalStats[attr] = bonuses[attr] + attributes[attr]))
+  const apBase = Math.ceil((totalStats.str + totalStats.dex + totalStats.int) / 6)
+  const apStart = Math.ceil((totalStats.pow + totalStats.siz) / 4 + 2)
+  const apMax = Math.ceil((totalStats.con + totalStats.siz) / 4 + 5)
+  // const hpBase = (totalStats.str + totalStats.con * 2 + totalStats.siz * 3) * 2
+  const hpMax = (totalStats.con + totalStats.siz) * 10
   return (
     <Card title={`${name} : level ${level.toLocaleString('fr')}`}>
       <div className="character">
@@ -79,29 +94,19 @@ const Character = ({
           <br />
           AP max: {apMax}
         </div>
-        <div className="character--title">Attributs</div>
+        <div className="character--title">Attributes</div>
         <div className="character--attributes">
-          <div className="character--attributes--strength">
-            Force : {totalStats.str} ({str}+{bonuses.str})
-          </div>
-          <div className="character--attributes--dexterity">
-            Dexterité : {totalStats.dex} ({dex}+{bonuses.dex})
-          </div>
-          <div className="character--attributes--constitution">
-            Constitution : {totalStats.con} ({con}+{bonuses.con})
-          </div>
-          <div className="character--attributes--size">
-            Taille : {totalStats.siz} ({siz}+{bonuses.siz})
-          </div>
-          <div className="character--attributes--intelligence">
-            Intelligence : {totalStats.int} ({int}+{bonuses.int})
-          </div>
-          <div className="character--attributes--perception">
-            Power : {totalStats.pow} ({pow}+{bonuses.pow})
-          </div>
-          <div className="character--attributes--speed">
-            Charisme : {totalStats.cha} ({cha}+{bonuses.cha})
-          </div>
+          {Object.keys(bonuses).map(bns => {
+            return (
+              <div key={bns} className={`character--attributes--${bns}`}>
+                <span>
+                  {BONUS_NAME[bns]} : {totalStats[bns]} ({attributes[bns]}+{bonuses[bns]})
+                </span>{' '}
+                <Button onClick={onChangeAttr('add', bns)}> + </Button>{' '}
+                <Button onClick={onChangeAttr('remove', bns)}> - </Button>
+              </div>
+            )
+          })}
         </div>
         <div className="character--title">Standard Skills</div>
         <div className="character--standard-skills">
@@ -288,6 +293,7 @@ Character.propTypes = {
   onEndTurn: PropTypes.func,
   onDelayTurn: PropTypes.func,
   onUpdateHp: PropTypes.func,
+  onChangeAttr: PropTypes.func,
   onChangeHp: PropTypes.func,
   onEquip: PropTypes.func,
   onUnequip: PropTypes.func,

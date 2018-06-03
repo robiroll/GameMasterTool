@@ -22,18 +22,13 @@ class Characters extends Component {
   handleAddCharacter = () => {
     const { character } = this.state
     const { attributes, standardSkills, proSkills } = character
-    const { str, dex, int, pow, siz, con } = attributes
-    // const { athletics } = standardSkills
-    // const standardSkills = {}
+    const { str, siz, con } = attributes
     const hpBase = (str + con * 2 + siz * 3) * 2
-    const changes = {
-      apBase: Math.ceil((str + dex + int) / 6),
-      apStart: Math.ceil((pow + siz) / 4 + 2),
-      apMax: Math.ceil((con + siz) / 4 + 5),
-      hpBase,
+    const startPoints = {
+      ap: 0,
       hp: hpBase + (siz + con) * 2
     }
-    const char = Object.assign({}, character, { attributes, standardSkills, proSkills }, changes)
+    const char = Object.assign({}, character, { attributes, standardSkills, proSkills }, startPoints)
     this.props.firebase.push('characters', char)
     this.handleClose()
   }

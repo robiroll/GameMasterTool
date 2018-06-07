@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Switch, BrowserRouter, Route } from 'react-router-dom'
 import { createStore, combineReducers, compose } from 'redux'
 import { reactReduxFirebase, firebaseReducer } from 'react-redux-firebase'
-import firebase from './firebase'
+import fbConfig from './firebase'
 import { Provider } from 'react-redux'
 import fight from './redux/reducers/fight'
 
@@ -22,7 +22,7 @@ const rrfConfig = {
 
 // Add reactReduxFirebase enhancer when making store creator
 const createStoreWithFirebase = compose(
-  reactReduxFirebase(firebase, rrfConfig) // firebase instance as first argument
+  reactReduxFirebase(fbConfig, rrfConfig) // firebase instance as first argument
   // reduxFirestore(firebase) // <- needed if using firestore
 )(createStore)
 

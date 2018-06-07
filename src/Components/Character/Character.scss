@@ -1,6 +1,13 @@
 @import 'scss/layout.scss';
 @import 'scss/colors.scss';
 
+%list-item {
+  display: inline-flex;
+  justify-content: space-between;
+  width: 250px;
+  margin-right: $g2;
+}
+
 .card {
   margin-top: 20px;
 }
@@ -52,6 +59,12 @@
       .character--skill--infos {
         display: block;
       }
+    }
+  }
+
+  &--standard-skills {
+    &--item {
+      @extend %list-item;
     }
   }
 

@@ -25,7 +25,13 @@ class Character extends Component {
     super(props)
     const { idCharacter, characters } = props
     const hp = characters ? characters[idCharacter].hp : 0
-    this.state = { usedAP: 0, hp }
+    this.state = {
+      usedAP: 0,
+      hp,
+      isAttributesOpen: true,
+      isStandardSkillsOpen: false,
+      isProSkillsOpen: false
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -34,6 +40,10 @@ class Character extends Component {
       this.setState({ hp: nextProps.characters[idCharacter].hp })
     }
   }
+
+  handleToggleAttributes = () => this.setState({ isAttributesOpen: !this.state.isAttributesOpen })
+  handleToggleStandardSkills = () => this.setState({ isStandardSkillsOpen: !this.state.isStandardSkillsOpen })
+  handleToggleProSkills = () => this.setState({ isProSkillsOpen: !this.state.isProSkillsOpen })
 
   updateCharacter = changes => {
     const { firebase, idCharacter } = this.props
@@ -69,6 +79,21 @@ class Character extends Component {
   }
   handleUpdateHp = () => {
     this.updateCharacter({ hp: this.state.hp })
+  }
+  handleChangeAttr = (operation, attr) => () => {
+    const { characters, idCharacter, firebase } = this.props
+    const attrValue = characters[idCharacter].attributes[attr]
+    const newValue = operation === 'add' ? attrValue + 1 : operation === 'remove' && attrValue - 1
+    const changes = { [attr]: newValue }
+    firebase.update(`characters/${idCharacter}/attributes`, changes)
+  }
+  handleChangeSkill = (operation, skill, type) => () => {
+    // type  must be 'combat' or 'standard'
+    const { characters, idCharacter, firebase } = this.props
+    const skillValue = characters[idCharacter][`${type}Skills`][skill] || 0
+    const newValue = operation === 'add' ? skillValue + 1 : operation === 'remove' && skillValue - 1
+    const changes = { [skill]: newValue }
+    firebase.update(`characters/${idCharacter}/${type}Skills`, changes)
   }
   handleEquip = (key, item) => {
     const { firebase, characters, idCharacter } = this.props
@@ -150,12 +175,20 @@ class Character extends Component {
         onEndTurn={this.handleEndTurn}
         onDelayTurn={this.handleDelayTurn}
         onChangeHp={this.handleChangeHp}
+        onChangeAttr={this.handleChangeAttr}
+        onChangeSkill={this.handleChangeSkill}
         onUpdateHp={this.handleUpdateHp}
         hpToUpdate={this.state.hp}
         onEquip={this.handleEquip}
         onUnequip={this.handleUnequip}
         onUseItem={this.handleUseItem}
         onDropItem={this.handleDropItem}
+        onToggleAttributes={this.handleToggleAttributes}
+        onToggleStandardSkills={this.handleToggleStandardSkills}
+        onToggleProSkills={this.handleToggleProSkills}
+        isAttributesOpen={this.state.isAttributesOpen}
+        isStandardSkillsOpen={this.state.isStandardSkillsOpen}
+        isProSkillsOpen={this.state.isProSkillsOpen}
       />
     )
   }

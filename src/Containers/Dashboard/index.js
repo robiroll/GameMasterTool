@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { firebaseConnect } from 'react-redux-firebase'
 import { nextRound, startFight, endFight, selectCharacter, validateCharacters } from '../../redux/actions/fight'
+import { AP, STATS } from '../../lib'
 
 class Dashboard extends Component {
   static propTypes = {
@@ -42,14 +43,15 @@ class Dashboard extends Component {
     const { order, firebase, characters, nextRound } = this.props
     order.map(char => {
       const character = characters[char]
-      const { ap, apBase, apMax, cooldowns } = character
+      const { ap, cooldowns } = character
+      const { base, max } = AP(STATS(character))
       let newCooldowns = cooldowns || null
       if (cooldowns)
         Object.keys(cooldowns).map(cd => {
           if (newCooldowns[cd] > 0) newCooldowns[cd] -= 1
         })
-      let newAp = ap + apBase
-      if (newAp > apMax) newAp = apMax
+      let newAp = ap + base
+      if (newAp > max) newAp = max
       firebase.update(`characters/${char}`, {
         ap: newAp,
         cooldowns: newCooldowns
@@ -68,7 +70,8 @@ class Dashboard extends Component {
     validateCharacters()
     order.map(char => {
       const character = characters[char]
-      firebase.update(`characters/${char}`, { ap: character.apStart })
+      const ap = AP(STATS(character)).start
+      firebase.update(`characters/${char}`, { ap })
     })
   }
 

@@ -8,8 +8,10 @@
   background: $primary-1;
   cursor: pointer;
   padding: $g1 $g2;
+  vertical-align: middle;
   color: $accent-1;
   overflow: hidden;
+  user-select: none;
 
   &:hover {
     background: darken($primary-1, 10%);
@@ -42,5 +44,16 @@
     z-index: 1;
     background: rgba($neutral-1, 0.3);
     cursor: not-allowed;
+  }
+
+  &--small {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: $g2;
+    height: $g2;
+    line-height: $g2 + 1;
+    padding: 0;
+    text-transform: uppercase;
   }
 }

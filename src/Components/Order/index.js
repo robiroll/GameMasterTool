@@ -9,16 +9,14 @@ const Order = ({ order, characters, status, removeCharacter, onChangeHp }) => (
     {order.map(idCharacter => {
       const character = characters[idCharacter]
       return (
-        <div key={idCharacter} className="order--char">
+        <div key={idCharacter} className={`order--char order--char--${status}`}>
+          <div className="order--char--name">{character.name}</div>
           {status === 'all' && (
-            <span>
+            <div className="order--char--all">
               <input type="number" defaultValue={character.hp} onChange={onChangeHp(idCharacter)} /> /{' '}
               {HP_MAX(STATS(character))}
-            </span>
-          )}
-          <div>{character.name}</div>
-          {(status === 'playing' || status === 'selection') && (
-            <Button onClick={() => removeCharacter(idCharacter)}>X</Button>
+              <Button onClick={() => removeCharacter(idCharacter)}>X</Button>
+            </div>
           )}
         </div>
       )

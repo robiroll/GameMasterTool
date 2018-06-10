@@ -1,4 +1,3 @@
-import { indexOf } from 'lodash'
 import {
   ROUND_NEXT,
   FIGHT_START,
@@ -8,7 +7,8 @@ import {
   FIGHT_SELECTION_VALIDATE,
   SKILL_USE,
   ACTION_END_TURN,
-  ACTION_DELAY_TURN
+  ACTION_DELAY_TURN,
+  ORDER_CHARACTER_ADD
 } from '../actions/actionTypes'
 const initialState = {
   round: 0,
@@ -47,12 +47,8 @@ export default function fight(state = initialState, action) {
 
     case FIGHT_SELECTION_CHARACTER_REMOVE:
       order = order.filter(idCharacter => idCharacter !== action.payload)
-      orderPlaying = orderPlaying.filter(
-        idCharacter => idCharacter !== action.payload
-      )
-      orderDone = orderDone.filter(
-        idCharacter => idCharacter !== action.payload
-      )
+      orderPlaying = orderPlaying.filter(idCharacter => idCharacter !== action.payload)
+      orderDone = orderDone.filter(idCharacter => idCharacter !== action.payload)
       return Object.assign({}, state, { order, orderPlaying, orderDone })
 
     case FIGHT_SELECTION_VALIDATE:
@@ -68,9 +64,7 @@ export default function fight(state = initialState, action) {
 
     case ACTION_END_TURN:
       // order.splice(indexOf(order, characterPlaying), 1, characterPlaying)
-      orderPlaying = orderPlaying.filter(
-        idCharacter => idCharacter !== characterPlaying
-      )
+      orderPlaying = orderPlaying.filter(idCharacter => idCharacter !== characterPlaying)
       orderDone.push(characterPlaying)
       characterPlaying = orderPlaying[0]
       return Object.assign({}, state, {
@@ -85,6 +79,11 @@ export default function fight(state = initialState, action) {
       orderPlaying.push(orderItem)
       characterPlaying = orderPlaying[0]
       return Object.assign({}, state, { orderPlaying, characterPlaying })
+
+    case ORDER_CHARACTER_ADD:
+      order.push(action.payload)
+      orderPlaying.push(action.payload)
+      return Object.assign({}, state, { order, orderPlaying })
 
     default:
       return state

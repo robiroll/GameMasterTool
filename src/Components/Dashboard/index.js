@@ -31,13 +31,19 @@ const Dashboard = ({
   const isEndFightDisabled = fightStatus !== 'in-progress'
   return (
     <div className="dashboard">
-      <div className="turn">Round {round}</div>
-      order
-      <Order />
-      order playing
-      <Order status="playing" />
-      order done
-      <Order status="done" />
+      <div className="dashboard--round">{round < 1 ? 'Prepare to fight!' : `Round ${round}`}</div>
+      <div className="dashboard--order">
+        <div className="dashboard--order--title">Character{"'"}s order (by initiative):</div>
+        <Order />
+      </div>
+      <div className="dashboard--order">
+        <div className="dashboard--order--title">Next players to play:</div>
+        <Order status="playing" />
+      </div>
+      <div className="dashboard--order">
+        <div className="dashboard--order--title">Turn finished for:</div>
+        <Order status="done" />
+      </div>
       <Modal isOpen={isOpen} ariaHideApp={false}>
         <Order status="selection" />
         <Selection

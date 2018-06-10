@@ -8,7 +8,8 @@ import {
   SKILL_USE,
   ACTION_END_TURN,
   ACTION_DELAY_TURN,
-  ACTION_USE
+  ACTION_USE,
+  ORDER_CHARACTER_ADD
 } from './actionTypes'
 
 export const nextRound = () => ({
@@ -51,5 +52,9 @@ export const endTurn = payload => ({
 })
 export const delayTurn = payload => ({
   type: ACTION_DELAY_TURN,
+  payload
+})
+export const addCharacterInOrder = payload => ({
+  type: ORDER_CHARACTER_ADD,
   payload
 })

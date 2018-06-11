@@ -7,6 +7,7 @@ import Selection from '../../Components/Selection'
 
 import Modal from 'react-modal'
 import Button from '../../styleguide/Button'
+import Card from '../../styleguide/Card'
 import './Dashboard.css'
 
 const Dashboard = ({
@@ -31,19 +32,20 @@ const Dashboard = ({
   const isEndFightDisabled = fightStatus !== 'in-progress'
   return (
     <div className="dashboard">
-      <div className="dashboard--round">{round < 1 ? 'Prepare to fight!' : `Round ${round}`}</div>
-      <div className="dashboard--order">
-        <div className="dashboard--order--title">Character{"'"}s order (by initiative):</div>
-        <Order />
-      </div>
-      <div className="dashboard--order">
-        <div className="dashboard--order--title">Next players to play:</div>
-        <Order status="playing" />
-      </div>
-      <div className="dashboard--order">
-        <div className="dashboard--order--title">Turn finished for:</div>
-        <Order status="done" />
-      </div>
+      <Card title={<h3 className="dashboard--round">{round < 1 ? 'Prepare to fight!' : `Round ${round}`}</h3>}>
+        <div className="dashboard--order">
+          <div className="dashboard--order--title">Character{"'"}s order (by initiative):</div>
+          <Order />
+        </div>
+        <div className="dashboard--order">
+          <div className="dashboard--order--title">Next players to play:</div>
+          <Order status="playing" />
+        </div>
+        <div className="dashboard--order">
+          <div className="dashboard--order--title">Turn finished for:</div>
+          <Order status="done" />
+        </div>
+      </Card>
       <Modal isOpen={isOpen} ariaHideApp={false}>
         <Order status="selection" />
         <Selection
@@ -55,20 +57,21 @@ const Dashboard = ({
           order={order}
         />
       </Modal>
-      <div className="dashboard--fight">
-        <div className="dashboard--fight--title">Fight actions</div>
-        <div className="dashboard--fight--actions">
-          <Button onClick={onStartFight} disabled={isStartDisabled}>
-            start fight
-          </Button>
-          <Button onClick={onNextRound} disabled={isEndTurnDisabled}>
-            next round
-          </Button>
-          <Button onClick={onEndFight} disabled={isEndFightDisabled}>
-            end fight
-          </Button>
+      <Card title={<h3 className="dashboard--fight--title">Fight actions</h3>}>
+        <div className="dashboard--fight">
+          <div className="dashboard--fight--actions">
+            <Button onClick={onStartFight} disabled={isStartDisabled}>
+              start fight
+            </Button>
+            <Button onClick={onNextRound} disabled={isEndTurnDisabled}>
+              next round
+            </Button>
+            <Button onClick={onEndFight} disabled={isEndFightDisabled}>
+              end fight
+            </Button>
+          </div>
         </div>
-      </div>
+      </Card>
       {characterPlaying && (
         <div className="dashboard--characters--content">
           <Character idCharacter={characterPlaying} onUseSkill={onUseSkill} />

@@ -2,10 +2,12 @@
 @import 'scss/colors.scss';
 
 .menu {
+  margin-bottom: $g2;
+
   &--header {
     background-color: $neutral-2;
-    padding: $g1;
-    color: #fff;
+    padding: $g2;
+    margin-bottom: 2px;
 
     &--title {
       text-align: center;
@@ -15,7 +17,7 @@
   &--links {
     display: flex;
     padding-bottom: 1px;
-    background: $accent-3;
+    background: $neutral-1;
 
     li {
       flex-grow: 1;
@@ -24,28 +26,29 @@
         flex-grow: 0;
       }
     }
-
-    .divider {
-      width: 3px;
-      background: $accent-2;
-    }
   }
 
   &--link {
+    transition: all ease-in-out 300ms;
     padding: $g1 $g2;
-    background: $accent-1;
+    margin: 2px;
+    background: rgba($primary-1, 0.2);
     color: $white;
     text-align: center;
+    border: 1px solid $primary-1;
+    text-shadow: 0 0 2px $primary-1;
 
     &:hover {
-      background: darken($accent-1, 10%);
+      background: rgba($primary-1, 0.1);
+      box-shadow: 0 0 5px 1px rgba($primary-1, 0.7);
+      border-color: $white;
     }
 
     &--active {
       position: relative;
 
       &:hover {
-        background: $accent-1;
+        background: rgba($primary-1, 0.1);
       }
 
       &:before {
@@ -63,9 +66,11 @@
 
   &--category {
     padding: $g1 $g2;
-    background: $accent-4;
-    color: $white;
+    background: rgba($neutral-3, 0.3);
+    color: $primary-1;
     text-align: center;
     width: 150px;
+    text-transform: uppercase;
+    font-weight: 500;
   }
 }

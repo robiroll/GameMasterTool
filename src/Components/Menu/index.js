@@ -40,7 +40,6 @@ const Menu = ({ characters, active }) => {
       </ul>
       <ul className="menu--links">
         <li className="menu--category">Heroes</li>
-        <div className="divider" />
         {Object.keys(heroes).map(char => {
           return (
             <li key={char}>
@@ -55,7 +54,6 @@ const Menu = ({ characters, active }) => {
       </ul>
       <ul className="menu--links">
         <li className="menu--category">Foes</li>
-        <div className="divider" />
         {Object.keys(foes).map(char => {
           return (
             <li key={char}>

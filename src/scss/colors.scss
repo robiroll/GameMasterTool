@@ -1,4 +1,4 @@
-$primary-1: #ecd078;
+$primary-1: #add8e6;
 
 $accent-1: #d95b43;
 $accent-2: #c02942;
@@ -12,3 +12,5 @@ $neutral-4: #93b8c2;
 $neutral-5: #dceff5;
 
 $white: #fff;
+
+$accent-1-l: lighten($accent-1, 20%);

@@ -14,10 +14,9 @@
 
 .character {
   &--title {
-    line-height: $g4;
-    color: $neutral-2;
-    font-size: $g3;
-    font-weight: bold;
+    margin: $g1 0;
+    border-bottom: 1px solid rgba($primary-1, 0.6);
+    // padding-bottom: $g1;
   }
 
   &--name {

@@ -12,7 +12,7 @@ const Characters = ({ data, character, isOpen, onAddCharacter, onOpen, onClose, 
       <Button onClick={onOpen} variant="accent-1">
         Create Character
       </Button>
-      <Modal isOpen={isOpen} ariaHideApp={false}>
+      <Modal isOpen={isOpen} className="card modal--content" overlayClassName="modal--overlay" ariaHideApp={false}>
         <CharacterSheet
           onAddCharacter={onAddCharacter}
           onOpen={onOpen}

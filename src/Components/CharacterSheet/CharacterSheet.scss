@@ -1,0 +1,32 @@
+@import 'scss/layout.scss';
+@import 'scss/colors.scss';
+
+.character-sheet {
+  &--form {
+    &--title {
+      border-bottom: 1px solid $primary-1;
+      padding-bottom: $g2;
+      margin-bottom: $g3;
+    }
+
+    h3 {
+      border-bottom: 1px solid rgba($primary-1, 0.8);
+      margin-bottom: $g1;
+    }
+
+    &--field {
+      display: flex;
+      align-items: center;
+      margin-bottom: $g1;
+
+      label {
+        width: 150px;
+      }
+
+      span {
+        margin-left: $g2;
+        color: rgba($primary-1, 0.8);
+      }
+    }
+  }
+}

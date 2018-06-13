@@ -1,11 +1,23 @@
 @import 'src/scss/layout.scss';
+@import 'src/scss/colors.scss';
 
 .selection {
+  &--title {
+    border-bottom: 1px solid rgba($primary-1, 0.8);
+    margin-bottom: $g2;
+  }
+  &--content {
+    display: flex;
+    margin-bottom: $g4;
+  }
+  &--button {
+    margin-top: $g2;
+  }
   &--characters {
     &--char {
       &--name {
         cursor: pointer;
-        padding: $g1;
+        // padding: $g1;
       }
     }
   }

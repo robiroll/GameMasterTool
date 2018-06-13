@@ -1,19 +1,11 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
+import Item from '../../Containers/Item'
 import Button from '../../styleguide/Button'
+import Card from '../../styleguide/Card'
+import './Items.css'
 
-const Items = ({
-  items,
-  onCreate,
-  onChangeField,
-  onChangeBonus,
-  fields,
-  bonuses,
-  onAssign,
-  characters,
-  onChangeAssignee,
-  assignedCharacter
-}) => {
+const Items = ({ items, onCreate, onChangeField, onChangeBonus, fields, bonuses }) => {
   const {
     name,
     type,
@@ -30,175 +22,146 @@ const Items = ({
   } = fields
   const { str, siz, con, dex, int, pow, cha } = bonuses
   return (
-    <div>
-      <div className="form">
-        <div>fields</div>
-        <div>
-          <label htmlFor="name">name</label>
-          <input type="text" id="name" onChange={onChangeField} value={name} />
-        </div>
-
-        <div>
-          <label htmlFor="type">Type</label>
-          <select name="type" id="type" onChange={onChangeField} value={type}>
-            <option value="equipment">equipment</option>
-            <option value="usable">usable</option>
-            <option value="permanent">permanent</option>
-          </select>
-        </div>
-
-        {type === 'usable' && (
-          <div>
-            <label htmlFor="quantity">quantity</label>
-            <input type="number" id="quantity" onChange={onChangeField} value={quantity} />
-          </div>
-        )}
-
-        {type === 'equipment' && (
-          <Fragment>
-            <div>
-              <label htmlFor="slot">slot</label>
-              <select name="slot" id="slot" onChange={onChangeField} value={slot}>
-                <option value="weapon">weapon</option>
-                <option value="offhand">offhand</option>
-                <option value="head">head</option>
-                <option value="shoulders">shoulders</option>
-                <option value="back">back</option>
-                <option value="chest">chest</option>
-                <option value="hands">hands</option>
-                <option value="belt">belt</option>
-                <option value="legs">legs</option>
-                <option value="feet">feet</option>
-                <option value="neck">neck</option>
-                <option value="ring">ring</option>
-              </select>
-              {slot === 'weapon' && (
-                <select name="weaponHands" id="weaponHands" onChange={onChangeField} value={weaponHands}>
-                  <option value="1handed">1H weapon</option>
-                  <option value="2handed">2H weapon</option>
-                </select>
-              )}
+    <div className="items">
+      <Card title={<h3>Create item</h3>}>
+        <div className="items--form">
+          <div className="items--form--main">
+            <div className="items--fieldset">
+              <label htmlFor="name">Name</label>
+              <input type="text" id="name" onChange={onChangeField} value={name} />
             </div>
 
-            {slot === 'weapon' && (
-              <Fragment>
-                <div>
-                  <label htmlFor="damage">damage</label>
-                  <input type="number" id="damage" onChange={onChangeField} value={damage} />
-                </div>
-                <div>
-                  <label htmlFor="size">size</label>
-                  <input type="number" id="size" onChange={onChangeField} value={size} />
-                </div>
-              </Fragment>
+            <div className="items--fieldset">
+              <label htmlFor="type">Type</label>
+              <select name="type" id="type" onChange={onChangeField} value={type}>
+                <option value="equipment">equipment</option>
+                <option value="usable">usable</option>
+                <option value="permanent">permanent</option>
+              </select>
+            </div>
+
+            {type === 'usable' && (
+              <div className="items--fieldset">
+                <label htmlFor="quantity">Quantity</label>
+                <input type="number" id="quantity" onChange={onChangeField} value={quantity} />
+              </div>
             )}
 
-            <div>
-              <label htmlFor="armor">armor</label>
-              <input type="number" id="armor" onChange={onChangeField} value={armor} />
+            <div className="items--fieldset">
+              <label htmlFor="weight">Weight</label>
+              <input type="number" id="weight" onChange={onChangeField} value={weight} />
             </div>
 
-            <div>
-              <label htmlFor="magicArmor">magicArmor</label>
-              <input type="number" id="magicArmor" onChange={onChangeField} value={magicArmor} />
+            {type !== 'equipment' && (
+              <div className="items--fieldset">
+                <label htmlFor="apCost">AP cost</label>
+                <input type="number" id="apCost" onChange={onChangeField} value={apCost} />
+              </div>
+            )}
+
+            <div className="items--fieldset">
+              <label htmlFor="creditsValue">Value (credits)</label>
+              <input type="number" id="creditsValue" onChange={onChangeField} value={creditsValue} />
             </div>
-
-            <div>
-              <label htmlFor="bonuses">bonuses</label>
-              <div>
-                str: <input type="number" id="str" onChange={onChangeBonus} value={str} />
-              </div>
-              <div>
-                siz: <input type="number" id="siz" onChange={onChangeBonus} value={siz} />
-              </div>
-              <div>
-                con: <input type="number" id="con" onChange={onChangeBonus} value={con} />
-              </div>
-              <div>
-                dex: <input type="number" id="dex" onChange={onChangeBonus} value={dex} />
-              </div>
-              <div>
-                int: <input type="number" id="int" onChange={onChangeBonus} value={int} />
-              </div>
-              <div>
-                pow: <input type="number" id="pow" onChange={onChangeBonus} value={pow} />
-              </div>
-              <div>
-                cha: <input type="number" id="cha" onChange={onChangeBonus} value={cha} />
-              </div>
-              --
-            </div>
-          </Fragment>
-        )}
-
-        <div>
-          <label htmlFor="weight">weight</label>
-          <input type="number" id="weight" onChange={onChangeField} value={weight} />
-        </div>
-
-        {type !== 'equipment' && (
-          <div>
-            <label htmlFor="apCost">apCost</label>
-            <input type="number" id="apCost" onChange={onChangeField} value={apCost} />
           </div>
-        )}
+          {type === 'equipment' && (
+            <div className="items--form--equipment">
+              <div className="items--fieldset">
+                <label htmlFor="slot">Slot</label>
+                <select name="slot" id="slot" onChange={onChangeField} value={slot}>
+                  <option value="weapon">weapon</option>
+                  <option value="offhand">offhand</option>
+                  <option value="head">head</option>
+                  <option value="shoulders">shoulders</option>
+                  <option value="back">back</option>
+                  <option value="chest">chest</option>
+                  <option value="hands">hands</option>
+                  <option value="belt">belt</option>
+                  <option value="legs">legs</option>
+                  <option value="feet">feet</option>
+                  <option value="neck">neck</option>
+                  <option value="ring">ring</option>
+                </select>
+              </div>
+              {slot === 'weapon' && (
+                <div className="items--fieldset">
+                  <label htmlFor="weaponHands">Weapon type</label>
+                  <select name="weaponHands" id="weaponHands" onChange={onChangeField} value={weaponHands}>
+                    <option value="1handed">1H weapon</option>
+                    <option value="2handed">2H weapon</option>
+                  </select>
+                </div>
+              )}
 
-        <div>
-          <label htmlFor="creditsValue">creditsValue</label>
-          <input type="number" id="creditsValue" onChange={onChangeField} value={creditsValue} />
-        </div>
-      </div>
-      <Button onClick={onCreate}>Create new item</Button>
-      <div>list</div>
-      <div className="equipment--title">
-        {Object.keys(items).map(id => {
-          return (
-            <div key={id}>
-              <div>{items[id].name}</div>
-              <select
-                name="assignedCharacter"
-                id="assignedCharacter"
-                onChange={onChangeAssignee}
-                value={assignedCharacter}
-              >
-                <option value="" disabled>
-                  CHARACTER
-                </option>
-                <option value="---" disabled>
-                  --------------
-                </option>
-                {Object.keys(characters).map(charId => {
-                  return (
-                    <option key={charId} value={charId}>
-                      {characters[charId].name}
-                    </option>
-                  )
-                })}
-              </select>
-              <Button onClick={() => onAssign(id)}>Assign</Button>
-              <ul>
-                {Object.keys(items[id]).map(key => {
-                  const value = items[id][key]
-                  return (
-                    <li key={key}>
-                      {key} :{' '}
-                      {typeof value !== 'object'
-                        ? value
-                        : Object.keys(value).map(val => {
-                            return (
-                              <div key={val}>
-                                {val}: {value[val]}
-                              </div>
-                            )
-                          })}
-                    </li>
-                  )
-                })}
-              </ul>
+              {slot === 'weapon' && (
+                <Fragment>
+                  <div className="items--fieldset">
+                    <label htmlFor="damage">Damage</label>
+                    <input type="number" id="damage" onChange={onChangeField} value={damage} />
+                  </div>
+
+                  <div className="items--fieldset">
+                    <label htmlFor="size">Size</label>
+                    <input type="number" id="size" onChange={onChangeField} value={size} />
+                  </div>
+                </Fragment>
+              )}
+
+              <div className="items--fieldset">
+                <label htmlFor="armor">Armor</label>
+                <input type="number" id="armor" onChange={onChangeField} value={armor} />
+              </div>
+
+              <div className="items--fieldset">
+                <label htmlFor="magicArmor">Magic armor</label>
+                <input type="number" id="magicArmor" onChange={onChangeField} value={magicArmor} />
+              </div>
             </div>
-          )
-        })}
-      </div>
+          )}
+          {type === 'equipment' && (
+            <div>
+              <div className="items--fieldset">
+                <label htmlFor="str">Strength</label>
+                <input type="number" id="str" onChange={onChangeBonus} value={str} />
+              </div>
+              <div className="items--fieldset">
+                <label htmlFor="siz">Size</label>
+                <input type="number" id="siz" onChange={onChangeBonus} value={siz} />
+              </div>
+              <div className="items--fieldset">
+                <label htmlFor="con">Constitution</label>
+                <input type="number" id="con" onChange={onChangeBonus} value={con} />
+              </div>
+              <div className="items--fieldset">
+                <label htmlFor="dex">Dexterity</label>
+                <input type="number" id="dex" onChange={onChangeBonus} value={dex} />
+              </div>
+              <div className="items--fieldset">
+                <label htmlFor="int">Intelligence</label>
+                <input type="number" id="int" onChange={onChangeBonus} value={int} />
+              </div>
+              <div className="items--fieldset">
+                <label htmlFor="pow">Power</label>
+                <input type="number" id="pow" onChange={onChangeBonus} value={pow} />
+              </div>
+              <div className="items--fieldset">
+                <label htmlFor="cha">Charisma</label>
+                <input type="number" id="cha" onChange={onChangeBonus} value={cha} />
+              </div>
+            </div>
+          )}
+        </div>
+        <Button onClick={onCreate} variant="accent-1">
+          Create item
+        </Button>
+      </Card>
+      <Card title={<h3>Items list</h3>}>
+        <div className="equipment--title">
+          {Object.keys(items).map(id => {
+            return <Item key={id} item={items[id]} />
+          })}
+        </div>
+      </Card>
     </div>
   )
 }

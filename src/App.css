@@ -148,7 +148,8 @@ h3,
 h4 {
   font-family: 'Cinzel Decorative';
   color: #add8e6;
-  text-shadow: 0 0 10px white; }
+  text-shadow: 0 0 10px white;
+  text-transform: capitalize; }
 
 h1 {
   font-size: 40px;
@@ -165,3 +166,37 @@ h3 {
 h4 {
   font-size: 16px;
   line-height: 24px; }
+
+.modal--overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 29, 41, 0.8); }
+
+.modal--content {
+  position: absolute;
+  top: 80px;
+  left: 80px;
+  right: 80px;
+  bottom: 80px;
+  padding: 24px;
+  overflow: auto;
+  outline: 0; }
+
+input,
+select {
+  -webkit-appearance: none;
+  border: 0;
+  font-size: 16px;
+  background: transparent;
+  color: #fff;
+  font-family: inherit;
+  background: rgba(83, 119, 122, 0.3);
+  padding: 4px 8px;
+  width: 150px; }
+  input:focus,
+  select:focus {
+    outline: 1px solid rgba(173, 216, 230, 0.2);
+    box-shadow: 0 0 5px -1px rgba(173, 216, 230, 0.6); }

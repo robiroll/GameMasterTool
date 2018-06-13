@@ -177,7 +177,12 @@ const Skills = ({
               )
             })}
             <Button onClick={() => onOpenModify(skill)}>modifier</Button>
-            <Modal isOpen={isModifyOpen} ariaHideApp={false}>
+            <Modal
+              isOpen={isModifyOpen}
+              className="card modal--content"
+              overlayClassName="modal--overlay"
+              ariaHideApp={false}
+            >
               <SkillForm {...skillFormProps} onSubmit={onUpdate} buttonLabel="update skill" isNameHidden />
               <Button onClick={onCloseModify}>close</Button>
             </Modal>

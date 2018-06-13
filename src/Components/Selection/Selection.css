@@ -1,3 +1,13 @@
+.selection--title {
+  border-bottom: 1px solid rgba(173, 216, 230, 0.8);
+  margin-bottom: 16px; }
+
+.selection--content {
+  display: flex;
+  margin-bottom: 32px; }
+
+.selection--button {
+  margin-top: 16px; }
+
 .selection--characters--char--name {
-  cursor: pointer;
-  padding: 8px; }
+  cursor: pointer; }

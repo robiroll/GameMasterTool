@@ -8,19 +8,13 @@ export default [
     id: 'kind',
     type: 'select',
     label: 'Type de charactère',
-    options: [
-      { label: 'Héros', value: 'hero' },
-      { label: 'Ennemi', value: 'foe' }
-    ]
+    options: [{ label: 'Héros', value: 'hero' }, { label: 'Ennemi', value: 'foe' }]
   },
   {
     id: 'race',
     type: 'select',
     label: 'Race',
-    options: [
-      { label: 'Hobbit', value: 'hobbit' },
-      { label: 'Elfe', value: 'elf' }
-    ]
+    options: [{ label: 'Hobbit', value: 'hobbit' }, { label: 'Elfe', value: 'elf' }]
   },
   {
     id: 'class',
@@ -38,13 +32,13 @@ export default [
     label: 'Attributs',
     extendedType: 'attributes',
     children: [
-      { id: 'str', label: 'Force' },
-      { id: 'con', label: 'Constitution' },
-      { id: 'siz', label: 'Taille' },
-      { id: 'dex', label: 'Dexterité' },
-      { id: 'int', label: 'Intelligence' },
-      { id: 'pow', label: 'Puissance' },
-      { id: 'cha', label: 'Charisme' }
+      { id: 'str', label: 'Force', score: '(3d6)' },
+      { id: 'con', label: 'Constitution', score: '(3d6)' },
+      { id: 'siz', label: 'Taille', score: '(3d6)' },
+      { id: 'dex', label: 'Dexterité', score: '(3d6)' },
+      { id: 'int', label: 'Intelligence', score: '(3d6)' },
+      { id: 'pow', label: 'Puissance', score: '(2d6 + 6)' },
+      { id: 'cha', label: 'Charisme', score: '(2d6 + 6)' }
     ]
   },
   {

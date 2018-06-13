@@ -18,20 +18,7 @@ const BONUS_NAME = {
 }
 
 const Character = ({
-  data: {
-    cooldowns,
-    hp,
-    name,
-    level,
-    ap,
-    attributes,
-    combatSkills,
-    standardSkills,
-    proSkills,
-    talents,
-    equipment,
-    inventory
-  },
+  data: { cooldowns, hp, name, ap, attributes, combatSkills, standardSkills, proSkills, talents, equipment, inventory },
   onUseSkill,
   onAttack,
   onMove,
@@ -321,7 +308,6 @@ const Character = ({
 Character.propTypes = {
   data: PropTypes.shape({
     name: PropTypes.string.isRequired,
-    level: PropTypes.number.isRequired,
     combatSkills: PropTypes.object
   }),
   round: PropTypes.number,

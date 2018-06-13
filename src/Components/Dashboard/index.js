@@ -46,7 +46,7 @@ const Dashboard = ({
           <Order status="done" />
         </div>
       </Card>
-      <Modal isOpen={isOpen} ariaHideApp={false}>
+      <Modal isOpen={isOpen} className="card modal--content" overlayClassName="modal--overlay" ariaHideApp={false}>
         <Order status="selection" />
         <Selection
           onCloseSelection={onCloseSelection}

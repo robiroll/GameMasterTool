@@ -1,0 +1,30 @@
+@import 'scss/layout.scss';
+@import 'scss/colors.scss';
+
+.item {
+  border-bottom: 1px solid rgba($primary-1, 0.6);
+  margin-bottom: $g2;
+
+  &:last-child {
+    border: 0;
+    margin-bottom: 0;
+  }
+
+  &--header {
+    display: flex;
+    align-items: center;
+    margin-bottom: $g2;
+
+    &--name {
+      margin-right: $g2;
+    }
+
+    &--select {
+      margin-right: $g2;
+    }
+  }
+
+  &--stats {
+    margin-bottom: $g2;
+  }
+}

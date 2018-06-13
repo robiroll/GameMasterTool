@@ -2,18 +2,13 @@ import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import Button from '../../styleguide/Button'
 import fields from './config'
+import './CharacterSheet.css'
 
-const CharacterSheet = ({
-  character,
-  onAddCharacter,
-  onClose,
-  onChange,
-  onChangeAttributes
-}) => {
+const CharacterSheet = ({ character, onAddCharacter, onClose, onChange, onChangeAttributes }) => {
   return (
     <div className="character-sheet">
       <form className="character-sheet--form">
-        <h1 className="character-sheet--form--title">Création de Personnage</h1>
+        <h2 className="character-sheet--form--title">Création de Personnage</h2>
         {fields.map(field => {
           const { type, id, label, options, children, extendedType } = field
           let total = 0
@@ -22,11 +17,11 @@ const CharacterSheet = ({
               Object.values(character[id]).map(val => (total += val))
               return (
                 <Fragment key={id}>
-                  <h2>
+                  <h3>
                     {field.label} ({total})
-                  </h2>
+                  </h3>
                   {children.map(attr => {
-                    const { id, label } = attr
+                    const { id, label, score } = attr
                     return (
                       <div key={id} className="character-sheet--form--field">
                         <label htmlFor={id}>{label}</label>
@@ -36,6 +31,7 @@ const CharacterSheet = ({
                           onChange={e => onChangeAttributes(e, extendedType)}
                           value={character[extendedType][id]}
                         />
+                        {score && <span>{score}</span>}
                       </div>
                     )
                   })}
@@ -45,19 +41,12 @@ const CharacterSheet = ({
             case 'select':
               return (
                 <Fragment key={id}>
-                  <select
-                    id={id}
-                    key={id}
-                    className="character-sheet--form--field"
-                    onChange={onChange}
-                  >
+                  <select id={id} key={id} className="character-sheet--form--field" onChange={onChange}>
                     {options.map(option => (
                       <option
                         key={option.value}
                         value={option.value}
-                        selected={`${
-                          option.value === character[id] ? 'selected' : ''
-                        }`}
+                        selected={`${option.value === character[id] ? 'selected' : ''}`}
                       >
                         {option.label}
                       </option>
@@ -74,11 +63,11 @@ const CharacterSheet = ({
               )
           }
         })}
-        <Button onClick={onAddCharacter}>
-          Valider la création de Personnage
-        </Button>
       </form>
-      <Button onClick={onClose}>Close modal</Button>
+      <Button onClick={onAddCharacter}>Valider la création de Personnage</Button>
+      <Button onClick={onClose} variant="accent-1">
+        Close modal
+      </Button>
     </div>
   )
 }

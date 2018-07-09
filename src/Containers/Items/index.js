@@ -37,8 +37,7 @@ class Items extends Component {
         int: 0,
         pow: 0,
         cha: 0
-      },
-      assignedCharacter: ''
+      }
     }
   }
   handleCreate = () => {
@@ -77,20 +76,9 @@ class Items extends Component {
     this.setState({ bonuses })
   }
 
-  handleChangeAssignee = e => {
-    const { id, value } = e.target
-    this.setState({ [id]: value })
-  }
-
-  handleAssign = id => {
-    const { firebase, items } = this.props
-    const { assignedCharacter } = this.state
-    firebase.push(`characters/${assignedCharacter}/inventory`, items[id])
-  }
-
   render() {
     const { items, characters } = this.props
-    const { fields, bonuses, assignedCharacter } = this.state
+    const { fields, bonuses } = this.state
     return (
       <ItemsComponent
         items={items}
@@ -100,9 +88,6 @@ class Items extends Component {
         fields={fields}
         bonuses={bonuses}
         characters={characters}
-        onChangeAssignee={this.handleChangeAssignee}
-        onAssign={this.handleAssign}
-        assignedCharacter={assignedCharacter}
       />
     )
   }

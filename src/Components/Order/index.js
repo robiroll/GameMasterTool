@@ -10,12 +10,21 @@ const Order = ({ order, characters, status, removeCharacter, onChangeHp }) => (
       const character = characters[idCharacter]
       return (
         <div key={idCharacter} className={`order--char order--char--${status}`}>
-          <div className="order--char--name">{character.name}</div>
+          <h4 className="order--char--name">{character.name}</h4>
           {status === 'all' && (
             <div className="order--char--all">
-              <input type="number" defaultValue={character.hp} onChange={onChangeHp(idCharacter)} /> /{' '}
-              {HP_MAX(STATS(character))}
-              <Button onClick={() => removeCharacter(idCharacter)}>X</Button>
+              <input
+                className="order--char--input"
+                type="number"
+                defaultValue={character.hp}
+                onChange={onChangeHp(idCharacter)}
+              />{' '}
+              / {HP_MAX(STATS(character))}
+              <div className="order--char--button">
+                <Button onClick={() => removeCharacter(idCharacter)} size="small" variant="accent-1">
+                  X
+                </Button>
+              </div>
             </div>
           )}
         </div>

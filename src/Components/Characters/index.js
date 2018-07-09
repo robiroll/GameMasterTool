@@ -9,8 +9,10 @@ import './Character.css'
 const Characters = ({ data, character, isOpen, onAddCharacter, onOpen, onClose, onChange, onChangeAttributes }) => {
   return (
     <div className="characters">
-      <Button onClick={onOpen}>Create Character</Button>
-      <Modal isOpen={isOpen} ariaHideApp={false}>
+      <Button onClick={onOpen} variant="accent-1">
+        Create Character
+      </Button>
+      <Modal isOpen={isOpen} className="card modal--content" overlayClassName="modal--overlay" ariaHideApp={false}>
         <CharacterSheet
           onAddCharacter={onAddCharacter}
           onOpen={onOpen}

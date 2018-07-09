@@ -1,26 +1,71 @@
 .button {
+  transition: all ease-in-out 300ms;
   position: relative;
-  display: inline-block;
-  border-radius: 8px;
-  background: #ecd078;
+  display: inline-flex;
+  border: 1px solid #add8e6;
+  background: rgba(173, 216, 230, 0.2);
   cursor: pointer;
   padding: 8px 16px;
   vertical-align: middle;
-  color: #d95b43;
-  overflow: hidden;
-  user-select: none; }
+  color: #add8e6;
+  text-shadow: 0 0 3px #add8e6;
+  box-shadow: 0 0 2px #add8e6;
+  user-select: none;
+  text-transform: uppercase; }
   .button:hover {
-    background: #e6c04b; }
+    background: rgba(173, 216, 230, 0.1);
+    border-color: rgba(255, 255, 255, 0.7);
+    color: #fff;
+    box-shadow: 0 0 5px 1px rgba(173, 216, 230, 0.7); }
+
+.button--accent-1 {
+  border: 1px solid #d95b43;
+  background: rgba(217, 91, 67, 0.2);
+  color: #eaa598; }
+  .button--accent-1 .button--corner.top {
+    border-top-color: #eaa598; }
+  .button--accent-1 .button--corner.bottom {
+    border-bottom-color: #eaa598; }
+  .button--accent-1 .button--corner.right {
+    border-right-color: #eaa598; }
+  .button--accent-1 .button--corner.left {
+    border-left-color: #eaa598; }
+  .button--accent-1:hover {
+    background: rgba(217, 91, 67, 0.1);
+    color: #eeb8ad;
+    box-shadow: 0 0 5px 1px rgba(217, 91, 67, 0.7); }
+
+.button--corner {
+  position: absolute;
+  background: transparent;
+  border: 2px solid transparent;
+  width: 15px;
+  height: 15px; }
+  .button--corner.top {
+    top: -2px;
+    border-top-color: rgba(255, 255, 255, 0.7); }
+  .button--corner.bottom {
+    bottom: -2px;
+    border-bottom-color: rgba(255, 255, 255, 0.7); }
+  .button--corner.right {
+    right: -2px;
+    border-right-color: rgba(255, 255, 255, 0.7); }
+  .button--corner.left {
+    left: -2px;
+    border-left-color: rgba(255, 255, 255, 0.7); }
 
 .button--disabled {
   position: relative; }
+  .button--disabled:hover {
+    background: rgba(173, 216, 230, 0.2);
+    border-color: #add8e6; }
   .button--disabled:after {
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    background: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.4);
     cursor: not-allowed;
     content: ''; }
 
@@ -35,10 +80,12 @@
 
 .button--small {
   display: inline-flex;
-  align-items: center;
   justify-content: center;
-  width: 16px;
-  height: 16px;
-  line-height: 17px;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
   padding: 0;
   text-transform: uppercase; }
+  .button--small .button--corner {
+    width: 8px;
+    height: 8px; }

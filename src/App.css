@@ -2,6 +2,7 @@
 v2.0 | 20110126
 License: none (public domain)
 */
+@import url("https://fonts.googleapis.com/css?family=Cinzel+Decorative:400,700|Rajdhani:300,400,500,600,700");
 html,
 body,
 div,
@@ -135,6 +136,69 @@ a {
 
 body {
   line-height: 24px;
-  color: #001d29;
+  background: #001d29;
+  color: #fff;
   font-size: 16px;
-  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif; }
+  font-family: 'Rajdhani', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-weight: 300; }
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: 'Cinzel Decorative';
+  color: #add8e6;
+  text-shadow: 0 0 10px white;
+  text-transform: capitalize; }
+
+h1 {
+  font-size: 40px;
+  line-height: 48px; }
+
+h2 {
+  font-size: 32px;
+  line-height: 40px; }
+
+h3 {
+  font-size: 20px;
+  line-height: 28px; }
+
+h4 {
+  font-size: 16px;
+  line-height: 24px; }
+
+.modal--overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 29, 41, 0.8); }
+
+.modal--content {
+  position: absolute;
+  top: 80px;
+  left: 80px;
+  right: 80px;
+  bottom: 80px;
+  padding: 24px;
+  overflow: auto;
+  outline: 0; }
+
+input,
+select,
+textarea {
+  -webkit-appearance: none;
+  border: 0;
+  font-size: 16px;
+  background: transparent;
+  color: #fff;
+  font-family: inherit;
+  background: rgba(83, 119, 122, 0.3);
+  padding: 4px 8px;
+  width: 150px; }
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: 1px solid rgba(173, 216, 230, 0.2);
+    box-shadow: 0 0 5px -1px rgba(173, 216, 230, 0.6); }

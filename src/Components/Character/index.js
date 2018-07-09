@@ -18,20 +18,7 @@ const BONUS_NAME = {
 }
 
 const Character = ({
-  data: {
-    cooldowns,
-    hp,
-    name,
-    level,
-    ap,
-    attributes,
-    combatSkills,
-    standardSkills,
-    proSkills,
-    talents,
-    equipment,
-    inventory
-  },
+  data: { cooldowns, hp, name, ap, attributes, combatSkills, standardSkills, proSkills, talents, equipment, inventory },
   onUseSkill,
   onAttack,
   onMove,
@@ -81,7 +68,7 @@ const Character = ({
   const apMax = AP(totalStats).max
   const hpMax = HP_MAX(totalStats)
   return (
-    <Card title={`${name} : level ${level.toLocaleString('fr')}`}>
+    <Card title={<h2>{name}</h2>}>
       <div className="character">
         <div className="character--hp">
           HP: {hp} / {hpMax}
@@ -97,20 +84,20 @@ const Character = ({
           <br />
           AP max: {apMax}
         </div>
-        <div className="character--title" onClick={onToggleAttributes}>
+        <h3 className="character--title" onClick={onToggleAttributes}>
           Attributes <span>{isAttributesOpen ? '⇡' : '⇣'}</span>
-        </div>
+        </h3>
         {isAttributesOpen && (
           <div className="character--attributes">
             {Object.keys(bonuses).map(bns => {
               return (
-                <div key={bns} className={`character--attributes--${bns}`}>
+                <div key={bns} className={`character--attributes--elem character--attributes--elem--${bns}`}>
                   <span>
                     {BONUS_NAME[bns]} : {totalStats[bns]} ({attributes[bns]}+{bonuses[bns]})
-                  </span>{' '}
+                  </span>
                   <Button onClick={onChangeAttr('add', bns)} size="small">
                     +
-                  </Button>{' '}
+                  </Button>
                   <Button onClick={onChangeAttr('remove', bns)} size="small">
                     -
                   </Button>
@@ -119,9 +106,9 @@ const Character = ({
             })}
           </div>
         )}
-        <div className="character--title" onClick={onToggleStandardSkills}>
+        <h3 className="character--title" onClick={onToggleStandardSkills}>
           Standard Skills <span>{isStandardSkillsOpen ? '⇡' : '⇣'}</span>
-        </div>
+        </h3>
         {isStandardSkillsOpen && (
           <div className="character--standard-skills">
             {Object.keys(standardSkillsBonuses).map(key => {
@@ -152,9 +139,9 @@ const Character = ({
             })}
           </div>
         )}
-        <div className="character--title" onClick={onToggleProSkills}>
+        <h3 className="character--title" onClick={onToggleProSkills}>
           Professional Skills <span>{isProSkillsOpen ? '⇡' : '⇣'}</span>
-        </div>
+        </h3>
         {isProSkillsOpen && (
           <div className="character--standard-skills">
             {Object.keys(proSkillsBonuses).map(key => {
@@ -185,7 +172,7 @@ const Character = ({
             })}
           </div>
         )}
-        <div className="character--title">Talents</div>
+        <h3 className="character--title">Talents</h3>
         {talents && (
           <div className="character--talents">
             {Object.keys(talents).map(key => {
@@ -198,7 +185,7 @@ const Character = ({
             })}
           </div>
         )}
-        <div className="character--title">Compétences</div>
+        <h3 className="character--title">Compétences</h3>
         {combatSkills && (
           <div className="character--skills">
             {Object.keys(combatSkills).map(key => {
@@ -244,7 +231,7 @@ const Character = ({
             })}
           </div>
         )}
-        <div className="character--title">Actions</div>
+        <h3 className="character--title">Actions</h3>
         <div className="character--action">
           {weapons.length > 0 &&
             weapons.map(weapon => {
@@ -278,7 +265,7 @@ const Character = ({
           </Button>
         </div>
       </div>
-      <div className="character--title">Inventaire</div>
+      <h3 className="character--title">Inventaire</h3>
       {inventory && (
         <div className="character--inventory">
           {Object.keys(inventory).map(key => {
@@ -293,13 +280,15 @@ const Character = ({
                     Use item ({item.apCost})
                   </Button>
                 )}
-                <Button onClick={() => onDropItem(key)}>x</Button>
+                <Button onClick={() => onDropItem(key)} size="small">
+                  x
+                </Button>
               </div>
             )
           })}
         </div>
       )}
-      <div className="character--title">Équipement</div>
+      <h3 className="character--title">Équipement</h3>
       {equipment && (
         <div className="character--equipment">
           {Object.keys(equipment).map(key => {
@@ -319,7 +308,6 @@ const Character = ({
 Character.propTypes = {
   data: PropTypes.shape({
     name: PropTypes.string.isRequired,
-    level: PropTypes.number.isRequired,
     combatSkills: PropTypes.object
   }),
   round: PropTypes.number,

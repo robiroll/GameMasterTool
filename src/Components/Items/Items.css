@@ -1,0 +1,16 @@
+.items--form {
+  display: flex;
+  border-bottom: 1px solid rgba(173, 216, 230, 0.6);
+  padding-bottom: 16px;
+  margin-bottom: 16px; }
+  .items--form--main {
+    margin-right: 16px; }
+  .items--form--equipment {
+    margin-right: 16px; }
+
+.items--fieldset {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px; }
+  .items--fieldset label {
+    width: 150px; }

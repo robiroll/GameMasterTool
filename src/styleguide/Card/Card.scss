@@ -2,18 +2,44 @@
 @import 'scss/colors.scss';
 
 .card {
-  border: 2px solid $neutral-2;
-  border-radius: $g1;
-  box-shadow: 0 0 20px 4px rgba($neutral-2, 0.4);
-  background: $neutral-4;
+  position: relative;
+  border: 1px solid $primary-1;
+  // border-radius: 2px;
+  box-shadow: 0 0 10px 2px rgba($primary-1, 0.4);
+  background: $neutral-1;
   // max-width: 600px;
 
   &--title {
-    border-bottom: 1px solid $neutral-2;
+    border-bottom: 1px solid rgba($primary-1, 0.6);
     padding: $g2;
   }
 
   &--content {
     padding: $g2;
+  }
+
+  &--corner {
+    position: absolute;
+    background: transparent;
+    border: 3px solid transparent;
+    width: $g3;
+    height: $g3;
+
+    &.top {
+      top: -2px;
+      border-top-color: rgba($white, 0.7);
+    }
+    &.bottom {
+      bottom: -2px;
+      border-bottom-color: rgba($white, 0.7);
+    }
+    &.right {
+      right: -2px;
+      border-right-color: rgba($white, 0.7);
+    }
+    &.left {
+      left: -2px;
+      border-left-color: rgba($white, 0.7);
+    }
   }
 }

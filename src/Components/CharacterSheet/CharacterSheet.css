@@ -1,0 +1,18 @@
+.character-sheet--form--title {
+  border-bottom: 1px solid #add8e6;
+  padding-bottom: 16px;
+  margin-bottom: 24px; }
+
+.character-sheet--form h3 {
+  border-bottom: 1px solid rgba(173, 216, 230, 0.8);
+  margin-bottom: 8px; }
+
+.character-sheet--form--field {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px; }
+  .character-sheet--form--field label {
+    width: 150px; }
+  .character-sheet--form--field span {
+    margin-left: 16px;
+    color: rgba(173, 216, 230, 0.8); }

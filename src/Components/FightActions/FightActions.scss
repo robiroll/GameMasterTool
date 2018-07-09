@@ -12,7 +12,7 @@
   margin-top: 20px;
 }
 
-.character {
+.fight-actions {
   &--title {
     margin: $g1 0;
     border-bottom: 1px solid rgba($primary-1, 0.6);
@@ -22,6 +22,12 @@
   &--name {
     font-size: $g5;
     background-color: red;
+  }
+
+  &--standard {
+    border-bottom: 1px solid rgba($primary-1, 0.6);
+    margin-bottom: $g2;
+    padding-bottom: $g2;
   }
 
   &--skill {

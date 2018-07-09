@@ -1,0 +1,29 @@
+@import 'scss/layout.scss';
+@import 'scss/colors.scss';
+
+.items {
+  &--form {
+    display: flex;
+    border-bottom: 1px solid rgba($primary-1, 0.6);
+    padding-bottom: $g2;
+    margin-bottom: $g2;
+
+    &--main {
+      margin-right: $g2;
+    }
+
+    &--equipment {
+      margin-right: $g2;
+    }
+  }
+
+  &--fieldset {
+    display: flex;
+    align-items: center;
+    margin-bottom: $g1;
+
+    label {
+      width: 150px;
+    }
+  }
+}

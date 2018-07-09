@@ -4,6 +4,7 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase'
 import Menu from '../Containers/Menu'
+import Spinner from '../styleguide/Spinner'
 import './style.css'
 
 class Layout extends Component {
@@ -19,11 +20,11 @@ class Layout extends Component {
   }
   render() {
     const { children, characters, skills, items } = this.props
-    if (!isLoaded(characters)) return 'loading characters...'
+    if (!isLoaded(characters)) return <Spinner />
     if (isEmpty(characters)) return 'characters list is empty'
-    if (!isLoaded(skills)) return 'loading skills...'
+    if (!isLoaded(skills)) return <Spinner />
     if (isEmpty(skills)) return 'skills list is empty'
-    if (!isLoaded(items)) return 'loading skills...'
+    if (!isLoaded(items)) return <Spinner />
     if (isEmpty(items)) return 'skills list is empty'
     return (
       <div className="layout">

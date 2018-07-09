@@ -1,0 +1,16 @@
+.item {
+  border-bottom: 1px solid rgba(173, 216, 230, 0.6);
+  margin-bottom: 16px; }
+  .item:last-child {
+    border: 0;
+    margin-bottom: 0; }
+  .item--header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px; }
+    .item--header--name {
+      margin-right: 16px; }
+    .item--header--select {
+      margin-right: 16px; }
+  .item--stats {
+    margin-bottom: 16px; }

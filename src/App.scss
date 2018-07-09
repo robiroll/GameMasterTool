@@ -134,12 +134,82 @@ a {
 
 @import './scss/colors.scss';
 @import './scss/layout.scss';
+@import './scss/fonts.scss';
+
 * {
   box-sizing: border-box;
 }
 body {
   line-height: $g3;
-  color: $neutral-1;
+  background: $neutral-1;
+  color: $white;
   font-size: $g2;
-  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-family: 'Rajdhani', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-weight: 300;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: 'Cinzel Decorative';
+  color: $primary-1;
+  text-shadow: 0 0 10px white;
+  text-transform: capitalize;
+}
+
+h1 {
+  font-size: $g5;
+  line-height: $g6;
+}
+h2 {
+  font-size: $g4;
+  line-height: $g5;
+}
+h3 {
+  font-size: $g3 - 4;
+  line-height: $g4 - 4;
+}
+h4 {
+  font-size: $g2;
+  line-height: $g3;
+}
+
+.modal--overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba($neutral-1, 0.8);
+}
+
+.modal--content {
+  position: absolute;
+  top: $g10;
+  left: $g10;
+  right: $g10;
+  bottom: $g10;
+  padding: $g3;
+  overflow: auto;
+  outline: 0;
+}
+
+input,
+select,
+textarea {
+  -webkit-appearance: none;
+  border: 0;
+  font-size: $g2;
+  background: transparent;
+  color: $white;
+  font-family: inherit;
+  background: rgba($accent-4, 0.3);
+  padding: $g1/2 $g1;
+  width: 150px;
+
+  &:focus {
+    outline: 1px solid rgba($primary-1, 0.2);
+    box-shadow: 0 0 5px -1px rgba($primary-1, 0.6);
+  }
 }

@@ -2,23 +2,23 @@
 @import 'scss/colors.scss';
 
 .card {
-  margin-top: 20px;
+  // margin-top: 20px;
 }
 
 .button {
-  margin-left: $g1;
+  // margin-left: $g1;
 }
 
 .character {
-  &--title {
-    line-height: $g4;
-    color: $neutral-2;
-    font-size: $g3;
-    font-weight: bold;
-  }
+  // &--title {
+  //   line-height: $g4;
+  //   color: $neutral-2;
+  //   font-size: $g3;
+  //   font-weight: bold;
+  // }
 
-  &--name {
-    font-size: $g5;
-    background-color: red;
-  }
+  // &--name {
+  //   font-size: $g5;
+  //   background-color: red;
+  // }
 }

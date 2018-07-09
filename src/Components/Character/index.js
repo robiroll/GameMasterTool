@@ -91,13 +91,13 @@ const Character = ({
           <div className="character--attributes">
             {Object.keys(bonuses).map(bns => {
               return (
-                <div key={bns} className={`character--attributes--${bns}`}>
+                <div key={bns} className={`character--attributes--elem character--attributes--elem--${bns}`}>
                   <span>
                     {BONUS_NAME[bns]} : {totalStats[bns]} ({attributes[bns]}+{bonuses[bns]})
-                  </span>{' '}
+                  </span>
                   <Button onClick={onChangeAttr('add', bns)} size="small">
                     +
-                  </Button>{' '}
+                  </Button>
                   <Button onClick={onChangeAttr('remove', bns)} size="small">
                     -
                   </Button>

@@ -1,0 +1,62 @@
+@import 'src/scss/layout.scss';
+@import 'src/scss/colors.scss';
+
+.skills {
+  &--assign {
+    margin-top: $g2;
+    border-top: 1px solid rgba($primary-1, 0.7);
+    padding-top: $g2;
+  }
+
+  &--create {
+    &--title {
+      border-bottom: 1px solid rgba($primary-1, 0.7);
+      margin-bottom: $g2;
+      padding-bottom: $g2;
+    }
+
+    &--field {
+      display: flex;
+      align-items: center;
+      margin-bottom: $g1;
+
+      label {
+        width: $g10 * 2;
+      }
+
+      &--additional {
+        margin-right: $g2;
+        margin-left: $g2;
+        font-size: $g3;
+      }
+    }
+
+    &--actions {
+      margin-top: $g2;
+      padding-top: $g2;
+      border-top: 1px solid rgba($primary-1, 0.7);
+
+      &--message {
+        margin-top: $g1;
+        color: rgba($neutral-5, 0.7);
+        font-size: $g2 - 2;
+        font-style: italic;
+      }
+    }
+  }
+
+  &--list {
+    &--title {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid rgba($primary-1, 0.7);
+      margin-bottom: $g2;
+      padding-bottom: $g2;
+
+      span {
+        margin-right: $g2;
+        margin-left: $g2;
+      }
+    }
+  }
+}

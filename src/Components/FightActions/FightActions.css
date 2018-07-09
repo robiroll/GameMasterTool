@@ -1,4 +1,4 @@
-.character--standard-skills--item {
+.fight-actions--standard-skills--item {
   display: inline-flex;
   justify-content: space-between;
   width: 250px;
@@ -7,17 +7,22 @@
 .card {
   margin-top: 20px; }
 
-.character--title {
+.fight-actions--title {
   margin: 8px 0;
   border-bottom: 1px solid rgba(173, 216, 230, 0.6); }
 
-.character--name {
+.fight-actions--name {
   font-size: 40px;
   background-color: red; }
 
-.character--skill {
+.fight-actions--standard {
+  border-bottom: 1px solid rgba(173, 216, 230, 0.6);
+  margin-bottom: 16px;
+  padding-bottom: 16px; }
+
+.fight-actions--skill {
   position: relative; }
-  .character--skill--icon {
+  .fight-actions--skill--icon {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -32,7 +37,7 @@
     width: 16px;
     height: 16px;
     background: rgba(173, 216, 230, 0.4); }
-  .character--skill--infos {
+  .fight-actions--skill--infos {
     display: none;
     position: absolute;
     top: 0;
@@ -44,16 +49,16 @@
     padding: 8px 16px;
     box-shadow: 0 0 20px 4px rgba(0, 29, 41, 0.2);
     font-size: 14px; }
-  .character--skill:hover .character--skill--infos {
+  .fight-actions--skill:hover .character--skill--infos {
     display: block; }
 
-.character--attributes--elem span {
+.fight-actions--attributes--elem span {
   display: inline-block;
   width: 160px;
   margin-right: 40px; }
 
-.character--skills {
+.fight-actions--skills {
   display: flex; }
-  .character--skills--action {
+  .fight-actions--skills--action {
     display: flex;
     flex-direction: column; }

@@ -2,12 +2,14 @@ import React from 'react'
 import PropTypes from 'prop-types'
 // import Characters from '../../Containers/Characters'
 import Character from '../../Containers/Character'
+import FightActions from '../../Containers/FightActions'
 import Order from '../../Containers/Order'
 import Selection from '../../Components/Selection'
 
 import Modal from 'react-modal'
 import Button from '../../styleguide/Button'
 import Card from '../../styleguide/Card'
+import Spinner from '../../styleguide/Spinner'
 import './Dashboard.css'
 
 const Dashboard = ({
@@ -30,6 +32,7 @@ const Dashboard = ({
   const isStartDisabled = fightStatus !== null
   const isEndTurnDisabled = orderPlaying.length > 0 || fightStatus !== 'in-progress'
   const isEndFightDisabled = fightStatus !== 'in-progress'
+  // return <Spinner />
   return (
     <div className="dashboard">
       <Card title={<h3 className="dashboard--round">{round < 1 ? 'Prepare to fight!' : `Round ${round}`}</h3>}>
@@ -57,6 +60,7 @@ const Dashboard = ({
           order={order}
         />
       </Modal>
+      {characterPlaying && <FightActions idCharacter={characterPlaying} onUseSkill={onUseSkill} />}
       <Card title={<h3 className="dashboard--fight--title">Fight actions</h3>}>
         <div className="dashboard--fight">
           <div className="dashboard--fight--actions">

@@ -186,7 +186,8 @@ h4 {
   outline: 0; }
 
 input,
-select {
+select,
+textarea {
   -webkit-appearance: none;
   border: 0;
   font-size: 16px;
@@ -197,6 +198,7 @@ select {
   padding: 4px 8px;
   width: 150px; }
   input:focus,
-  select:focus {
+  select:focus,
+  textarea:focus {
     outline: 1px solid rgba(173, 216, 230, 0.2);
     box-shadow: 0 0 5px -1px rgba(173, 216, 230, 0.6); }

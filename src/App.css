@@ -202,3 +202,23 @@ textarea {
   textarea:focus {
     outline: 1px solid rgba(173, 216, 230, 0.2);
     box-shadow: 0 0 5px -1px rgba(173, 216, 230, 0.6); }
+
+input[type='checkbox'] {
+  -webkit-appearance: initial;
+  width: 24px;
+  height: 24px;
+  border-radius: 16px; }
+  input[type='checkbox']:focus {
+    outline: 0; }
+  input[type='checkbox']:checked {
+    position: relative; }
+    input[type='checkbox']:checked:after {
+      content: '';
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      bottom: 8px;
+      left: 8px;
+      border-radius: 8px;
+      background: rgba(173, 216, 230, 0.6);
+      box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.6); }

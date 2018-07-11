@@ -30,13 +30,9 @@ class Skills extends Component {
       isModifyOpen: false,
       assignedCharacter: '',
       assignedSkill: '',
-      assignedValue: '10'
+      assignedValue: '10',
+      isSymbiosis: false
     }
-  }
-
-  createSkill = skill => {
-    const { firebase } = this.props
-    firebase.push('skills', skill)
   }
 
   handleChangeField = e => {
@@ -47,13 +43,15 @@ class Skills extends Component {
     this.setState({ fields })
   }
 
+  handleToggleSymbioses = () => this.setState({ isSymbiosis: !this.state.isSymbiosis })
+
   handleClearFields = () => {
     this.setState({ fields: { ...initialStateFields } })
   }
 
   handleCreate = () => {
     const { firebase } = this.props
-    const skill = { ...this.state.fields }
+    const skill = { ...this.state.fields, type: this.state.isSymbiosis ? 'symbiosis' : 'default' }
     delete skill.name
     firebase.set(`skills/${this.state.fields.name}`, skill)
   }
@@ -86,7 +84,7 @@ class Skills extends Component {
 
   render() {
     const { skills, characters } = this.props
-    const { fields, fields: { name }, assignedCharacter, assignedSkill, assignedValue } = this.state
+    const { fields, fields: { name }, assignedCharacter, assignedSkill, assignedValue, isSymbiosis } = this.state
     let disabled = false
     skills &&
       Object.keys(skills).map(skill => {
@@ -110,6 +108,8 @@ class Skills extends Component {
         assignedCharacter={assignedCharacter}
         assignedSkill={assignedSkill}
         assignedValue={assignedValue}
+        isSymbiosis={isSymbiosis}
+        onToggleSymbiosis={this.handleToggleSymbioses}
       />
     )
   }

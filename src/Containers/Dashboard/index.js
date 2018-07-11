@@ -71,7 +71,7 @@ class Dashboard extends Component {
     order.map(char => {
       const character = characters[char]
       const ap = AP(STATS(character)).start
-      firebase.update(`characters/${char}`, { ap })
+      firebase.update(`characters/${char}`, { ap, sp: 0 })
     })
   }
 

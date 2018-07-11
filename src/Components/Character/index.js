@@ -14,14 +14,28 @@ const BONUS_NAME = {
   con: 'Constitution',
   siz: 'Taille',
   cha: 'Charisme',
-  pow: 'Power'
+  pow: 'Volonté'
 }
 
 const Character = ({
-  data: { cooldowns, hp, name, ap, attributes, combatSkills, standardSkills, proSkills, talents, equipment, inventory },
+  data: {
+    cooldowns,
+    hp,
+    name,
+    ap,
+    sp,
+    attributes,
+    combatSkills,
+    standardSkills,
+    proSkills,
+    talents,
+    equipment,
+    inventory
+  },
   onUseSkill,
   onAttack,
   onMove,
+  onUpSp,
   onEndTurn,
   onDelayTurn,
   onUpdateHp,
@@ -76,6 +90,8 @@ const Character = ({
         <input type="number" value={hpToUpdate} onChange={onChangeHp} />
         <Button onClick={() => onUpdateHp(20)}>update hp</Button>
         <div className="character--ap">
+          SP: {sp} / 5
+          <br />
           AP: {ap} / {apMax}
           <br />
           AP start: {apStart}
@@ -192,12 +208,14 @@ const Character = ({
               const skill = skills[key]
               const success = totalStats[skill.attr1] + totalStats[skill.attr2] + combatSkills[key]
               let successString = `${skill.attr1} + ${skill.attr2} + ${combatSkills[key]}`
+              const points = skill.type === 'symbiosis' ? sp : ap
               return (
                 <Fragment key={key}>
                   <div className="character--skills--action">
                     <Button
                       className="character--skills--item"
-                      disabled={!(ap - skill.cost >= 0) || (cooldowns && cooldowns[key] > 0)}
+                      disabled={!(points - skill.cost >= 0) || (cooldowns && cooldowns[key] > 0)}
+                      variant={`${skill.type === 'symbiosis' && 'accent-1'}`}
                       onClick={() => {
                         onUseSkill(key, skill)
                       }}
@@ -248,14 +266,11 @@ const Character = ({
                 </Button>
               )
             })}
-          <Button
-            className="character--action--item"
-            disabled={!(ap > 0)}
-            onClick={() => {
-              onMove()
-            }}
-          >
+          <Button className="character--action--item" disabled={!(ap > 0)} onClick={onMove}>
             Move + {movement} (1)
+          </Button>
+          <Button className="character--action--item" disabled={!(ap >= 3) || sp >= 5} onClick={onUpSp}>
+            SP + 1 (3)
           </Button>
           <Button className="character--action--item" onClick={onDelayTurn}>
             Delay turn
@@ -316,6 +331,7 @@ Character.propTypes = {
   onUseSkill: PropTypes.func,
   onAttack: PropTypes.func,
   onMove: PropTypes.func,
+  onUpSp: PropTypes.func,
   onEndTurn: PropTypes.func,
   onDelayTurn: PropTypes.func,
   onUpdateHp: PropTypes.func,

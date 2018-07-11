@@ -56,10 +56,10 @@ class Character extends Component {
     const cooldowns = Object.assign({}, character.cooldowns, {
       [name]: skill.cooldown
     })
-    this.updateCharacter({
-      ap: character.ap - skill.cost,
-      cooldowns
-    })
+    const changes = { cooldowns }
+    if (skill.type === 'symbiosis') Object.assign(changes, { sp: character.sp - skill.cost })
+    else Object.assign(changes, { ap: character.ap - skill.cost })
+    this.updateCharacter(changes)
   }
   handleUseAction = action => this.props.useAction(action)
   handleAttack = weapon => {
@@ -71,6 +71,11 @@ class Character extends Component {
     const { characters, idCharacter } = this.props
     const character = characters[idCharacter]
     this.updateCharacter({ ap: character.ap - 1 })
+  }
+  handleUpSp = () => {
+    const { characters, idCharacter } = this.props
+    const character = characters[idCharacter]
+    this.updateCharacter({ ap: character.ap - 3, sp: character.sp + 1 })
   }
   handleEndTurn = () => this.props.endTurn()
   handleDelayTurn = () => this.props.delayTurn()
@@ -172,6 +177,7 @@ class Character extends Component {
         onUseAction={this.handleUseAction}
         onAttack={this.handleAttack}
         onMove={this.handleMove}
+        onUpSp={this.handleUpSp}
         onEndTurn={this.handleEndTurn}
         onDelayTurn={this.handleDelayTurn}
         onChangeHp={this.handleChangeHp}

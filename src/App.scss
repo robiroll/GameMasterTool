@@ -213,3 +213,30 @@ textarea {
     box-shadow: 0 0 5px -1px rgba($primary-1, 0.6);
   }
 }
+
+input[type='checkbox'] {
+  -webkit-appearance: initial;
+  width: $g3;
+  height: $g3;
+  border-radius: $g2;
+
+  &:focus {
+    outline: 0;
+  }
+
+  &:checked {
+    position: relative;
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: $g1;
+      right: $g1;
+      bottom: $g1;
+      left: $g1;
+      border-radius: $g1;
+      background: rgba($primary-1, 0.6);
+      box-shadow: 0 0 10px 2px rgba($white, 0.6);
+    }
+  }
+}

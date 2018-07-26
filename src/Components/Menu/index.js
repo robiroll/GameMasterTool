@@ -6,11 +6,12 @@ import './style.css'
 const Menu = ({ characters, active }) => {
   let heroes = {}
   let foes = {}
-  Object.keys(characters).map(idCharacter => {
-    const char = characters[idCharacter]
-    if (char.kind === 'hero') Object.assign(heroes, { [idCharacter]: char })
-    if (char.kind === 'foe') Object.assign(foes, { [idCharacter]: char })
-  })
+  characters &&
+    Object.keys(characters).map(idCharacter => {
+      const char = characters[idCharacter]
+      if (char.kind === 'hero') Object.assign(heroes, { [idCharacter]: char })
+      if (char.kind === 'foe') Object.assign(foes, { [idCharacter]: char })
+    })
   return (
     <div className="menu">
       <header className="menu--header">
@@ -40,38 +41,40 @@ const Menu = ({ characters, active }) => {
       </ul>
       <ul className="menu--links">
         <li className="menu--category">Heroes</li>
-        {Object.keys(heroes).map(char => {
-          return (
-            <li key={char}>
-              <Link to={`/characters/${char}`}>
-                <div className={`menu--link${active === char ? ' menu--link--active' : ''}`}>
-                  {characters[char].name}
-                </div>
-              </Link>
-            </li>
-          )
-        })}
+        {heroes &&
+          Object.keys(heroes).map(char => {
+            return (
+              <li key={char}>
+                <Link to={`/characters/${char}`}>
+                  <div className={`menu--link${active === char ? ' menu--link--active' : ''}`}>
+                    {characters[char].name}
+                  </div>
+                </Link>
+              </li>
+            )
+          })}
       </ul>
       <ul className="menu--links">
         <li className="menu--category">Foes</li>
-        {Object.keys(foes).map(char => {
-          return (
-            <li key={char}>
-              <Link to={`/characters/${char}`}>
-                <div className={`menu--link${active === char ? ' menu--link--active' : ''}`}>
-                  {characters[char].name}
-                </div>
-              </Link>
-            </li>
-          )
-        })}
+        {foes &&
+          Object.keys(foes).map(char => {
+            return (
+              <li key={char}>
+                <Link to={`/characters/${char}`}>
+                  <div className={`menu--link${active === char ? ' menu--link--active' : ''}`}>
+                    {characters[char].name}
+                  </div>
+                </Link>
+              </li>
+            )
+          })}
       </ul>
     </div>
   )
 }
 
 Menu.propTypes = {
-  characters: PropTypes.object.isRequired,
+  characters: PropTypes.object,
   active: PropTypes.string
 }
 

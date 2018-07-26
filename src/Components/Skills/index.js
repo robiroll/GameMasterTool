@@ -143,48 +143,61 @@ export default class Skills extends Component {
       onChange
     }
     const { isOpen } = this.state
+
     return (
       <div className="skills">
         <Card title={<h3>Assign Skill</h3>}>
-          <span>Assign </span>
-          <select name="assignedSkill" id="assignedSkill" onChange={onChangeAssignee} value={assignedSkill}>
-            <option value="" disabled>
-              SKILL
-            </option>
-            <option value="---" disabled>
-              --------------
-            </option>
-            {Object.keys(skills).map(skill => {
-              return (
-                <option key={skill} value={skill}>
-                  {skill}
+          {characters ? (
+            <React.Fragment>
+              <span>Assign </span>
+              <select name="assignedSkill" id="assignedSkill" onChange={onChangeAssignee} value={assignedSkill}>
+                <option value="" disabled>
+                  SKILL
                 </option>
-              )
-            })}
-          </select>
-          <span> at </span>
-          <input type="number" id="assignedValue" value={assignedValue} onChange={onChangeAssignee} />
-          <span> to </span>
-          <select name="assignedCharacter" id="assignedCharacter" onChange={onChangeAssignee} value={assignedCharacter}>
-            <option value="" disabled>
-              CHARACTER
-            </option>
-            <option value="---" disabled>
-              --------------
-            </option>
-            {Object.keys(characters).map(charId => {
-              return (
-                <option key={charId} value={charId}>
-                  {characters[charId].name}
+                <option value="---" disabled>
+                  --------------
                 </option>
-              )
-            })}
-          </select>
-          <div className="skills--assign">
-            <Button onClick={onAssign} disabled={assignedSkill === '' || assignedCharacter === ''}>
-              Assigner
-            </Button>
-          </div>
+                {skills &&
+                  Object.keys(skills).map(skill => {
+                    return (
+                      <option key={skill} value={skill}>
+                        {skill}
+                      </option>
+                    )
+                  })}
+              </select>
+              <span> at </span>
+              <input type="number" id="assignedValue" value={assignedValue} onChange={onChangeAssignee} />
+              <span> to </span>
+              <select
+                name="assignedCharacter"
+                id="assignedCharacter"
+                onChange={onChangeAssignee}
+                value={assignedCharacter}
+              >
+                <option value="" disabled>
+                  CHARACTER
+                </option>
+                <option value="---" disabled>
+                  --------------
+                </option>
+                {Object.keys(characters).map(charId => {
+                  return (
+                    <option key={charId} value={charId}>
+                      {characters[charId].name}
+                    </option>
+                  )
+                })}
+              </select>
+              <div className="skills--assign">
+                <Button onClick={onAssign} disabled={assignedSkill === '' || assignedCharacter === ''}>
+                  Assigner
+                </Button>
+              </div>
+            </React.Fragment>
+          ) : (
+            <h3>characters list empty</h3>
+          )}
         </Card>
 
         <Card title={<h3>Create Skill</h3>}>
@@ -199,39 +212,43 @@ export default class Skills extends Component {
         </Card>
 
         <Card title={<h3>Skills List</h3>}>
-          {Object.keys(skills).map(skill => {
-            return (
-              <div key={skill} className="skills--list">
-                <div className="skills--list--title">
-                  <h4 onClick={this.handleToggleDetails}>
-                    {skill}
-                    <span>{isOpen ? '⇡' : '⇣'}</span>
-                  </h4>
-                  <Button onClick={() => onOpenModify(skill)}>modifier</Button>
-                </div>
-                {isOpen && (
-                  <div>
-                    {Object.keys(skills[skill]).map(attr => {
-                      return (
-                        <div key={attr}>
-                          {attr} : {skills[skill][attr]}
-                        </div>
-                      )
-                    })}
+          {skills ? (
+            Object.keys(skills).map(skill => {
+              return (
+                <div key={skill} className="skills--list">
+                  <div className="skills--list--title">
+                    <h4 onClick={this.handleToggleDetails}>
+                      {skill}
+                      <span>{isOpen ? '⇡' : '⇣'}</span>
+                    </h4>
+                    <Button onClick={() => onOpenModify(skill)}>modifier</Button>
                   </div>
-                )}
-                <Modal
-                  isOpen={isModifyOpen}
-                  className="card modal--content"
-                  overlayClassName="modal--overlay"
-                  ariaHideApp={false}
-                  onRequestClose={onCloseModify}
-                >
-                  <SkillForm {...skillFormProps} onSubmit={onUpdate} buttonLabel="update skill" isNameHidden />
-                </Modal>
-              </div>
-            )
-          })}
+                  {isOpen && (
+                    <div>
+                      {Object.keys(skills[skill]).map(attr => {
+                        return (
+                          <div key={attr}>
+                            {attr} : {skills[skill][attr]}
+                          </div>
+                        )
+                      })}
+                    </div>
+                  )}
+                  <Modal
+                    isOpen={isModifyOpen}
+                    className="card modal--content"
+                    overlayClassName="modal--overlay"
+                    ariaHideApp={false}
+                    onRequestClose={onCloseModify}
+                  >
+                    <SkillForm {...skillFormProps} onSubmit={onUpdate} buttonLabel="update skill" isNameHidden />
+                  </Modal>
+                </div>
+              )
+            })
+          ) : (
+            <h3>No skill yet</h3>
+          )}
         </Card>
       </div>
     )

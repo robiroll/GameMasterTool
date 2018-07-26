@@ -22,15 +22,16 @@ const Characters = ({ data, character, isOpen, onAddCharacter, onOpen, onClose, 
           character={character}
         />
       </Modal>
-      {Object.keys(data).map(char => {
-        return <Character key={char} idCharacter={char} characters={data} />
-      })}
+      {data &&
+        Object.keys(data).map(char => {
+          return <Character key={char} idCharacter={char} characters={data} />
+        })}
     </div>
   )
 }
 
 Characters.propTypes = {
-  data: PropTypes.object.isRequired,
+  data: PropTypes.object,
   character: PropTypes.object,
   isOpen: PropTypes.bool,
   onAddCharacter: PropTypes.func,

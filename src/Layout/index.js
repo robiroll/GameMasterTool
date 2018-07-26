@@ -21,11 +21,8 @@ class Layout extends Component {
   render() {
     const { children, characters, skills, items } = this.props
     if (!isLoaded(characters)) return <Spinner />
-    if (isEmpty(characters)) return 'characters list is empty'
     if (!isLoaded(skills)) return <Spinner />
-    if (isEmpty(skills)) return 'skills list is empty'
     if (!isLoaded(items)) return <Spinner />
-    if (isEmpty(items)) return 'skills list is empty'
     return (
       <div className="layout">
         <Menu active={this.context.router.route.location.pathname.substr(1)} />

@@ -88,9 +88,10 @@ class Skills extends Component {
     const { skills, characters } = this.props
     const { fields, fields: { name }, assignedCharacter, assignedSkill, assignedValue } = this.state
     let disabled = false
-    Object.keys(skills).map(skill => {
-      if (skill === name) disabled = true
-    })
+    skills &&
+      Object.keys(skills).map(skill => {
+        if (skill === name) disabled = true
+      })
     return (
       <SkillsComponent
         skills={skills}

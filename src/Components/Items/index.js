@@ -157,9 +157,13 @@ const Items = ({ items, onCreate, onChangeField, onChangeBonus, fields, bonuses 
       </Card>
       <Card title={<h3>Items list</h3>}>
         <div className="equipment--title">
-          {Object.keys(items).map(id => {
-            return <Item key={id} item={items[id]} />
-          })}
+          {items ? (
+            Object.keys(items).map(id => {
+              return <Item key={id} item={items[id]} />
+            })
+          ) : (
+            <h3>No item yet</h3>
+          )}
         </div>
       </Card>
     </div>

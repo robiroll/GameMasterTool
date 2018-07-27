@@ -21,48 +21,56 @@ export default class Item extends PureComponent {
           <h4 className="item--header--name" onClick={onToggle}>
             {item.name} <span>{isOpen ? '⇡' : '⇣'}</span>
           </h4>
-          <select
-            className="item--header--select"
-            name="assignedCharacter"
-            id="assignedCharacter"
-            onChange={onChangeAssignee}
-            value={assignedCharacter}
-          >
-            <option value="" disabled>
-              CHARACTER
-            </option>
-            <option value="---" disabled>
-              --------------
-            </option>
-            {Object.keys(characters).map(charId => {
-              return (
-                <option key={charId} value={charId}>
-                  {characters[charId].name}
+          {characters ? (
+            <React.Fragment>
+              <select
+                className="item--header--select"
+                name="assignedCharacter"
+                id="assignedCharacter"
+                onChange={onChangeAssignee}
+                value={assignedCharacter}
+              >
+                <option value="" disabled>
+                  CHARACTER
                 </option>
-              )
-            })}
-          </select>
-          <Button onClick={onAssign}>Assign</Button>
+                <option value="---" disabled>
+                  --------------
+                </option>
+                {characters &&
+                  Object.keys(characters).map(charId => {
+                    return (
+                      <option key={charId} value={charId}>
+                        {characters[charId].name}
+                      </option>
+                    )
+                  })}
+              </select>
+              <Button onClick={onAssign}>Assign</Button>
+            </React.Fragment>
+          ) : (
+            <h4>can't assign: characters list empty</h4>
+          )}
         </div>
         {isOpen && (
           <ul className="item--stats">
-            {Object.keys(item).map(key => {
-              const value = item[key]
-              return (
-                <li key={key}>
-                  {key} :{' '}
-                  {typeof value !== 'object'
-                    ? value
-                    : Object.keys(value).map(val => {
-                        return (
-                          <div key={val}>
-                            {val}: {value[val]}
-                          </div>
-                        )
-                      })}
-                </li>
-              )
-            })}
+            {item &&
+              Object.keys(item).map(key => {
+                const value = item[key]
+                return (
+                  <li key={key}>
+                    {key} :{' '}
+                    {typeof value !== 'object'
+                      ? value
+                      : Object.keys(value).map(val => {
+                          return (
+                            <div key={val}>
+                              {val}: {value[val]}
+                            </div>
+                          )
+                        })}
+                  </li>
+                )
+              })}
           </ul>
         )}
       </div>

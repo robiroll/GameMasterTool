@@ -41,6 +41,7 @@ class Items extends Component {
     }
   }
   handleCreate = () => {
+    // TODO Handle case where item name is empty maybe
     const { firebase } = this.props
     const { fields, bonuses } = this.state
     const item = { ...fields }

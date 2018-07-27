@@ -33,6 +33,10 @@ const Dashboard = ({
   const isEndTurnDisabled = orderPlaying.length > 0 || fightStatus !== 'in-progress'
   const isEndFightDisabled = fightStatus !== 'in-progress'
   // return <Spinner />
+
+  if (!characters)
+    return <h3>character list empty</h3>
+
   return (
     <div className="dashboard">
       <Card title={<h3 className="dashboard--round">{round < 1 ? 'Prepare to fight!' : `Round ${round}`}</h3>}>

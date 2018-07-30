@@ -75,7 +75,7 @@ class Character extends Component {
   handleUpSp = () => {
     const { characters, idCharacter } = this.props
     const character = characters[idCharacter]
-    this.updateCharacter({ ap: character.ap - 3, sp: character.sp + 1 })
+    this.updateCharacter({ ap: character.ap - (character.sp + 2), sp: character.sp + 1 })
   }
   handleEndTurn = () => this.props.endTurn()
   handleDelayTurn = () => this.props.delayTurn()

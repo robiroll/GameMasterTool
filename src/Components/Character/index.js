@@ -270,7 +270,7 @@ const Character = ({
             Move + {movement} (1)
           </Button>
           <Button className="character--action--item" disabled={!(ap >= 3) || sp >= 5} onClick={onUpSp}>
-            SP + 1 (3)
+            SP + 1 ({sp + 2})
           </Button>
           <Button className="character--action--item" onClick={onDelayTurn}>
             Delay turn

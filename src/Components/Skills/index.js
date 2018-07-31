@@ -5,11 +5,27 @@ import Button from '../../styleguide/Button'
 import Card from '../../styleguide/Card'
 import './Skills.css'
 
-const SkillForm = ({ fields, onChange, onClear, onSubmit, disabled, disabledMessage, buttonLabel, isNameHidden }) => {
+const SkillForm = ({
+  fields,
+  onChange,
+  onClear,
+  onSubmit,
+  disabled,
+  disabledMessage,
+  buttonLabel,
+  isNameHidden,
+  isSymbiosis,
+  onToggleSymbiosis
+}) => {
   const { name, cooldown, cost, distance, range, description, attr1, attr2, damage } = fields
 
   return (
     <div className="skills--create">
+      <div className="skills--create--field">
+        <label htmlFor="symbiosis">Symbiosis Skill</label>
+        <input type="checkbox" id="symbiosis" onChange={onToggleSymbiosis} value={isSymbiosis} />
+      </div>
+
       {isNameHidden ? (
         <div className="skills--create--title">
           <h3>{name}</h3>
@@ -92,7 +108,9 @@ SkillForm.propTypes = {
   disabled: PropTypes.bool,
   isNameHidden: PropTypes.bool,
   disabledMessage: PropTypes.string,
-  buttonLabel: PropTypes.string
+  buttonLabel: PropTypes.string,
+  isSymbiosis: PropTypes.bool,
+  onToggleSymbiosis: PropTypes.func
 }
 
 export default class Skills extends Component {
@@ -113,7 +131,9 @@ export default class Skills extends Component {
     assignedCharacter: PropTypes.string,
     assignedSkill: PropTypes.string,
     assignedValue: PropTypes.string,
-    onAssign: PropTypes.func
+    onAssign: PropTypes.func,
+    isSymbiosis: PropTypes.bool,
+    onToggleSymbiosis: PropTypes.func
   }
   state = {
     isOpen: false
@@ -136,11 +156,15 @@ export default class Skills extends Component {
       assignedCharacter,
       assignedSkill,
       assignedValue,
-      onAssign
+      onAssign,
+      isSymbiosis,
+      onToggleSymbiosis
     } = this.props
     const skillFormProps = {
       fields,
-      onChange
+      onChange,
+      isSymbiosis,
+      onToggleSymbiosis
     }
     const { isOpen } = this.state
 

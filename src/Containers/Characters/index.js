@@ -26,6 +26,7 @@ class Characters extends Component {
     const hpBase = (str + con * 2 + siz * 3) * 2
     const startPoints = {
       ap: 0,
+      sp: 0,
       hp: hpBase + (siz + con) * 2
     }
     const char = Object.assign({}, character, { attributes, standardSkills, proSkills }, startPoints)

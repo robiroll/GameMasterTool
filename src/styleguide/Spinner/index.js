@@ -2,18 +2,9 @@ import React from 'react'
 import './Spinner.css'
 
 const Spinner = () => (
-  <div className="spinner--container">
-    <div className="spinner">
-      <div className="part">
-        <div className="part">
-          <div className="part">
-            <div className="part">
-              <div className="part" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div className="spinner">
+    <div className="spinner--outer spinner--circle spinner--large" />
+    <div className="spinner--outer spinner--circle spinner--small" />
   </div>
 )
 

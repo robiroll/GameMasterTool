@@ -1,0 +1,6 @@
+export { default as armor } from './chest-armor.svg'
+export { default as damage } from './light-sabers.svg'
+export { default as dice } from './rolling-dices.svg'
+export { default as life } from './techno-heart.svg'
+export { default as magic } from './aura.svg'
+export { default as target } from './crosshair.svg'

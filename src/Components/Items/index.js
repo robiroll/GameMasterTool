@@ -18,7 +18,8 @@ const Items = ({ items, onCreate, onChangeField, onChangeBonus, fields, bonuses 
     armor,
     magicArmor,
     weaponHands,
-    damage
+    damage,
+    damageType
   } = fields
   const { str, siz, con, dex, int, pow, cha } = bonuses
   return (
@@ -84,17 +85,24 @@ const Items = ({ items, onCreate, onChangeField, onChangeBonus, fields, bonuses 
                 </select>
               </div>
               {slot === 'weapon' && (
-                <div className="items--fieldset">
-                  <label htmlFor="weaponHands">Weapon type</label>
-                  <select name="weaponHands" id="weaponHands" onChange={onChangeField} value={weaponHands}>
-                    <option value="1handed">1H weapon</option>
-                    <option value="2handed">2H weapon</option>
-                  </select>
-                </div>
-              )}
-
-              {slot === 'weapon' && (
                 <Fragment>
+                  <div className="items--fieldset">
+                    <label htmlFor="weaponHands">Weapon type</label>
+                    <select name="weaponHands" id="weaponHands" onChange={onChangeField} value={weaponHands}>
+                      <option value="1handed">1H weapon</option>
+                      <option value="2handed">2H weapon</option>
+                    </select>
+                  </div>
+
+                  <div className="items--fieldset">
+                    <label htmlFor="damageType">Damage Type</label>
+                    <select name="damageType" id="damageType" onChange={onChangeField} value={damageType}>
+                      <option value="str">Strength</option>
+                      <option value="dex">Dexterity</option>
+                      <option value="pow">Power</option>
+                    </select>
+                  </div>
+
                   <div className="items--fieldset">
                     <label htmlFor="damage">Damage</label>
                     <input type="number" id="damage" onChange={onChangeField} value={damage} />

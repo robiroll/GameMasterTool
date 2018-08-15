@@ -60,7 +60,7 @@ class FightActions extends Component {
     const character = characters[idCharacter]
     return (
       <FightActionsComponent
-        data={character}
+        character={character}
         skills={skills}
         onUseSkill={this.handleUseSkill}
         onAttack={this.handleAttack}

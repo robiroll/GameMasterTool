@@ -1,25 +1,55 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Button from '../../styleguide/Button'
+import Icon from '../../styleguide/Icon'
 import { STATS, HP_MAX } from '../../lib'
 import './Order.css'
 
 const Order = ({ order, characters, status, removeCharacter, onChangeHp }) => (
-  <div className="order">
+  <div className={`order order--${status}`}>
     {order.map(idCharacter => {
       const character = characters[idCharacter]
+      const stats = STATS(character)
+      const { con, pow } = stats
+      let armor = con
+      let magicArmor = pow
+      Object.values(character.equipment).forEach(eq => {
+        armor += eq.armor || 0
+        magicArmor += eq.armor || 0
+      })
       return (
-        <div key={idCharacter} className={`order--char order--char--${status}`}>
+        <div key={idCharacter} className="order--char">
           <h4 className="order--char--name">{character.name}</h4>
           {status === 'all' && (
-            <div className="order--char--all">
-              <input
-                className="order--char--input"
-                type="number"
-                defaultValue={character.hp}
-                onChange={onChangeHp(idCharacter)}
-              />{' '}
-              / {HP_MAX(STATS(character))}
+            <div className="order--char--input">
+              <div className="order--char--def">
+                <div className="order--char--def--item">
+                  <div className="order--char--def--item--icon">
+                    <Icon name="armor" />
+                  </div>
+                  <span>{armor}</span>
+                </div>
+                <div className="order--char--def--item">
+                  <div className="order--char--def--item--icon">
+                    <Icon name="magic" />
+                  </div>
+                  <span>{magicArmor}</span>
+                </div>
+              </div>
+              <div className="order--char--life">
+                <div className="order--char--life--current">
+                  <input
+                    className="order--char--life--current--input"
+                    type="number"
+                    defaultValue={character.hp}
+                    onChange={onChangeHp(idCharacter)}
+                  />
+                  <div className="order--char--life--current--icon">
+                    <Icon name="life" />
+                  </div>
+                </div>
+                <div className="order--char--life--max">/ {HP_MAX(stats)}</div>
+              </div>
               <div className="order--char--button">
                 <Button onClick={() => removeCharacter(idCharacter)} size="small" variant="accent-1">
                   X

@@ -1,40 +1,18 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
+import Difficulty from '../Difficulty'
 import Card from '../../styleguide/Card'
 import Button from '../../styleguide/Button'
+import Icon from '../../styleguide/Icon'
+import { STATS } from '../../lib'
 import './FightActions.css'
 
-const FightActions = ({
-  data: { cooldowns, ap, sp, attributes, combatSkills, equipment },
-  onUseSkill,
-  onAttack,
-  onMove,
-  onUpSp,
-  onEndTurn,
-  onDelayTurn,
-  skills
-}) => {
+const FightActions = ({ character, onUseSkill, onAttack, onMove, onUpSp, onEndTurn, onDelayTurn, skills }) => {
+  const { cooldowns, ap, sp, combatSkills, equipment } = character
+  const stats = STATS(character)
   let weapons = []
   if (equipment && equipment.weapon1) weapons.push(equipment.weapon1)
   if (equipment && equipment.weapon2) weapons.push(equipment.weapon2)
-  let bonuses = {
-    str: 0,
-    siz: 0,
-    con: 0,
-    dex: 0,
-    int: 0,
-    pow: 0,
-    cha: 0
-  }
-  if (equipment)
-    Object.keys(equipment).map(key => {
-      const eq = equipment[key]
-      if (eq.bonus) Object.keys(eq.bonus).map(bns => (bonuses[bns] += eq.bonus[bns]))
-    })
-  let totalStats = {}
-  Object.keys(attributes).map(attr => (totalStats[attr] = bonuses[attr] + attributes[attr]))
-  const { str, dex, siz } = attributes
-  const movement = Math.ceil((str + dex - siz) / 5 + 3)
   return (
     <Card title={<h3>Actions</h3>}>
       <div className="fight-actions">
@@ -43,17 +21,32 @@ const FightActions = ({
         <div className="fight-actions--standard">
           {weapons.length > 0 &&
             weapons.map(weapon => {
+              const hitPercent = 50 + stats[weapon.damageType] * 2
               return (
-                <Button
-                  key={weapon.name}
-                  className="fight-actions--standard--item"
-                  disabled={!(ap - weapon.size >= 0)}
-                  onClick={() => {
-                    onAttack(weapon)
-                  }}
-                >
-                  Attack + {weapon.damage} ({weapon.size})
-                </Button>
+                <div key={weapon.name} className="fight-actions--standard--item">
+                  <Button
+                    disabled={!(ap - weapon.size >= 0)}
+                    onClick={() => {
+                      onAttack(weapon)
+                    }}
+                  >
+                    <span className="fight-actions--standard--item--button">
+                      <span>Attack</span>
+                      <span>
+                        <Icon name="target" />
+                        {hitPercent}%
+                      </span>
+                      <span>
+                        <Icon name="damage" />
+                        {stats[weapon.damageType] + weapon.damage} + <Icon name="dice" />
+                      </span>
+                      <span>({weapon.size})</span>
+                    </span>
+                  </Button>
+                  <div className="fight-actions--standard--item--button--difficulty">
+                    <Difficulty title="attack" total={hitPercent} />
+                  </div>
+                </div>
               )
             })}
           <Button
@@ -63,7 +56,7 @@ const FightActions = ({
               onMove()
             }}
           >
-            Move + {movement} (1)
+            Move (1)
           </Button>
           <Button className="character--action--item" disabled={!(ap >= 3) || sp >= 5} onClick={onUpSp}>
             SP + 1 ({sp + 2})
@@ -80,6 +73,7 @@ const FightActions = ({
             {Object.keys(combatSkills).map(key => {
               const skill = skills[key]
               const points = skill.type === 'symbiosis' ? sp : ap
+              const hitPercent = character.combatSkills[key] + stats[skill.attr1] + stats[skill.attr2]
               return (
                 <Fragment key={key}>
                   <div className="fight-actions--skills--action">
@@ -92,8 +86,24 @@ const FightActions = ({
                       }}
                       progress={cooldowns[key] / skill.cooldown * 100}
                     >
-                      {key} ({skill.cost})
+                      <span className="fight-actions--standard--item--button">
+                        <span>{key}</span>
+                        <span>
+                          <Icon name="target" />
+                          {hitPercent}%
+                        </span>
+                        <span>
+                          <Icon name="damage" />
+                          {skill.damage}
+                        </span>
+                        <span>({skill.cost})</span>
+                      </span>
                     </Button>
+                    {skill.type !== 'symbiosis' && (
+                      <div className="fight-actions--standard--item--button--difficulty">
+                        <Difficulty title={key} total={hitPercent} />
+                      </div>
+                    )}
 
                     {cooldowns && (
                       <div className="fight-actions--skills--progress">
@@ -112,10 +122,7 @@ const FightActions = ({
 }
 
 FightActions.propTypes = {
-  data: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    combatSkills: PropTypes.object
-  }),
+  character: PropTypes.object,
   onUseSkill: PropTypes.func,
   onAttack: PropTypes.func,
   onMove: PropTypes.func,

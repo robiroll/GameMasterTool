@@ -15,7 +15,7 @@ const BONUS_NAME = {
   con: 'Constitution',
   siz: 'Taille',
   cha: 'Charisme',
-  pow: 'Volonté'
+  pow: 'Power'
 }
 
 const Character = ({

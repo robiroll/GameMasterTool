@@ -4,14 +4,52 @@
 .order {
   display: flex;
 
+  &--all {
+    overflow: auto;
+
+    .order--char {
+      border: 1px solid rgba($neutral-3, 0.5);
+      padding: $g1;
+    }
+  }
+
   &--char {
     position: relative;
     margin-right: $g3;
 
+    &--life {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      &--current {
+        position: relative;
+        flex-grow: 1;
+        margin-right: $g1;
+
+        &--icon {
+          position: absolute;
+          display: flex;
+          align-items: center;
+          top: 0;
+          right: $g1;
+          bottom: 0;
+        }
+
+        &--input {
+          width: 100%;
+        }
+      }
+
+      &--max {
+        flex: 1 1 auto;
+      }
+    }
+
     &--button {
       position: absolute;
-      top: 0;
-      right: 0;
+      top: $g1;
+      right: $g1;
     }
 
     &--name {
@@ -19,12 +57,26 @@
       // padding: 0 $g1;
     }
 
-    &:last-child {
-      margin-right: 0;
+    &--def {
+      display: flex;
+
+      &--item {
+        display: flex;
+        align-items: center;
+        margin-right: $g2;
+
+        &--icon {
+          margin-right: $g1;
+          margin-bottom: 4px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
     }
 
-    &--all {
-      // border: 1px solid red;
+    &:last-child {
+      margin-right: 0;
     }
 
     &--playing {

@@ -20,6 +20,7 @@ class Items extends Component {
         type: 'equipment',
         slot: 'weapon',
         weaponHands: '1handed',
+        damageType: 'str',
         damage: 1,
         quantity: 1,
         size: 1,

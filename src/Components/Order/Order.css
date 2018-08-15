@@ -1,12 +1,48 @@
 .order {
   display: flex; }
+  .order--all {
+    overflow: auto; }
+    .order--all .order--char {
+      border: 1px solid rgba(35, 100, 117, 0.5);
+      padding: 8px; }
   .order--char {
     position: relative;
     margin-right: 24px; }
+    .order--char--life {
+      display: flex;
+      align-items: center;
+      justify-content: space-between; }
+      .order--char--life--current {
+        position: relative;
+        flex-grow: 1;
+        margin-right: 8px; }
+        .order--char--life--current--icon {
+          position: absolute;
+          display: flex;
+          align-items: center;
+          top: 0;
+          right: 8px;
+          bottom: 0; }
+        .order--char--life--current--input {
+          width: 100%; }
+      .order--char--life--max {
+        flex: 1 1 auto; }
     .order--char--button {
       position: absolute;
-      top: 0;
-      right: 0; }
+      top: 8px;
+      right: 8px; }
+    .order--char--def {
+      display: flex; }
+      .order--char--def--item {
+        display: flex;
+        align-items: center;
+        margin-right: 16px; }
+        .order--char--def--item--icon {
+          margin-right: 8px;
+          margin-bottom: 4px;
+          display: flex;
+          align-items: center;
+          justify-content: center; }
     .order--char:last-child {
       margin-right: 0; }
     .order--char--playing .order--char--name {

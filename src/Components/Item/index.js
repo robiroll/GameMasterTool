@@ -48,7 +48,7 @@ export default class Item extends PureComponent {
               <Button onClick={onAssign}>Assign</Button>
             </React.Fragment>
           ) : (
-            <h4>can't assign: characters list empty</h4>
+            <h4>can{"'"}t assign: characters list empty</h4>
           )}
         </div>
         {isOpen && (

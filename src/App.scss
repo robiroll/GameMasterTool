@@ -212,6 +212,12 @@ textarea {
     outline: 1px solid rgba($primary-1, 0.2);
     box-shadow: 0 0 5px -1px rgba($primary-1, 0.6);
   }
+
+  &[type='number']::-webkit-inner-spin-button,
+  &[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 }
 
 input[type='checkbox'] {

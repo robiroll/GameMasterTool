@@ -1,4 +1,5 @@
 .character--standard-skills--item {
+  position: relative;
   display: inline-flex;
   justify-content: space-between;
   width: 250px;
@@ -51,6 +52,20 @@
   display: inline-block;
   width: 160px;
   margin-right: 40px; }
+
+.character--standard-skills {
+  overflow: hidden; }
+  .character--standard-skills:hover {
+    overflow: visible; }
+  .character--standard-skills--item--difficulty {
+    position: absolute;
+    top: 0;
+    right: 64px;
+    left: 0;
+    z-index: 1;
+    opacity: 0; }
+  .character--standard-skills--item--base:hover .character--standard-skills--item--difficulty {
+    opacity: 1; }
 
 .character--skills {
   display: flex; }

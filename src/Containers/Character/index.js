@@ -29,8 +29,8 @@ class Character extends Component {
       usedAP: 0,
       hp,
       isAttributesOpen: true,
-      isStandardSkillsOpen: false,
-      isProSkillsOpen: false
+      isStandardSkillsOpen: true,
+      isProSkillsOpen: true
     }
   }
 

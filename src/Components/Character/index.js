@@ -2,6 +2,7 @@ import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import Card from '../../styleguide/Card'
 import Button from '../../styleguide/Button'
+import Difficulty from '../Difficulty'
 import { AP, HP_MAX } from '../../lib'
 import './Character.css'
 
@@ -139,8 +140,11 @@ const Character = ({
                 })
               return (
                 <div key={key} className="character--standard-skills--item">
-                  <div>
-                    {key}: {total} (base {base})
+                  <div className="character--standard-skills--item--base">
+                    {key}: {base}
+                    <div className="character--standard-skills--item--difficulty">
+                      <Difficulty title={key} total={total} />
+                    </div>
                   </div>
                   <div>
                     <Button onClick={onChangeSkill('add', key, 'standard')} size="small">
@@ -172,8 +176,11 @@ const Character = ({
                 })
               return (
                 <div key={key} className="character--standard-skills--item">
-                  <div>
-                    {key}: {total} (base {base})
+                  <div className="character--standard-skills--item--base">
+                    {key}: {base}
+                    <div className="character--standard-skills--item--difficulty">
+                      <Difficulty title={key} total={total} />
+                    </div>
                   </div>
                   <div>
                     <Button onClick={onChangeSkill('add', key, 'pro')} size="small">

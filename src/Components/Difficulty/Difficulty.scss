@@ -1,0 +1,27 @@
+@import 'scss/layout.scss';
+@import 'scss/colors.scss';
+
+.difficulty {
+  background: rgba($neutral-1, 0.9);
+  border: 1px solid rgba($primary-1, 0.6);
+  padding: $g1 $g2;
+  box-shadow: 0 0 20px 4px rgba($neutral-1, 0.2);
+  font-size: 14px;
+
+  &--title {
+    font-size: $g2;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  li {
+    display: flex;
+    justify-content: space-between;
+
+    .separator {
+      flex-grow: 1;
+      border-bottom: 1px dotted rgba($primary-1, 0.2);
+      margin-bottom: $g1 - 1;
+    }
+  }
+}

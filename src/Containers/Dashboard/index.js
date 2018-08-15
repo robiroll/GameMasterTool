@@ -21,6 +21,7 @@ class Dashboard extends Component {
     characterPlaying: PropTypes.string,
     order: PropTypes.array,
     orderPlaying: PropTypes.array,
+    orderSelection: PropTypes.object,
     status: PropTypes.any
   }
 
@@ -68,7 +69,7 @@ class Dashboard extends Component {
     const { validateCharacters, order, characters, firebase } = this.props
     this.handleCloseSelection()
     validateCharacters()
-    order.map(char => {
+    order.forEach(char => {
       const character = characters[char]
       const ap = AP(STATS(character)).start
       firebase.update(`characters/${char}`, { ap, sp: 0 })
@@ -83,7 +84,7 @@ class Dashboard extends Component {
   handleCloseSelection = () => this.setState({ isOpen: false })
 
   render() {
-    const { round, status, characterPlaying, orderPlaying, characters } = this.props
+    const { round, status, characterPlaying, orderPlaying, characters, orderSelection } = this.props
     return (
       <DashboardComponent
         round={round}
@@ -99,8 +100,7 @@ class Dashboard extends Component {
         characters={characters}
         selectCharacter={this.props.selectCharacter}
         validateCharacters={this.handleValidateCharacters}
-        isValidateDisabled={this.props.order.length < 1}
-        order={this.props.order}
+        isValidateDisabled={Object.keys(orderSelection).length < 2}
       />
     )
   }
@@ -108,6 +108,7 @@ class Dashboard extends Component {
 
 const mapStateToProps = state => ({
   round: state.fight.round,
+  orderSelection: state.fight.orderSelection,
   orderPlaying: state.fight.orderPlaying,
   order: state.fight.order,
   characterPlaying: state.fight.characterPlaying,

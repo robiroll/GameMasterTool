@@ -9,5 +9,10 @@
 .selection--button {
   margin-top: 16px; }
 
-.selection--characters--char--name {
-  cursor: pointer; }
+.selection--characters {
+  margin-right: 16px; }
+  .selection--characters:last-child {
+    margin-right: 0; }
+  .selection--characters--char--name {
+    display: flex;
+    flex-direction: column; }

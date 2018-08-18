@@ -6,9 +6,12 @@ import './PassionModify.css'
 
 const PassionModify = ({ name, value, onUpdate, total }) => (
   <div className="passion-modify">
-    <span>
+    <div className="passion-modify--label">
       {name}: {value}
-    </span>
+      <div className="passion-modify--difficulty">
+        <Difficulty title={name} total={total} />
+      </div>
+    </div>
     <div>
       <Button onClick={onUpdate('add')} size="small">
         +
@@ -16,9 +19,6 @@ const PassionModify = ({ name, value, onUpdate, total }) => (
       <Button onClick={onUpdate('remove')} size="small">
         -
       </Button>
-    </div>
-    <div className="passion-modify--difficulty">
-      <Difficulty title={name} total={total} />
     </div>
   </div>
 )

@@ -35,7 +35,7 @@
   grid-auto-flow: column;
   grid-column-gap: 16px;
   grid-auto-flow: column;
-  padding: 2px 0; }
+  padding: 1px 1px 1px 0; }
   .character--skills__standard {
     grid-template-rows: repeat(8, 1fr); }
   .character--skills__pro {

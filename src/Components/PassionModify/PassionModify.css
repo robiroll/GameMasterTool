@@ -2,7 +2,8 @@
   position: relative;
   display: flex;
   justify-content: space-between;
-  overflow: hidden; }
+  overflow: hidden;
+  padding: 1px 1px 1px 0; }
   .passion-modify:hover {
     overflow: visible; }
     .passion-modify:hover .passion-modify--difficulty {

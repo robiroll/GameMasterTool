@@ -20,20 +20,7 @@ const BONUS_NAME = {
 }
 
 const Character = ({
-  data: {
-    hp,
-    name,
-    attributes,
-    combatSkills,
-    standardSkills,
-    proSkills,
-    talents,
-    equipment,
-    inventory,
-    passion1,
-    passion2,
-    passion3
-  },
+  data: { hp, name, attributes, combatSkills, standardSkills, proSkills, talents, equipment, inventory },
   idCharacter,
   onUpdateHp,
   onChangeHp,

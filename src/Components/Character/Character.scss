@@ -1,14 +1,6 @@
 @import 'scss/layout.scss';
 @import 'scss/colors.scss';
 
-// %list-item {
-//   position: relative;
-//   display: inline-flex;
-//   justify-content: space-between;
-//   width: 250px;
-//   margin-right: $g2;
-// }
-
 .card {
   margin-top: 20px;
 }
@@ -62,7 +54,7 @@
     grid-auto-flow: column;
     grid-column-gap: $g2;
     grid-auto-flow: column;
-    padding: 2px 0;
+    padding: 1px 1px 1px 0;
 
     &__standard {
       grid-template-rows: repeat(8, 1fr);

@@ -1,0 +1,25 @@
+@import 'src/scss/layout.scss';
+@import 'src/scss/colors.scss';
+
+.passion-modify {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  overflow: hidden;
+
+  &:hover {
+    overflow: visible;
+    .passion-modify--difficulty {
+      opacity: 1;
+    }
+  }
+
+  &--difficulty {
+    position: absolute;
+    top: 0;
+    right: $g8;
+    left: 0;
+    z-index: 1;
+    opacity: 0;
+  }
+}

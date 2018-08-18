@@ -131,6 +131,7 @@ class Character extends Component {
     return (
       <CharacterComponent
         data={character}
+        idCharacter={idCharacter}
         skills={skills}
         onChangeHp={this.handleChangeHp}
         onChangeAttr={this.handleChangeAttr}

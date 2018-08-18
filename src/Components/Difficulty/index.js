@@ -4,11 +4,11 @@ import './Difficulty.css'
 
 const Difficulty = ({ title, total }) => {
   const veryEasy = total * 2
-  const easy = Math.round(total * 1.5)
-  const standard = Math.round(total)
-  const hard = Math.round(total / 3 * 2)
-  const formidable = Math.round(total / 2)
-  const herculean = Math.round(total / 5)
+  const easy = Math.ceil(total * 1.5)
+  const standard = Math.ceil(total)
+  const hard = Math.ceil(total / 3 * 2)
+  const formidable = Math.ceil(total / 2)
+  const herculean = Math.ceil(total / 5)
   return (
     <div className="difficulty">
       <div className="difficulty--title">{title}</div>
@@ -18,42 +18,42 @@ const Difficulty = ({ title, total }) => {
             <span>Very easy:</span>
             <span className="separator" />
             <span>
-              {veryEasy} ({Math.round(veryEasy * 0.1)})
+              {veryEasy} ({Math.ceil(veryEasy * 0.1)})
             </span>
           </li>
           <li>
             <span>Easy:</span>
             <span className="separator" />
             <span>
-              {easy} ({Math.round(easy * 0.1)})
+              {easy} ({Math.ceil(easy * 0.1)})
             </span>
           </li>
           <li>
             <span>Standard:</span>
             <span className="separator" />
             <span>
-              {standard} ({Math.round(standard * 0.1)})
+              {standard} ({Math.ceil(standard * 0.1)})
             </span>
           </li>
           <li>
             <span>Hard:</span>
             <span className="separator" />
             <span>
-              {hard} ({Math.round(hard * 0.1)})
+              {hard} ({Math.ceil(hard * 0.1)})
             </span>
           </li>
           <li>
             <span>Formidable:</span>
             <span className="separator" />
             <span>
-              {formidable} ({Math.round(formidable * 0.1)})
+              {formidable} ({Math.ceil(formidable * 0.1)})
             </span>
           </li>
           <li>
             <span>Herculean:</span>
             <span className="separator" />
             <span>
-              {herculean} ({Math.round(herculean * 0.1)})
+              {herculean} ({Math.ceil(herculean * 0.1)})
             </span>
           </li>
         </ul>

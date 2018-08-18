@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import Card from '../../styleguide/Card'
 import Button from '../../styleguide/Button'
 import Difficulty from '../Difficulty'
+import Passion from '../../Containers/Passion'
 import { AP, HP_MAX } from '../../lib'
 import './Character.css'
 
@@ -19,7 +20,21 @@ const BONUS_NAME = {
 }
 
 const Character = ({
-  data: { hp, name, attributes, combatSkills, standardSkills, proSkills, talents, equipment, inventory },
+  data: {
+    hp,
+    name,
+    attributes,
+    combatSkills,
+    standardSkills,
+    proSkills,
+    talents,
+    equipment,
+    inventory,
+    passion1,
+    passion2,
+    passion3
+  },
+  idCharacter,
   onUpdateHp,
   onChangeHp,
   onChangeAttr,
@@ -40,12 +55,12 @@ const Character = ({
   if (equipment && equipment.weapon2) weapons.push(equipment.weapon2)
   let bonuses = {
     str: 0,
-    siz: 0,
-    con: 0,
     dex: 0,
-    int: 0,
+    con: 0,
     pow: 0,
-    cha: 0
+    cha: 0,
+    int: 0,
+    siz: 0
   }
   if (equipment)
     Object.keys(equipment).map(key => {
@@ -164,13 +179,19 @@ const Character = ({
           </div>
           <div className="character--stats--general">
             <h4 className="character--title">Fight</h4>
-            <div className="character--initiative">Initiative: {Math.round((totalStats.int + totalStats.dex) / 2)}</div>
+            <div className="character--initiative">Initiative: {Math.ceil((totalStats.int + totalStats.dex) / 2)}</div>
             <div className="character--ap">
               AP start: {apStart}
               <br />
               AP per turn: {apBase}
               <br />
               AP max: {apMax}
+            </div>
+            <h4 className="character--title">Passions</h4>
+            <div className="character--passion">
+              <Passion idCharacter={idCharacter} number={1} />
+              <Passion idCharacter={idCharacter} number={2} />
+              <Passion idCharacter={idCharacter} number={3} />
             </div>
           </div>
         </div>
@@ -340,6 +361,7 @@ const Character = ({
 
 Character.propTypes = {
   data: PropTypes.object,
+  idCharacter: PropTypes.string,
   onUpdateHp: PropTypes.func,
   onChangeAttr: PropTypes.func,
   onChangeSkill: PropTypes.func,

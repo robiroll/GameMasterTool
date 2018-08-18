@@ -18,7 +18,7 @@ class Character extends Component {
 
   initiative = () => {
     const { int, dex } = STATS(this.props.character)
-    return Math.round((int + dex) / 2)
+    return Math.ceil((int + dex) / 2)
   }
 
   handleChange = e => this.setState({ roll: Number(e.target.value) })

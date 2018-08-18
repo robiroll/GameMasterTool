@@ -17,12 +17,12 @@ export default [
     extendedType: 'attributes',
     children: [
       { id: 'str', label: 'Force', score: '(3d6)' },
-      { id: 'con', label: 'Constitution', score: '(3d6)' },
-      { id: 'siz', label: 'Taille', score: '(3d6)' },
       { id: 'dex', label: 'Dexterité', score: '(3d6)' },
-      { id: 'int', label: 'Intelligence', score: '(3d6)' },
-      { id: 'pow', label: 'Puissance', score: '(2d6 + 6)' },
-      { id: 'cha', label: 'Charisme', score: '(2d6 + 6)' }
+      { id: 'con', label: 'Constitution', score: '(3d6)' },
+      { id: 'pow', label: 'Puissance', score: '(3d6)' },
+      { id: 'cha', label: 'Charisme', score: '(3d6)' },
+      { id: 'int', label: 'Intelligence', score: '(2d6 + 6)' },
+      { id: 'siz', label: 'Taille', score: '(2d6 + 6)' }
     ]
   }
 ]

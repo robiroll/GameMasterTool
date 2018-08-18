@@ -82,6 +82,19 @@ const Character = ({
   const apStart = AP(totalStats).start
   const apMax = AP(totalStats).max
   const hpMax = HP_MAX(totalStats)
+
+  let totalStandardSkills = 0
+  Object.keys(standardSkillsBonuses).forEach(key => {
+    const value = standardSkills[key] || 0
+    totalStandardSkills += value
+  })
+
+  let totalProSkills = 0
+  Object.keys(proSkillsBonuses).forEach(key => {
+    const value = proSkills[key] || 0
+    totalProSkills += value
+  })
+
   return (
     <Card title={<h2>{name}</h2>}>
       <div className="character">
@@ -102,7 +115,7 @@ const Character = ({
           AP max: {apMax}
         </div>
         <h3 className="character--title" onClick={onToggleAttributes}>
-          Attributes <span>{isAttributesOpen ? '⇡' : '⇣'}</span>
+          Attributes ({Object.values(totalStats).reduce((a, v) => a + v)})<span>{isAttributesOpen ? '⇡' : '⇣'}</span>
         </h3>
         {isAttributesOpen && (
           <div className="character--attributes">
@@ -124,10 +137,10 @@ const Character = ({
           </div>
         )}
         <h3 className="character--title" onClick={onToggleStandardSkills}>
-          Standard Skills <span>{isStandardSkillsOpen ? '⇡' : '⇣'}</span>
+          Standard Skills ({totalStandardSkills}) <span>{isStandardSkillsOpen ? '⇡' : '⇣'}</span>
         </h3>
         {isStandardSkillsOpen && (
-          <div className="character--standard-skills">
+          <div className="character--skills character--skills__standard">
             {Object.keys(standardSkillsBonuses).map(key => {
               const base = standardSkills[key] || 0
               let total = base
@@ -139,10 +152,10 @@ const Character = ({
                   } else total += skill
                 })
               return (
-                <div key={key} className="character--standard-skills--item">
-                  <div className="character--standard-skills--item--base">
+                <div key={key} className="character--skills--item">
+                  <div className="character--skills--item--base">
                     {key}: {base}
-                    <div className="character--standard-skills--item--difficulty">
+                    <div className="character--skills--item--difficulty">
                       <Difficulty title={key} total={total} />
                     </div>
                   </div>
@@ -160,10 +173,10 @@ const Character = ({
           </div>
         )}
         <h3 className="character--title" onClick={onToggleProSkills}>
-          Professional Skills <span>{isProSkillsOpen ? '⇡' : '⇣'}</span>
+          Professional Skills ({totalProSkills})<span>{isProSkillsOpen ? '⇡' : '⇣'}</span>
         </h3>
         {isProSkillsOpen && (
-          <div className="character--standard-skills">
+          <div className="character--skills character--skills__pro">
             {Object.keys(proSkillsBonuses).map(key => {
               const base = proSkills[key] || 0
               let total = base
@@ -175,10 +188,10 @@ const Character = ({
                   } else total += skill
                 })
               return (
-                <div key={key} className="character--standard-skills--item">
-                  <div className="character--standard-skills--item--base">
+                <div key={key} className="character--skills--item">
+                  <div className="character--skills--item--base">
                     {key}: {base}
-                    <div className="character--standard-skills--item--difficulty">
+                    <div className="character--skills--item--difficulty">
                       <Difficulty title={key} total={total} />
                     </div>
                   </div>
@@ -210,7 +223,7 @@ const Character = ({
         )}
         <h3 className="character--title">Compétences</h3>
         {combatSkills && (
-          <div className="character--skills">
+          <div className="character--combat-skills">
             {Object.keys(combatSkills).map(key => {
               const skill = skills[key]
               const success = totalStats[skill.attr1] + totalStats[skill.attr2] + combatSkills[key]
@@ -218,9 +231,9 @@ const Character = ({
               const points = skill.type === 'symbiosis' ? sp : ap
               return (
                 <Fragment key={key}>
-                  <div className="character--skills--action">
+                  <div className="character--combat-skills--action">
                     <Button
-                      className="character--skills--item"
+                      className="character--combat-skills--item"
                       disabled={!(points - skill.cost >= 0) || (cooldowns && cooldowns[key] > 0)}
                       variant={`${skill.type === 'symbiosis' && 'accent-1'}`}
                       onClick={() => {
@@ -232,7 +245,7 @@ const Character = ({
                     </Button>
 
                     {cooldowns && (
-                      <div className="character--skills--progress">
+                      <div className="character--combat-skills--progress">
                         <div>remaining: {cooldowns[key]}</div>
                       </div>
                     )}

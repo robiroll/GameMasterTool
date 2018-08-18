@@ -1,13 +1,13 @@
 @import 'scss/layout.scss';
 @import 'scss/colors.scss';
 
-%list-item {
-  position: relative;
-  display: inline-flex;
-  justify-content: space-between;
-  width: 250px;
-  margin-right: $g2;
-}
+// %list-item {
+//   position: relative;
+//   display: inline-flex;
+//   justify-content: space-between;
+//   width: 250px;
+//   margin-right: $g2;
+// }
 
 .card {
   margin-top: 20px;
@@ -68,42 +68,61 @@
 
   &--attributes {
     &--elem {
+      display: flex;
+      width: 33.33%;
+      padding-right: $g2 / 3 * 2;
       span {
-        display: inline-block;
-        width: $g10 * 2;
-        margin-right: $g5;
+        flex-grow: 1;
       }
     }
   }
 
-  &--standard-skills {
+  &--skills {
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin-right: - $g2;
+    padding-top: 2px;
+    padding-bottom: 2px;
+
+    &__standard {
+      max-height: 24 / 3 * $g3 + 4;
+    }
+
+    &__pro {
+      max-height: 39 / 3 * $g3 + 4;
+    }
 
     &:hover {
       overflow: visible;
     }
 
     &--item {
-      @extend %list-item;
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+      width: 33.33%;
+      padding-right: $g2;
 
       &--difficulty {
         position: absolute;
         top: 0;
-        right: $g8;
+        right: $g10;
         left: 0;
         z-index: 1;
         opacity: 0;
       }
 
       &--base:hover {
-        .character--standard-skills--item--difficulty {
+        .character--skills--item--difficulty {
           opacity: 1;
         }
       }
     }
   }
 
-  &--skills {
+  &--combat-skills {
     display: flex;
 
     &--action {

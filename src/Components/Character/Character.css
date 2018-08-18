@@ -9,69 +9,47 @@
   font-size: 40px;
   background-color: red; }
 
-.character--skill {
-  position: relative; }
-  .character--skill--icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 8px;
-    font-family: 'Cinzel Decorative';
-    text-transform: uppercase;
-    margin: 0 16px;
-    border-radius: 50%;
-    border: 1px solid rgba(173, 216, 230, 0.4);
-    box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.2);
-    padding: 8px;
-    width: 16px;
-    height: 16px;
-    background: rgba(173, 216, 230, 0.4); }
-  .character--skill--infos {
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 8px;
-    z-index: 2;
-    background: rgba(0, 29, 41, 0.9);
-    border: 1px solid rgba(173, 216, 230, 0.6);
-    width: 200px;
-    padding: 8px 16px;
-    box-shadow: 0 0 20px 4px rgba(0, 29, 41, 0.2);
-    font-size: 14px; }
-  .character--skill:hover .character--skill--infos {
-    display: block; }
-
-.character--attributes--elem {
+.character--health {
   display: flex;
-  width: 33.33%;
-  padding-right: 10.66667px; }
-  .character--attributes--elem span {
-    flex-grow: 1; }
+  align-items: center; }
+  .character--health input {
+    width: 50px;
+    margin-right: 8px;
+    text-align: right; }
+  .character--health--button {
+    flex: 0 1 50%; }
+
+.character--stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 16px; }
+  .character--stats--attributes--elem {
+    display: flex; }
+    .character--stats--attributes--elem span {
+      flex-grow: 1; }
 
 .character--skills {
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  margin-right: -16px;
-  padding-top: 2px;
-  padding-bottom: 2px; }
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-flow: column;
+  grid-column-gap: 16px;
+  grid-auto-flow: column;
+  padding: 2px 0; }
   .character--skills__standard {
-    max-height: 196px; }
+    grid-template-rows: repeat(8, 1fr); }
   .character--skills__pro {
-    max-height: 316px; }
+    grid-template-rows: repeat(13, 1fr); }
   .character--skills:hover {
     overflow: visible; }
   .character--skills--item {
     position: relative;
     display: flex;
-    justify-content: space-between;
-    width: 33.33%;
-    padding-right: 16px; }
+    justify-content: space-between; }
     .character--skills--item--difficulty {
       position: absolute;
       top: 0;
-      right: 80px;
+      right: 64px;
       left: 0;
       z-index: 1;
       opacity: 0; }
@@ -79,7 +57,19 @@
       opacity: 1; }
 
 .character--combat-skills {
-  display: flex; }
-  .character--combat-skills--action {
-    display: flex;
-    flex-direction: column; }
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 16px; }
+  .character--combat-skills--item {
+    border: 1px solid rgba(220, 239, 245, 0.1);
+    padding: 16px;
+    box-shadow: 0 0 10px 0px rgba(220, 239, 245, 0.1);
+    transition: all 300ms ease-in-out; }
+    .character--combat-skills--item:hover {
+      border-color: rgba(220, 239, 245, 0.2);
+      box-shadow: 0 0 20px rgba(220, 239, 245, 0.2); }
+    .character--combat-skills--item--title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px; }

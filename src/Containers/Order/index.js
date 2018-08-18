@@ -35,11 +35,13 @@ class Order extends Component {
   render() {
     const { status, order, orderPlaying, orderDone, characters } = this.props
     const orderDisplay = status === 'playing' ? orderPlaying : status === 'done' ? orderDone : order
+    const playing = orderPlaying[0]
     return (
       <OrderComponent
         status={status}
         removeCharacter={this.props.removeCharacter}
         order={orderDisplay}
+        playing={playing}
         characters={characters}
         onChangeHp={this.handleUpdateHp}
       />

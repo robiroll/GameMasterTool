@@ -88,10 +88,12 @@ const FightActions = ({ character, onUseSkill, onAttack, onMove, onUpSp, onEndTu
                     >
                       <span className="fight-actions--standard--item--button">
                         <span>{key}</span>
-                        <span>
-                          <Icon name="target" />
-                          {hitPercent}%
-                        </span>
+                        {skill.type !== 'symbiosis' && (
+                          <span>
+                            <Icon name="target" />
+                            {hitPercent}%
+                          </span>
+                        )}
                         <span>
                           <Icon name="damage" />
                           {skill.damage}

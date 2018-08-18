@@ -81,7 +81,7 @@
 .button--small {
   display: inline-flex;
   justify-content: center;
-  width: 24px;
+  min-width: 24px;
   height: 24px;
   line-height: 24px;
   padding: 0;
@@ -89,3 +89,6 @@
   .button--small .button--corner {
     width: 8px;
     height: 8px; }
+
+.button--full {
+  width: 100%; }

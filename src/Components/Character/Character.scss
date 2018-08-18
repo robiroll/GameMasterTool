@@ -17,7 +17,6 @@
   &--title {
     margin: $g1 0;
     border-bottom: 1px solid rgba($primary-1, 0.6);
-    // padding-bottom: $g1;
   }
 
   &--name {
@@ -25,73 +24,52 @@
     background-color: red;
   }
 
-  &--skill {
-    position: relative;
+  &--health {
+    display: flex;
+    align-items: center;
 
-    &--icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: $g1;
-      font-family: 'Cinzel Decorative';
-      text-transform: uppercase;
-      margin: 0 $g2;
-      border-radius: 50%;
-      border: 1px solid rgba($primary-1, 0.4);
-      box-shadow: 0 0 10px 2px rgba($white, 0.2);
-      padding: $g1;
-      width: $g2;
-      height: $g2;
-      background: rgba($primary-1, 0.4);
+    input {
+      width: 50px;
+      margin-right: $g1;
+      text-align: right;
     }
 
-    &--infos {
-      display: none;
-      position: absolute;
-      top: 0;
-      left: $g1;
-      z-index: 2;
-      background: rgba($neutral-1, 0.9);
-      border: 1px solid rgba($primary-1, 0.6);
-      width: 200px;
-      padding: $g1 $g2;
-      box-shadow: 0 0 20px 4px rgba($neutral-1, 0.2);
-      font-size: 14px;
-    }
-
-    &:hover {
-      .character--skill--infos {
-        display: block;
-      }
+    &--button {
+      flex: 0 1 50%;
     }
   }
 
-  &--attributes {
-    &--elem {
-      display: flex;
-      width: 33.33%;
-      padding-right: $g2 / 3 * 2;
-      span {
-        flex-grow: 1;
+  &--stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: $g2;
+
+    &--attributes {
+      &--elem {
+        display: flex;
+
+        span {
+          flex-grow: 1;
+        }
       }
     }
   }
 
   &--skills {
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    margin-right: - $g2;
-    padding-top: 2px;
-    padding-bottom: 2px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-flow: column;
+    grid-column-gap: $g2;
+    grid-auto-flow: column;
+    padding: 2px 0;
 
     &__standard {
-      max-height: 24 / 3 * $g3 + 4;
+      grid-template-rows: repeat(8, 1fr);
     }
 
     &__pro {
-      max-height: 39 / 3 * $g3 + 4;
+      grid-template-rows: repeat(13, 1fr);
     }
 
     &:hover {
@@ -102,13 +80,11 @@
       position: relative;
       display: flex;
       justify-content: space-between;
-      width: 33.33%;
-      padding-right: $g2;
 
       &--difficulty {
         position: absolute;
         top: 0;
-        right: $g10;
+        right: $g8;
         left: 0;
         z-index: 1;
         opacity: 0;
@@ -123,11 +99,30 @@
   }
 
   &--combat-skills {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: $g2;
 
-    &--action {
-      display: flex;
-      flex-direction: column;
+    &--item {
+      border: 1px solid rgba($neutral-5, 0.1);
+      padding: $g2;
+      box-shadow: 0 0 10px 0px rgba($neutral-5, 0.1);
+      transition: all 300ms ease-in-out;
+
+      &:hover {
+        border-color: rgba($neutral-5, 0.2);
+        box-shadow: 0 0 20px rgba($neutral-5, 0.2);
+      }
+
+      &--title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: $g1;
+      }
+
+      &--infos {
+      }
     }
   }
 }

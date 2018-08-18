@@ -66,10 +66,10 @@ class Dashboard extends Component {
     this.props.startFight()
   }
   handleValidateCharacters = () => {
-    const { validateCharacters, order, characters, firebase } = this.props
+    const { validateCharacters, orderSelection, characters, firebase } = this.props
     this.handleCloseSelection()
     validateCharacters()
-    order.forEach(char => {
+    Object.keys(orderSelection).forEach(char => {
       const character = characters[char]
       const ap = AP(STATS(character)).start
       firebase.update(`characters/${char}`, { ap, sp: 0 })

@@ -4,12 +4,35 @@
 .order {
   display: flex;
 
-  &--all {
+  &__all {
     overflow: auto;
 
     .order--char {
       border: 1px solid rgba($neutral-3, 0.5);
       padding: $g1;
+      transition: all 300ms linear;
+
+      &__playing {
+        border-color: rgba($neutral-5, 0.7);
+        background-color: rgba($neutral-5, 0.1);
+      }
+    }
+  }
+
+  &__playing {
+    .order--char {
+      &--name {
+        padding: $g1/2 $g1;
+      }
+
+      &:first-child {
+        .order--char--name {
+          border: 1px solid $accent-4;
+          border-radius: 2px;
+          box-shadow: 0 0 5px 2px rgba($accent-4, 0.6);
+          font-size: 18px;
+        }
+      }
     }
   }
 
@@ -42,7 +65,7 @@
       }
 
       &--max {
-        flex: 1 1 auto;
+        flex: 1 0 auto;
       }
     }
 
@@ -50,11 +73,6 @@
       position: absolute;
       top: $g1;
       right: $g1;
-    }
-
-    &--name {
-      // line-height: $g3;
-      // padding: 0 $g1;
     }
 
     &--def {
@@ -77,23 +95,6 @@
 
     &:last-child {
       margin-right: 0;
-    }
-
-    &--playing {
-      .order--char--name {
-        padding: $g1/2 $g1;
-      }
-      &:first-child {
-        .order--char {
-          &--name {
-            border: 1px solid $accent-4;
-            border-radius: 2px;
-            box-shadow: 0 0 5px 2px rgba($accent-4, 0.6);
-            font-size: 18px;
-            // font-weight: bold;
-          }
-        }
-      }
     }
   }
 }

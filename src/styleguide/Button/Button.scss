@@ -110,7 +110,7 @@
   &--small {
     display: inline-flex;
     justify-content: center;
-    width: $g3;
+    min-width: $g3;
     height: $g3;
     line-height: $g3;
     padding: 0;
@@ -120,5 +120,9 @@
       width: $g1;
       height: $g1;
     }
+  }
+
+  &--full {
+    width: 100%;
   }
 }

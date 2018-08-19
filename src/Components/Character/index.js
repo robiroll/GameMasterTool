@@ -4,6 +4,7 @@ import Card from '../../styleguide/Card'
 import Button from '../../styleguide/Button'
 import Difficulty from '../Difficulty'
 import Passion from '../../Containers/Passion'
+import Equipment from '../../Containers/Equipment'
 import { AP, HP_MAX } from '../../lib'
 import './Character.css'
 
@@ -27,7 +28,6 @@ const Character = ({
   onChangeAttr,
   onChangeSkill,
   onEquip,
-  onUnequip,
   onUseItem,
   onDropItem,
   hpToUpdate,
@@ -59,10 +59,11 @@ const Character = ({
 
   let armor = 0
   let magicArmor = 0
-  Object.values(equipment).forEach(eq => {
-    armor += eq.armor || 0
-    magicArmor += eq.magicArmor || 0
-  })
+  if (equipment)
+    Object.values(equipment).forEach(eq => {
+      armor += eq.armor || 0
+      magicArmor += eq.magicArmor || 0
+    })
   const apBase = AP(totalStats).base
   const apStart = AP(totalStats).start
   const apMax = AP(totalStats).max
@@ -278,19 +279,7 @@ const Character = ({
           </div>
         )}
         <h3 className="character--title">Équipement</h3>
-        {equipment && (
-          <div className="character--equipment">
-            {Object.keys(equipment).map(key => {
-              const item = equipment[key]
-              return (
-                <div key={key} className="character--equipment--item">
-                  {item.name}{' '}
-                  {item.type === 'equipment' && <Button onClick={() => onUnequip(key, item)}>Unequip</Button>}
-                </div>
-              )
-            })}
-          </div>
-        )}
+        <Equipment idCharacter={idCharacter} />
         <h3 className="character--title">Talents</h3>
         {talents && (
           <div className="character--talents">
@@ -313,7 +302,7 @@ const Character = ({
               let successString = `${skill.attr1} + ${skill.attr2} + ${combatSkills[key]}`
               return (
                 <div className="character--combat-skills--item" key={key}>
-                  <h4 className="character--combat-skills--item--title">
+                  <h5 className="character--combat-skills--item--title">
                     {key}: {combatSkills[key]}
                     <div>
                       <Button onClick={onChangeSkill('add', key, 'combat')} size="small">
@@ -323,7 +312,7 @@ const Character = ({
                         -
                       </Button>
                     </div>
-                  </h4>
+                  </h5>
                   <ul className="character--combat-skills--item--infos">
                     <li>type: {skill.type}</li>
                     <li>damage: {skill.damage}</li>
@@ -354,7 +343,6 @@ Character.propTypes = {
   onChangeSkill: PropTypes.func,
   onChangeHp: PropTypes.func,
   onEquip: PropTypes.func,
-  onUnequip: PropTypes.func,
   onUseItem: PropTypes.func,
   onDropItem: PropTypes.func,
   hpToUpdate: PropTypes.number,

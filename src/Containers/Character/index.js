@@ -111,11 +111,6 @@ class Character extends Component {
       firebase.remove(`${path}/inventory/${key}`)
     }
   }
-  handleUnequip = (key, item) => {
-    const { firebase, idCharacter } = this.props
-    firebase.remove(`characters/${idCharacter}/equipment/${key}`)
-    firebase.push(`characters/${idCharacter}/inventory`, item)
-  }
   handleUseItem = (key, item) => {
     const { firebase, idCharacter } = this.props
     firebase.update(`characters/${idCharacter}/inventory/${key}`, { quantity: item.quantity - 1 })
@@ -139,7 +134,6 @@ class Character extends Component {
         onUpdateHp={this.handleUpdateHp}
         hpToUpdate={this.state.hp}
         onEquip={this.handleEquip}
-        onUnequip={this.handleUnequip}
         onUseItem={this.handleUseItem}
         onDropItem={this.handleDropItem}
         onToggleStandardSkills={this.handleToggleStandardSkills}

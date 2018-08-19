@@ -53,6 +53,11 @@ class Items extends Component {
         if (bonus[key] <= 0) delete bonus[key]
       })
       Object.assign(item, { bonus })
+      if (item.slot !== 'weapon') {
+        delete item.weaponHands
+        delete item.damageType
+        delete item.damage
+      }
     } else {
       delete item.slot
       delete item.size

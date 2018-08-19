@@ -76,7 +76,7 @@ export default {
   talents: [],
   skills: [],
   equipment: {
-    torso: { armor: 1 }
+    chest: { armor: 1 }
   },
   inventory: {
     lifePotion: {

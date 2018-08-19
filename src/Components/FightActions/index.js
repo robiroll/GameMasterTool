@@ -58,7 +58,7 @@ const FightActions = ({ character, onUseSkill, onAttack, onMove, onUpSp, onEndTu
           >
             Move (1)
           </Button>
-          <Button className="character--action--item" disabled={!(ap >= 3) || sp >= 5} onClick={onUpSp}>
+          <Button className="character--action--item" disabled={!(ap >= sp + 2) || sp >= 5} onClick={onUpSp}>
             SP + 1 ({sp + 2})
           </Button>
           <Button className="fight-actions--standard--item" onClick={onDelayTurn}>

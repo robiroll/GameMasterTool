@@ -20,6 +20,7 @@ class Items extends Component {
         type: 'equipment',
         slot: 'weapon',
         weaponHands: '1handed',
+        damageType: 'str',
         damage: 1,
         quantity: 1,
         size: 1,
@@ -52,6 +53,11 @@ class Items extends Component {
         if (bonus[key] <= 0) delete bonus[key]
       })
       Object.assign(item, { bonus })
+      if (item.slot !== 'weapon') {
+        delete item.weaponHands
+        delete item.damageType
+        delete item.damage
+      }
     } else {
       delete item.slot
       delete item.size

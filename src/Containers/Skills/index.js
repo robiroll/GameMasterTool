@@ -30,7 +30,7 @@ class Skills extends Component {
       isModifyOpen: false,
       assignedCharacter: '',
       assignedSkill: '',
-      assignedValue: '10',
+      assignedValue: '50',
       isSymbiosis: false
     }
   }

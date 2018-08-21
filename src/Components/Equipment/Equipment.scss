@@ -1,0 +1,58 @@
+@import 'scss/layout.scss';
+@import 'scss/colors.scss';
+
+.equipment {
+  display: flex;
+  align-items: flex-start;
+
+  &--schema {
+    display: grid;
+    grid-template-areas:
+      '. head back'
+      'shoulders chest neck'
+      'hands belt ring1'
+      'feet legs ring2'
+      'weapon1 weapon2 offhand';
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(5, 1fr);
+    grid-gap: $g1;
+    width: $g5 * 4;
+    margin-right: $g3;
+
+    &--item {
+      opacity: 0.1;
+
+      &__equipped {
+        opacity: 0.8;
+        cursor: pointer;
+      }
+
+      &__selected {
+        opacity: 1;
+        filter: drop-shadow(0 0 5px rgba($white, 0.8));
+      }
+
+      $placements: head chest back shoulders neck ring1 ring2 hands belt legs feet weapon1 weapon2 offhand;
+      @each $place in $placements {
+        &__#{$place} {
+          grid-area: #{$place};
+        }
+      }
+    }
+  }
+
+  &--single {
+    border: 1px solid rgba($neutral-4, 0.5);
+    box-shadow: 0 0 $g1 rgba($neutral-5, 0.5);
+    margin-right: $g3;
+    min-width: 200px;
+
+    &--button {
+      // margin-top: $g1;
+    }
+  }
+
+  &--stats {
+    justify-self: flex-end;
+  }
+}

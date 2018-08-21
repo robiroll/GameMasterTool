@@ -1,0 +1,13 @@
+@import 'scss/layout.scss';
+@import 'scss/colors.scss';
+
+.item-stats {
+  &--block {
+    padding: $g1;
+  }
+
+  &--divider {
+    height: 1px;
+    background-color: $neutral-3;
+  }
+}

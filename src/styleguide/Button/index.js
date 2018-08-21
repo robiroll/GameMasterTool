@@ -2,11 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import './Button.css'
 
-const Button = ({ children, onClick, disabled, progress, size, variant }) => {
+const Button = ({ children, onClick, disabled, progress, size, variant, format }) => {
   const handleClick = !disabled ? onClick : undefined
   return (
     <div
-      className={`button${disabled ? ' button--disabled' : ''} button--${size} button--${variant}`}
+      className={`button${disabled ? ' button--disabled' : ''} button--${size} button--${variant} button--${format}`}
       onClick={handleClick}
     >
       {children}
@@ -25,7 +25,8 @@ Button.propTypes = {
   disabled: PropTypes.bool,
   progress: PropTypes.number,
   size: PropTypes.string,
-  variant: PropTypes.string
+  variant: PropTypes.string,
+  format: PropTypes.string
 }
 
 Button.defaultProps = {
@@ -33,7 +34,8 @@ Button.defaultProps = {
   disabled: false,
   progress: 0,
   size: 'medium',
-  variant: 'primary-1'
+  variant: 'primary-1',
+  format: 'default'
 }
 
 export default Button

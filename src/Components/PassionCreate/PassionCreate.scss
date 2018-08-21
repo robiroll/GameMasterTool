@@ -1,0 +1,39 @@
+@import 'src/scss/layout.scss';
+@import 'src/scss/colors.scss';
+
+.passion-create {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1px;
+
+  &--label {
+    flex: 0 0 auto;
+    margin-right: $g1;
+  }
+
+  &--input {
+    flex: 1 1 auto;
+    margin-right: $g1;
+
+    input {
+      width: 100%;
+
+      &::placeholder {
+        color: rgba($neutral-3, 0.6);
+      }
+    }
+  }
+
+  &--options {
+    flex: 1 1;
+    margin-right: $g1;
+
+    select {
+      width: auto;
+    }
+  }
+
+  &--action {
+    flex: 1 1 25%;
+  }
+}

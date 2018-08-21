@@ -14,10 +14,15 @@
     margin-top: $g2;
   }
   &--characters {
+    margin-right: $g2;
+
+    &:last-child {
+      margin-right: 0;
+    }
     &--char {
       &--name {
-        cursor: pointer;
-        // padding: $g1;
+        display: flex;
+        flex-direction: column;
       }
     }
   }

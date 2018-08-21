@@ -25,9 +25,47 @@
   }
 
   &--standard {
+    display: flex;
     border-bottom: 1px solid rgba($primary-1, 0.6);
     margin-bottom: $g2;
     padding-bottom: $g2;
+
+    &--item {
+      position: relative;
+      overflow: hidden;
+
+      &:hover {
+        overflow: visible;
+
+        .fight-actions--standard--item--button--difficulty {
+          opacity: 1;
+        }
+      }
+
+      &--button {
+        display: flex;
+        align-items: center;
+
+        span {
+          display: flex;
+          align-items: center;
+          margin-right: $g1;
+
+          &:last-child {
+            margin-right: 0;
+          }
+        }
+
+        &--difficulty {
+          position: absolute;
+          top: $g5 + 1;
+          right: 0;
+          left: 0;
+          opacity: 0;
+          z-index: 2;
+        }
+      }
+    }
   }
 
   &--skill {
@@ -91,8 +129,18 @@
     display: flex;
 
     &--action {
+      position: relative;
       display: flex;
       flex-direction: column;
+      overflow: hidden;
+
+      &:hover {
+        overflow: visible;
+
+        .fight-actions--standard--item--button--difficulty {
+          opacity: 1;
+        }
+      }
     }
   }
 }

@@ -167,13 +167,29 @@ h4 {
   font-size: 16px;
   line-height: 24px; }
 
+h5,
+h6 {
+  text-shadow: 0 0 10px white;
+  text-transform: uppercase;
+  font-weight: 500; }
+
+h5 {
+  font-size: 18px;
+  line-height: 26px; }
+
+h6 {
+  font-size: 16px;
+  line-height: 24px;
+  color: #add8e6; }
+
 .modal--overlay {
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  background: rgba(0, 29, 41, 0.8); }
+  background: rgba(0, 29, 41, 0.8);
+  z-index: 1; }
 
 .modal--content {
   position: absolute;
@@ -202,6 +218,13 @@ textarea {
   textarea:focus {
     outline: 1px solid rgba(173, 216, 230, 0.2);
     box-shadow: 0 0 5px -1px rgba(173, 216, 230, 0.6); }
+  input[type='number']::-webkit-inner-spin-button, input[type='number']::-webkit-outer-spin-button,
+  select[type='number']::-webkit-inner-spin-button,
+  select[type='number']::-webkit-outer-spin-button,
+  textarea[type='number']::-webkit-inner-spin-button,
+  textarea[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0; }
 
 input[type='checkbox'] {
   -webkit-appearance: initial;

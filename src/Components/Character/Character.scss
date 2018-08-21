@@ -1,13 +1,6 @@
 @import 'scss/layout.scss';
 @import 'scss/colors.scss';
 
-%list-item {
-  display: inline-flex;
-  justify-content: space-between;
-  width: 250px;
-  margin-right: $g2;
-}
-
 .card {
   margin-top: 20px;
 }
@@ -16,7 +9,6 @@
   &--title {
     margin: $g1 0;
     border-bottom: 1px solid rgba($primary-1, 0.6);
-    // padding-bottom: $g1;
   }
 
   &--name {
@@ -24,69 +16,105 @@
     background-color: red;
   }
 
-  &--skill {
-    position: relative;
+  &--health {
+    display: flex;
+    align-items: center;
 
-    &--icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: $g1;
-      font-family: 'Cinzel Decorative';
-      text-transform: uppercase;
-      margin: 0 $g2;
-      border-radius: 50%;
-      border: 1px solid rgba($primary-1, 0.4);
-      box-shadow: 0 0 10px 2px rgba($white, 0.2);
-      padding: $g1;
-      width: $g2;
-      height: $g2;
-      background: rgba($primary-1, 0.4);
+    input {
+      width: 50px;
+      margin-right: $g1;
+      text-align: right;
     }
 
-    &--infos {
-      display: none;
-      position: absolute;
-      top: 0;
-      left: $g1;
-      z-index: 2;
-      background: rgba($neutral-1, 0.9);
-      border: 1px solid rgba($primary-1, 0.6);
-      width: 200px;
-      padding: $g1 $g2;
-      box-shadow: 0 0 20px 4px rgba($neutral-1, 0.2);
-      font-size: 14px;
-    }
-
-    &:hover {
-      .character--skill--infos {
-        display: block;
-      }
+    &--button {
+      flex: 0 1 50%;
     }
   }
 
-  &--attributes {
-    &--elem {
-      span {
-        display: inline-block;
-        width: $g10 * 2;
-        margin-right: $g5;
-      }
-    }
-  }
+  &--stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: $g2;
 
-  &--standard-skills {
-    &--item {
-      @extend %list-item;
+    &--attributes {
+      &--elem {
+        display: flex;
+
+        span {
+          flex-grow: 1;
+        }
+      }
     }
   }
 
   &--skills {
-    display: flex;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-flow: column;
+    grid-column-gap: $g2;
+    grid-auto-flow: column;
+    padding: 1px 1px 1px 0;
 
-    &--action {
+    &__standard {
+      grid-template-rows: repeat(8, 1fr);
+    }
+
+    &__pro {
+      grid-template-rows: repeat(13, 1fr);
+    }
+
+    &:hover {
+      overflow: visible;
+    }
+
+    &--item {
+      position: relative;
       display: flex;
-      flex-direction: column;
+      justify-content: space-between;
+
+      &--difficulty {
+        position: absolute;
+        top: 0;
+        right: $g8;
+        left: 0;
+        z-index: 1;
+        opacity: 0;
+      }
+
+      &--base:hover {
+        .character--skills--item--difficulty {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  &--combat-skills {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: $g2;
+
+    &--item {
+      border: 1px solid rgba($neutral-5, 0.1);
+      padding: $g2;
+      box-shadow: 0 0 10px 0px rgba($neutral-5, 0.1);
+      transition: all 300ms ease-in-out;
+
+      &:hover {
+        border-color: rgba($neutral-5, 0.2);
+        box-shadow: 0 0 20px rgba($neutral-5, 0.2);
+      }
+
+      &--title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: $g1;
+      }
+
+      &--infos {
+      }
     }
   }
 }

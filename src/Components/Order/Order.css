@@ -1,18 +1,58 @@
 .order {
   display: flex; }
+  .order__all {
+    overflow: auto; }
+    .order__all .order--char {
+      border: 1px solid rgba(35, 100, 117, 0.5);
+      padding: 8px;
+      transition: all 300ms linear; }
+      .order__all .order--char__playing {
+        border-color: rgba(220, 239, 245, 0.7);
+        background-color: rgba(220, 239, 245, 0.1); }
+  .order__playing .order--char--name {
+    padding: 4px 8px; }
+  .order__playing .order--char:first-child .order--char--name {
+    border: 1px solid #53777a;
+    border-radius: 2px;
+    box-shadow: 0 0 5px 2px rgba(83, 119, 122, 0.6);
+    font-size: 18px; }
   .order--char {
     position: relative;
     margin-right: 24px; }
+    .order--char--life {
+      display: flex;
+      align-items: center;
+      justify-content: space-between; }
+      .order--char--life--current {
+        position: relative;
+        flex-grow: 1;
+        margin-right: 8px; }
+        .order--char--life--current--icon {
+          position: absolute;
+          display: flex;
+          align-items: center;
+          top: 0;
+          right: 8px;
+          bottom: 0; }
+        .order--char--life--current--input {
+          width: 100%; }
+      .order--char--life--max {
+        flex: 1 0 auto; }
     .order--char--button {
       position: absolute;
-      top: 0;
-      right: 0; }
+      top: 8px;
+      right: 8px; }
+    .order--char--def {
+      display: flex; }
+      .order--char--def--item {
+        display: flex;
+        align-items: center;
+        margin-right: 16px; }
+        .order--char--def--item--icon {
+          margin-right: 8px;
+          margin-bottom: 4px;
+          display: flex;
+          align-items: center;
+          justify-content: center; }
     .order--char:last-child {
       margin-right: 0; }
-    .order--char--playing .order--char--name {
-      padding: 4px 8px; }
-    .order--char--playing:first-child .order--char--name {
-      border: 1px solid #53777a;
-      border-radius: 2px;
-      box-shadow: 0 0 5px 2px rgba(83, 119, 122, 0.6);
-      font-size: 18px; }

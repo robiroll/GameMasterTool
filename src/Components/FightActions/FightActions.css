@@ -16,9 +16,33 @@
   background-color: red; }
 
 .fight-actions--standard {
+  display: flex;
   border-bottom: 1px solid rgba(173, 216, 230, 0.6);
   margin-bottom: 16px;
   padding-bottom: 16px; }
+  .fight-actions--standard--item {
+    position: relative;
+    overflow: hidden; }
+    .fight-actions--standard--item:hover {
+      overflow: visible; }
+      .fight-actions--standard--item:hover .fight-actions--standard--item--button--difficulty {
+        opacity: 1; }
+    .fight-actions--standard--item--button {
+      display: flex;
+      align-items: center; }
+      .fight-actions--standard--item--button span {
+        display: flex;
+        align-items: center;
+        margin-right: 8px; }
+        .fight-actions--standard--item--button span:last-child {
+          margin-right: 0; }
+      .fight-actions--standard--item--button--difficulty {
+        position: absolute;
+        top: 41px;
+        right: 0;
+        left: 0;
+        opacity: 0;
+        z-index: 2; }
 
 .fight-actions--skill {
   position: relative; }
@@ -60,5 +84,11 @@
 .fight-actions--skills {
   display: flex; }
   .fight-actions--skills--action {
+    position: relative;
     display: flex;
-    flex-direction: column; }
+    flex-direction: column;
+    overflow: hidden; }
+    .fight-actions--skills--action:hover {
+      overflow: visible; }
+      .fight-actions--skills--action:hover .fight-actions--standard--item--button--difficulty {
+        opacity: 1; }

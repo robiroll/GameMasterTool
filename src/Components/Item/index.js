@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import Button from '../../styleguide/Button'
+import ItemStats from '../ItemStats'
 import './Item.css'
 
 export default class Item extends PureComponent {
@@ -48,31 +49,10 @@ export default class Item extends PureComponent {
               <Button onClick={onAssign}>Assign</Button>
             </React.Fragment>
           ) : (
-            <h4>can't assign: characters list empty</h4>
+            <h4>can{"'"}t assign: characters list empty</h4>
           )}
         </div>
-        {isOpen && (
-          <ul className="item--stats">
-            {item &&
-              Object.keys(item).map(key => {
-                const value = item[key]
-                return (
-                  <li key={key}>
-                    {key} :{' '}
-                    {typeof value !== 'object'
-                      ? value
-                      : Object.keys(value).map(val => {
-                          return (
-                            <div key={val}>
-                              {val}: {value[val]}
-                            </div>
-                          )
-                        })}
-                  </li>
-                )
-              })}
-          </ul>
-        )}
+        {isOpen && <ItemStats item={item} hideTitle />}
       </div>
     )
   }

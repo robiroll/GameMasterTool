@@ -1,15 +1,13 @@
 export default {
   kind: 'hero',
-  race: 'hobbit',
-  class: 'thief',
   attributes: {
     str: 3,
-    con: 3,
-    siz: 3,
     dex: 3,
-    int: 3,
-    pow: 8,
-    cha: 8
+    pow: 3,
+    con: 3,
+    cha: 3,
+    siz: 8,
+    int: 8
   },
   standardSkills: {
     athletics: 0,
@@ -78,8 +76,7 @@ export default {
   talents: [],
   skills: [],
   equipment: {
-    weapon: { type: 'str', name: 'Mains nues', size: 1, damage: 0 },
-    torso: { armor: 1 }
+    chest: { armor: 1 }
   },
   inventory: {
     lifePotion: {

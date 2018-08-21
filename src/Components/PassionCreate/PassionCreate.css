@@ -1,0 +1,21 @@
+.passion-create {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1px; }
+  .passion-create--label {
+    flex: 0 0 auto;
+    margin-right: 8px; }
+  .passion-create--input {
+    flex: 1 1 auto;
+    margin-right: 8px; }
+    .passion-create--input input {
+      width: 100%; }
+      .passion-create--input input::placeholder {
+        color: rgba(35, 100, 117, 0.6); }
+  .passion-create--options {
+    flex: 1 1;
+    margin-right: 8px; }
+    .passion-create--options select {
+      width: auto; }
+  .passion-create--action {
+    flex: 1 1 25%; }

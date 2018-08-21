@@ -9,7 +9,6 @@ import Selection from '../../Components/Selection'
 import Modal from 'react-modal'
 import Button from '../../styleguide/Button'
 import Card from '../../styleguide/Card'
-import Spinner from '../../styleguide/Spinner'
 import './Dashboard.css'
 
 const Dashboard = ({
@@ -26,16 +25,13 @@ const Dashboard = ({
   characters,
   selectCharacter,
   validateCharacters,
-  isValidateDisabled,
-  order
+  isValidateDisabled
 }) => {
   const isStartDisabled = fightStatus !== null
   const isEndTurnDisabled = orderPlaying.length > 0 || fightStatus !== 'in-progress'
   const isEndFightDisabled = fightStatus !== 'in-progress'
-  // return <Spinner />
 
-  if (!characters)
-    return <h3>character list empty</h3>
+  if (!characters) return <h3>character list empty</h3>
 
   return (
     <div className="dashboard">
@@ -61,7 +57,6 @@ const Dashboard = ({
           selectCharacter={selectCharacter}
           validateCharacters={validateCharacters}
           isValidateDisabled={isValidateDisabled}
-          order={order}
         />
       </Modal>
       {characterPlaying && <FightActions idCharacter={characterPlaying} onUseSkill={onUseSkill} />}
@@ -104,8 +99,7 @@ Dashboard.propTypes = {
   characters: PropTypes.object,
   selectCharacter: PropTypes.func,
   validateCharacters: PropTypes.func,
-  isValidateDisabled: PropTypes.bool,
-  order: PropTypes.array
+  isValidateDisabled: PropTypes.bool
 }
 
 export default Dashboard

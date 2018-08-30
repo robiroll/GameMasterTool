@@ -25,7 +25,7 @@ class Character extends Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.characters) {
       const { idCharacter } = nextProps
       this.setState({ hp: nextProps.characters[idCharacter].hp })
@@ -152,4 +152,7 @@ const mapStateToProps = state => {
   }
 }
 
-export default compose(firebaseConnect(['characters', 'skills']), connect(mapStateToProps))(Character)
+export default compose(
+  firebaseConnect(['characters', 'skills']),
+  connect(mapStateToProps)
+)(Character)

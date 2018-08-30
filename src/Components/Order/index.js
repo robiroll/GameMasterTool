@@ -9,12 +9,13 @@ const Order = ({ playing, order, characters, status, removeCharacter, onChangeHp
   <div className={`order order__${status}`}>
     {order.map(idCharacter => {
       const character = characters[idCharacter]
+      const { equipment } = character
       const stats = STATS(character)
       const { con, pow } = stats
       const isPlaying = playing === idCharacter
       let armor = con
       let magicArmor = pow
-      Object.values(character.equipment).forEach(eq => {
+      Object.values(equipment).forEach(eq => {
         armor += eq.armor || 0
         magicArmor += eq.magicArmor || 0
       })
@@ -49,7 +50,7 @@ const Order = ({ playing, order, characters, status, removeCharacter, onChangeHp
                     <Icon name="life" />
                   </div>
                 </div>
-                <div className="order--char--life--max">/ {HP_MAX(stats)}</div>
+                <div className="order--char--life--max">/ {HP_MAX(stats, equipment)}</div>
               </div>
               <div className="order--char--button">
                 <Button onClick={() => removeCharacter(idCharacter)} size="small" variant="accent-1">

@@ -59,15 +59,18 @@ const Character = ({
 
   let armor = 0
   let magicArmor = 0
+  let bonusHP = 0
   if (equipment)
     Object.values(equipment).forEach(eq => {
       armor += eq.armor || 0
       magicArmor += eq.magicArmor || 0
+      bonusHP += eq.hp || 0
     })
+  console.log(equipment)
   const apBase = AP(totalStats).base
   const apStart = AP(totalStats).start
   const apMax = AP(totalStats).max
-  const hpMax = HP_MAX(totalStats)
+  const hpMax = HP_MAX(totalStats, equipment)
 
   let totalStandardSkills = 0
   Object.keys(standardSkillsBonuses).forEach(key => {
@@ -153,6 +156,7 @@ const Character = ({
             )}
             <div className="character--stats--defenses--physical">Armor: {armor}</div>
             <div className="character--stats--defenses--magical">Magic Armor: {magicArmor}</div>
+            <div className="character--stats--defenses--hp">Bonus Health: {bonusHP}</div>
             <div className="character--hp">
               HP: {hp.toLocaleString('fr')} / {hpMax.toLocaleString('fr')}
             </div>

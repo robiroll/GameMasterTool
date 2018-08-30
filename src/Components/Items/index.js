@@ -17,6 +17,7 @@ const Items = ({ items, onCreate, onChangeField, onChangeBonus, fields, bonuses 
     size,
     armor,
     magicArmor,
+    hp,
     weaponHands,
     damage,
     damageType
@@ -123,6 +124,11 @@ const Items = ({ items, onCreate, onChangeField, onChangeBonus, fields, bonuses 
               <div className="items--fieldset">
                 <label htmlFor="magicArmor">Magic armor</label>
                 <input type="number" id="magicArmor" onChange={onChangeField} value={magicArmor} />
+              </div>
+
+              <div className="items--fieldset">
+                <label htmlFor="hp">HP</label>
+                <input type="number" id="hp" onChange={onChangeField} value={hp} />
               </div>
             </div>
           )}

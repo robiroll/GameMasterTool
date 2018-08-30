@@ -11,7 +11,7 @@ export const AP = stats => {
 
 export const HP_MAX = stats => {
   const { con, siz } = stats
-  const hpMax = (con + siz) * 10
+  const hpMax = con * 5 + siz * 15
   return hpMax
 }
 

@@ -117,4 +117,29 @@
       }
     }
   }
+
+  &--credits {
+    display: flex;
+    align-items: center;
+
+    &--title {
+      margin-top: $g1;
+      padding-top: $g1;
+      border-top: 1px solid rgba($neutral-4, 0.5);
+    }
+
+    &--input {
+      margin-right: $g2;
+      width: $g10;
+
+      input {
+        text-align: right;
+        width: 100%;
+      }
+    }
+
+    &--button {
+      width: 144px;
+    }
+  }
 }

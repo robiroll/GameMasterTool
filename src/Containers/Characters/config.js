@@ -85,5 +85,6 @@ export default {
       cost: 2,
       recovery: 20
     }
-  }
+  },
+  credits: 100
 }

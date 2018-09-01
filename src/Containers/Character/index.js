@@ -16,10 +16,13 @@ class Character extends Component {
   constructor(props) {
     super(props)
     const { idCharacter, characters } = props
-    const hp = characters ? characters[idCharacter].hp : 0
+    const character = characters[idCharacter]
+    const hp = characters ? character.hp : 0
+    const { credits } = character
     this.state = {
       usedAP: 0,
       hp,
+      credits,
       isStandardSkillsOpen: true,
       isProSkillsOpen: true
     }
@@ -43,8 +46,14 @@ class Character extends Component {
   handleChangeHp = e => {
     this.setState({ hp: Number(e.target.value) })
   }
+  handleChangeCredits = e => {
+    this.setState({ credits: Number(e.target.value) })
+  }
   handleUpdateHp = () => {
     this.updateCharacter({ hp: this.state.hp })
+  }
+  handleUpdateCredits = () => {
+    this.updateCharacter({ credits: this.state.credits })
   }
   handleChangeAttr = (operation, attr) => () => {
     const { characters, idCharacter, firebase } = this.props
@@ -129,10 +138,13 @@ class Character extends Component {
         idCharacter={idCharacter}
         skills={skills}
         onChangeHp={this.handleChangeHp}
+        onChangeCredits={this.handleChangeCredits}
         onChangeAttr={this.handleChangeAttr}
         onChangeSkill={this.handleChangeSkill}
         onUpdateHp={this.handleUpdateHp}
+        onUpdateCredits={this.handleUpdateCredits}
         hpToUpdate={this.state.hp}
+        creditsToUpdate={this.state.credits}
         onEquip={this.handleEquip}
         onUseItem={this.handleUseItem}
         onDropItem={this.handleDropItem}

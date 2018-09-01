@@ -70,64 +70,6 @@ class Character extends Component {
     const changes = { [skill]: newValue }
     firebase.update(`characters/${idCharacter}/${type}Skills`, changes)
   }
-  handleEquip = (key, item) => {
-    const { firebase, characters, idCharacter } = this.props
-    const char = characters[idCharacter]
-    const path = `characters/${idCharacter}`
-    if (char.equipment) {
-      const unequippedItem = char.equipment[item.slot]
-      firebase.push(`${path}/inventory`, unequippedItem)
-    }
-    if (item.slot === 'weapon') {
-      if (!char.equipment) {
-        firebase.set(`${path}/equipment/weapon1`, item)
-        firebase.remove(`${path}/inventory/${key}`)
-      } else {
-        const { weapon1, weapon2 } = char.equipment
-        if (!weapon1 && !weapon2) {
-          firebase.set(`${path}/equipment/weapon1`, item)
-          firebase.remove(`${path}/inventory/${key}`)
-        }
-        if (weapon1) {
-          if (weapon1.weaponHands === '1handed' && item.weaponHands !== '2handed') {
-            firebase.set(`${path}/equipment/weapon2`, item)
-            firebase.remove(`${path}/inventory/${key}`)
-          }
-        }
-        if (weapon2) {
-          if (weapon2.weaponHands === '1handed' && item.weaponHands !== '2handed') {
-            firebase.set(`${path}/equipment/weapon1`, item)
-            firebase.remove(`${path}/inventory/${key}`)
-          }
-        }
-      }
-    } else if (item.slot === 'ring') {
-      if (!char.equipment) {
-        firebase.set(`${path}/equipment/ring1`, item)
-        firebase.remove(`${path}/inventory/${key}`)
-      } else {
-        const { ring1, ring2 } = char.equipment
-        if (!ring1) {
-          firebase.set(`${path}/equipment/ring1`, item)
-          firebase.remove(`${path}/inventory/${key}`)
-        } else if (!ring2) {
-          firebase.set(`${path}/equipment/ring2`, item)
-          firebase.remove(`${path}/inventory/${key}`)
-        }
-      }
-    } else {
-      firebase.set(`${path}/equipment/${item.slot}`, item)
-      firebase.remove(`${path}/inventory/${key}`)
-    }
-  }
-  handleUseItem = (key, item) => {
-    const { firebase, idCharacter } = this.props
-    firebase.update(`characters/${idCharacter}/inventory/${key}`, { quantity: item.quantity - 1 })
-  }
-  handleDropItem = key => {
-    const { firebase, idCharacter } = this.props
-    firebase.remove(`characters/${idCharacter}/inventory/${key}`)
-  }
 
   render() {
     const { characters, idCharacter, skills } = this.props
@@ -145,9 +87,6 @@ class Character extends Component {
         onUpdateCredits={this.handleUpdateCredits}
         hpToUpdate={this.state.hp}
         creditsToUpdate={this.state.credits}
-        onEquip={this.handleEquip}
-        onUseItem={this.handleUseItem}
-        onDropItem={this.handleDropItem}
         onToggleStandardSkills={this.handleToggleStandardSkills}
         onToggleProSkills={this.handleToggleProSkills}
         isStandardSkillsOpen={this.state.isStandardSkillsOpen}

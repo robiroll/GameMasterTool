@@ -15,7 +15,14 @@ const ItemStats = ({ item, hideTitle }) => {
   const { name, slot, weaponType, damage, size, damageType, armor, magicArmor, hp, bonus, creditsValue } = item
   return (
     <div className="item-stats">
-      <div className="item-stats--block">{!hideTitle && <h5>{name}</h5>}</div>
+      <div className="item-stats--block">
+        {!hideTitle && (
+          <h5>
+            {name}
+            {item.quantity && <span>{` (${item.quantity})`}</span>}
+          </h5>
+        )}
+      </div>
       <div className="item-stats--divider" />
       <div className="item-stats--block">
         <div className="item-stats--item">Slot: {slot}</div>

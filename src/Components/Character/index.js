@@ -5,6 +5,7 @@ import Button from '../../styleguide/Button'
 import Difficulty from '../Difficulty'
 import Passion from '../../Containers/Passion'
 import Equipment from '../../Containers/Equipment'
+import Inventory from '../../Containers/Inventory'
 import { AP, HP_MAX } from '../../lib'
 import './Character.css'
 
@@ -21,7 +22,7 @@ const BONUS_NAME = {
 }
 
 const Character = ({
-  data: { hp, name, attributes, combatSkills, standardSkills, proSkills, talents, equipment, inventory, credits },
+  data: { hp, name, attributes, combatSkills, standardSkills, proSkills, talents, equipment, credits },
   idCharacter,
   onUpdateHp,
   onChangeHp,
@@ -29,9 +30,6 @@ const Character = ({
   onChangeCredits,
   onChangeAttr,
   onChangeSkill,
-  onEquip,
-  onUseItem,
-  onDropItem,
   hpToUpdate,
   creditsToUpdate,
   skills,
@@ -262,29 +260,7 @@ const Character = ({
           </div>
         )}
         <h3 className="character--title">Inventaire</h3>
-
-        {inventory && (
-          <div className="character--inventory">
-            {Object.keys(inventory).map(key => {
-              const item = inventory[key]
-              const { name, quantity } = item
-              return (
-                <div key={key} className="character--inventory--item">
-                  {name} {quantity && <span>({quantity})</span>}
-                  {item.type === 'equipment' && <Button onClick={() => onEquip(key, item)}>Equip ({item.slot})</Button>}
-                  {(item.type === 'usable' || item.type === 'permanent') && (
-                    <Button onClick={() => onUseItem(key, item)} disabled={item.quantity <= 0}>
-                      Use item ({item.apCost})
-                    </Button>
-                  )}
-                  <Button onClick={() => onDropItem(key)} size="small">
-                    x
-                  </Button>
-                </div>
-              )
-            })}
-          </div>
-        )}
+        <Inventory idCharacter={idCharacter} />
         <h5 className="character--credits--title">credits: {credits.toLocaleString('fr')}</h5>
         <div className="character--credits">
           <div className="character--credits--input">
@@ -361,9 +337,6 @@ Character.propTypes = {
   onChangeSkill: PropTypes.func,
   onChangeHp: PropTypes.func,
   onChangeCredits: PropTypes.func,
-  onEquip: PropTypes.func,
-  onUseItem: PropTypes.func,
-  onDropItem: PropTypes.func,
   hpToUpdate: PropTypes.number,
   creditsToUpdate: PropTypes.number,
   skills: PropTypes.object,

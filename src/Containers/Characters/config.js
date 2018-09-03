@@ -86,5 +86,5 @@ export default {
       recovery: 20
     }
   },
-  credits: 100
+  credits: 500
 }

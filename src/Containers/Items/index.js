@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import ItemsComponent from '../../Components/Items'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
+import { omit } from 'lodash'
 import { firebaseConnect } from 'react-redux-firebase'
 
 class Items extends Component {
@@ -46,24 +47,19 @@ class Items extends Component {
     // TODO Handle case where item name is empty maybe
     const { firebase } = this.props
     const { fields, bonuses } = this.state
-    const item = { ...fields }
+    let item = { ...fields }
+    if (item.type !== 'usable') {
+      item = omit(item, ['quantity'])
+    }
     if (item.type === 'equipment') {
-      delete item.quantity
+      if (item.slot !== 'weapon') item = omit(item, ['weaponHands', 'damageType', 'damage'])
       const bonus = { ...bonuses }
       Object.keys(bonus).map(key => {
         if (bonus[key] <= 0) delete bonus[key]
       })
       Object.assign(item, { bonus })
-      if (item.slot !== 'weapon') {
-        delete item.weaponHands
-        delete item.damageType
-        delete item.damage
-      }
     } else {
-      delete item.slot
-      delete item.size
-      delete item.armor
-      delete item.magicArmor
+      item = omit(item, ['slot', 'hp', 'armor', 'magicArmor', 'weaponHands', 'damageType', 'damage'])
     }
     firebase.push('items', item)
   }

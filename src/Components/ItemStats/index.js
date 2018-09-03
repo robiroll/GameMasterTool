@@ -12,10 +12,17 @@ const LABELS = {
   siz: 'Size'
 }
 const ItemStats = ({ item, hideTitle }) => {
-  const { name, slot, weaponType, damage, size, damageType, armor, magicArmor, bonus, creditsValue } = item
+  const { name, slot, weaponType, damage, size, damageType, armor, magicArmor, hp, bonus, creditsValue } = item
   return (
     <div className="item-stats">
-      <div className="item-stats--block">{!hideTitle && <h5>{name}</h5>}</div>
+      <div className="item-stats--block">
+        {!hideTitle && (
+          <h5>
+            {name}
+            {item.quantity && <span>{` (${item.quantity})`}</span>}
+          </h5>
+        )}
+      </div>
       <div className="item-stats--divider" />
       <div className="item-stats--block">
         <div className="item-stats--item">Slot: {slot}</div>
@@ -32,6 +39,7 @@ const ItemStats = ({ item, hideTitle }) => {
         <React.Fragment>
           <div className="item-stats--block">
             <h6 className="item-stats--item--bonus--title">Bonus</h6>
+            {hp && <div className="item-stats--item">Health points: {hp}</div>}
             {Object.entries(bonus).map(([key, value]) => {
               return (
                 <div key={key} className="item-stats--item">

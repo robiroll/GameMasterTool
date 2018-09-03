@@ -73,3 +73,19 @@
       align-items: center;
       justify-content: space-between;
       margin-bottom: 8px; }
+
+.character--credits {
+  display: flex;
+  align-items: center; }
+  .character--credits--title {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(147, 184, 194, 0.5); }
+  .character--credits--input {
+    margin-right: 16px;
+    width: 80px; }
+    .character--credits--input input {
+      text-align: right;
+      width: 100%; }
+  .character--credits--button {
+    width: 144px; }

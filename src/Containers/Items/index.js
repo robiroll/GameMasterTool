@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import ItemsComponent from '../../Components/Items'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
+import { omit } from 'lodash'
 import { firebaseConnect } from 'react-redux-firebase'
 
 class Items extends Component {
@@ -28,7 +29,8 @@ class Items extends Component {
         apCost: 0,
         creditsValue: 100,
         armor: 0,
-        magicArmor: 0
+        magicArmor: 0,
+        hp: 0
       },
       bonuses: {
         str: 0,
@@ -45,24 +47,19 @@ class Items extends Component {
     // TODO Handle case where item name is empty maybe
     const { firebase } = this.props
     const { fields, bonuses } = this.state
-    const item = { ...fields }
+    let item = { ...fields }
+    if (item.type !== 'usable') {
+      item = omit(item, ['quantity'])
+    }
     if (item.type === 'equipment') {
-      delete item.quantity
+      if (item.slot !== 'weapon') item = omit(item, ['weaponHands', 'damageType', 'damage'])
       const bonus = { ...bonuses }
       Object.keys(bonus).map(key => {
         if (bonus[key] <= 0) delete bonus[key]
       })
       Object.assign(item, { bonus })
-      if (item.slot !== 'weapon') {
-        delete item.weaponHands
-        delete item.damageType
-        delete item.damage
-      }
     } else {
-      delete item.slot
-      delete item.size
-      delete item.armor
-      delete item.magicArmor
+      item = omit(item, ['slot', 'hp', 'armor', 'magicArmor', 'weaponHands', 'damageType', 'damage'])
     }
     firebase.push('items', item)
   }
@@ -70,7 +67,9 @@ class Items extends Component {
   handleChangeField = e => {
     let { id, value } = e.target
     const fields = { ...this.state.fields }
-    if (['size', 'weight', 'apCost', 'creditsValue', 'quantity', 'armor', 'magicArmor', 'damage'].indexOf(id) > -1)
+    if (
+      ['size', 'weight', 'apCost', 'creditsValue', 'quantity', 'armor', 'magicArmor', 'hp', 'damage'].indexOf(id) > -1
+    )
       value = Number(value)
     Object.assign(fields, { [id]: value })
     this.setState({ fields })
@@ -105,4 +104,7 @@ const mapStateToProps = state => ({
   characters: state.firebase.data.characters
 })
 
-export default compose(firebaseConnect(['items', 'characters']), connect(mapStateToProps))(Items)
+export default compose(
+  firebaseConnect(['items', 'characters']),
+  connect(mapStateToProps)
+)(Items)

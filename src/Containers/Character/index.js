@@ -16,16 +16,19 @@ class Character extends Component {
   constructor(props) {
     super(props)
     const { idCharacter, characters } = props
-    const hp = characters ? characters[idCharacter].hp : 0
+    const character = characters[idCharacter]
+    const hp = characters ? character.hp : 0
+    const { credits } = character
     this.state = {
       usedAP: 0,
       hp,
+      credits,
       isStandardSkillsOpen: true,
       isProSkillsOpen: true
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.characters) {
       const { idCharacter } = nextProps
       this.setState({ hp: nextProps.characters[idCharacter].hp })
@@ -43,8 +46,14 @@ class Character extends Component {
   handleChangeHp = e => {
     this.setState({ hp: Number(e.target.value) })
   }
+  handleChangeCredits = e => {
+    this.setState({ credits: Number(e.target.value) })
+  }
   handleUpdateHp = () => {
     this.updateCharacter({ hp: this.state.hp })
+  }
+  handleUpdateCredits = () => {
+    this.updateCharacter({ credits: this.state.credits })
   }
   handleChangeAttr = (operation, attr) => () => {
     const { characters, idCharacter, firebase } = this.props
@@ -61,64 +70,6 @@ class Character extends Component {
     const changes = { [skill]: newValue }
     firebase.update(`characters/${idCharacter}/${type}Skills`, changes)
   }
-  handleEquip = (key, item) => {
-    const { firebase, characters, idCharacter } = this.props
-    const char = characters[idCharacter]
-    const path = `characters/${idCharacter}`
-    if (char.equipment) {
-      const unequippedItem = char.equipment[item.slot]
-      firebase.push(`${path}/inventory`, unequippedItem)
-    }
-    if (item.slot === 'weapon') {
-      if (!char.equipment) {
-        firebase.set(`${path}/equipment/weapon1`, item)
-        firebase.remove(`${path}/inventory/${key}`)
-      } else {
-        const { weapon1, weapon2 } = char.equipment
-        if (!weapon1 && !weapon2) {
-          firebase.set(`${path}/equipment/weapon1`, item)
-          firebase.remove(`${path}/inventory/${key}`)
-        }
-        if (weapon1) {
-          if (weapon1.weaponHands === '1handed' && item.weaponHands !== '2handed') {
-            firebase.set(`${path}/equipment/weapon2`, item)
-            firebase.remove(`${path}/inventory/${key}`)
-          }
-        }
-        if (weapon2) {
-          if (weapon2.weaponHands === '1handed' && item.weaponHands !== '2handed') {
-            firebase.set(`${path}/equipment/weapon1`, item)
-            firebase.remove(`${path}/inventory/${key}`)
-          }
-        }
-      }
-    } else if (item.slot === 'ring') {
-      if (!char.equipment) {
-        firebase.set(`${path}/equipment/ring1`, item)
-        firebase.remove(`${path}/inventory/${key}`)
-      } else {
-        const { ring1, ring2 } = char.equipment
-        if (!ring1) {
-          firebase.set(`${path}/equipment/ring1`, item)
-          firebase.remove(`${path}/inventory/${key}`)
-        } else if (!ring2) {
-          firebase.set(`${path}/equipment/ring2`, item)
-          firebase.remove(`${path}/inventory/${key}`)
-        }
-      }
-    } else {
-      firebase.set(`${path}/equipment/${item.slot}`, item)
-      firebase.remove(`${path}/inventory/${key}`)
-    }
-  }
-  handleUseItem = (key, item) => {
-    const { firebase, idCharacter } = this.props
-    firebase.update(`characters/${idCharacter}/inventory/${key}`, { quantity: item.quantity - 1 })
-  }
-  handleDropItem = key => {
-    const { firebase, idCharacter } = this.props
-    firebase.remove(`characters/${idCharacter}/inventory/${key}`)
-  }
 
   render() {
     const { characters, idCharacter, skills } = this.props
@@ -129,13 +80,13 @@ class Character extends Component {
         idCharacter={idCharacter}
         skills={skills}
         onChangeHp={this.handleChangeHp}
+        onChangeCredits={this.handleChangeCredits}
         onChangeAttr={this.handleChangeAttr}
         onChangeSkill={this.handleChangeSkill}
         onUpdateHp={this.handleUpdateHp}
+        onUpdateCredits={this.handleUpdateCredits}
         hpToUpdate={this.state.hp}
-        onEquip={this.handleEquip}
-        onUseItem={this.handleUseItem}
-        onDropItem={this.handleDropItem}
+        creditsToUpdate={this.state.credits}
         onToggleStandardSkills={this.handleToggleStandardSkills}
         onToggleProSkills={this.handleToggleProSkills}
         isStandardSkillsOpen={this.state.isStandardSkillsOpen}
@@ -152,4 +103,7 @@ const mapStateToProps = state => {
   }
 }
 
-export default compose(firebaseConnect(['characters', 'skills']), connect(mapStateToProps))(Character)
+export default compose(
+  firebaseConnect(['characters', 'skills']),
+  connect(mapStateToProps)
+)(Character)

@@ -25,6 +25,7 @@ const Equipment = ({ equipment, onSelect, onUnequip, selectedItem }) => {
   if (!equipment) return 'You have equipped nothing yet'
   let ttlarmor = 0
   let ttlmagicArmor = 0
+  let ttlhp = 0
   let ttlstr = 0
   let ttldex = 0
   let ttlcon = 0
@@ -34,9 +35,10 @@ const Equipment = ({ equipment, onSelect, onUnequip, selectedItem }) => {
   let ttlsiz = 0
   let ttlcreditsValue = 0
   Object.values(equipment).map(item => {
-    const { armor, magicArmor, bonus, creditsValue } = item
+    const { armor, magicArmor, hp, bonus, creditsValue } = item
     if (armor) ttlarmor += armor
     if (magicArmor) ttlmagicArmor += magicArmor
+    if (hp) ttlhp += hp
     if (bonus) {
       const { str, dex, con, pow, cha, int, siz } = bonus
       if (str) ttlstr += str
@@ -84,6 +86,7 @@ const Equipment = ({ equipment, onSelect, onUnequip, selectedItem }) => {
         <h4>Overall equipment stats</h4>
         <div className="equipment--stats--item">Armor: {ttlarmor}</div>
         <div className="equipment--stats--item">Magic armor: {ttlmagicArmor}</div>
+        <div className="equipment--stats--item">Bonus HP: {ttlhp}</div>
         <div className="equipment--stats--item">Strength: {ttlstr}</div>
         <div className="equipment--stats--item">Dexterity: {ttldex}</div>
         <div className="equipment--stats--item">Constitution: {ttlcon}</div>

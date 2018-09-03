@@ -1,0 +1,42 @@
+@import 'scss/layout.scss';
+@import 'scss/colors.scss';
+
+.inventory {
+  display: flex;
+  align-items: flex-start;
+  min-height: 200px;
+
+  &--items {
+    display: flex;
+    flex-wrap: wrap;
+
+    &--item {
+      opacity: 0.1;
+      width: $g6;
+      height: $g6;
+      padding: $g1;
+      border: 1px dashed rgba($white, 0.5);
+      cursor: pointer;
+
+      &__selected {
+        opacity: 1;
+        filter: drop-shadow(0 0 5px rgba($white, 0.8));
+      }
+    }
+  }
+
+  &--single {
+    border: 1px solid rgba($neutral-4, 0.5);
+    box-shadow: 0 0 $g1 rgba($neutral-5, 0.5);
+    margin-right: $g3;
+    min-width: 200px;
+
+    &--button {
+      // margin-top: $g1;
+    }
+  }
+
+  &--stats {
+    justify-self: flex-end;
+  }
+}

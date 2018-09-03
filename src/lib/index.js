@@ -9,9 +9,14 @@ export const AP = stats => {
   }
 }
 
-export const HP_MAX = stats => {
+export const HP_MAX = (stats, equipment) => {
   const { con, siz } = stats
-  const hpMax = (con + siz) * 10
+  let hpMax = con * 5 + siz * 15
+  if (equipment)
+    Object.keys(equipment).map(key => {
+      const { hp } = equipment[key]
+      if (hp) hpMax += hp
+    })
   return hpMax
 }
 

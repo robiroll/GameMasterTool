@@ -32,6 +32,11 @@ class Order extends Component {
     firebase.update(`characters/${idCharacter}`, { hp: Number(e.target.value) })
   }
 
+  handleApplyStatus = idCharacter => e => {
+    const { firebase } = this.props
+    firebase.update(`characters/${idCharacter}`, { status: e.target.value })
+  }
+
   render() {
     const { status, order, orderPlaying, orderDone, characters } = this.props
     const orderDisplay = status === 'playing' ? orderPlaying : status === 'done' ? orderDone : order
@@ -44,6 +49,7 @@ class Order extends Component {
         playing={playing}
         characters={characters}
         onChangeHp={this.handleUpdateHp}
+        onApplyStatus={this.handleApplyStatus}
       />
     )
   }
@@ -62,4 +68,10 @@ const mapDispatchToProps = dispatch => ({
   }
 })
 
-export default compose(firebaseConnect(['characters']), connect(mapStateToProps, mapDispatchToProps))(Order)
+export default compose(
+  firebaseConnect(['characters']),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
+)(Order)

@@ -38,6 +38,8 @@
           width: 100%; }
       .order--char--life--max {
         flex: 1 0 auto; }
+    .order--char--status {
+      margin-top: 8px; }
     .order--char--button {
       position: absolute;
       top: 8px;

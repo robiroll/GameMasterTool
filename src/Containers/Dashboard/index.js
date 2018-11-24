@@ -39,29 +39,49 @@ class Dashboard extends Component {
       firebase.update(`characters/${char}`, { cooldowns })
     })
   }
+  removeStatuses = () => {
+    const { firebase, characters } = this.props
+    Object.keys(characters).map(char => {
+      const { status } = characters[char]
+      if (status) firebase.update(`characters/${char}`, { status: null })
+    })
+  }
 
   handleNextRound = () => {
     const { order, firebase, characters, nextRound } = this.props
     order.map(char => {
       const character = characters[char]
-      const { ap, cooldowns } = character
+      const { ap, cooldowns, status } = character
       const { base, max } = AP(STATS(character))
       let newCooldowns = cooldowns || null
       if (cooldowns)
         Object.keys(cooldowns).map(cd => {
           if (newCooldowns[cd] > 0) newCooldowns[cd] -= 1
         })
-      let newAp = ap + base
+      let newAp = ap
+      let newStatus = status || null
+      switch (status) {
+        case 'frozen':
+          newAp += 0
+          break
+        case 'slowed':
+          newAp += Math.round(base / 2)
+          break
+        default:
+          newAp += base
+      }
       if (newAp > max) newAp = max
       firebase.update(`characters/${char}`, {
         ap: newAp,
-        cooldowns: newCooldowns
+        cooldowns: newCooldowns,
+        status: newStatus
       })
     })
     nextRound()
   }
   handleStartFight = () => {
     this.resetCooldowns()
+    this.removeStatuses()
     this.setState({ isOpen: true })
     this.props.startFight()
   }
@@ -79,6 +99,7 @@ class Dashboard extends Component {
   handleEndFight = () => {
     this.props.endFight()
     this.resetCooldowns()
+    this.removeStatuses()
   }
 
   handleCloseSelection = () => this.setState({ isOpen: false })
@@ -140,5 +161,8 @@ export default compose(
     'characters', // { path: '/todos' } // object notation
     'items'
   ]),
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
 )(Dashboard)

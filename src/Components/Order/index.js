@@ -5,7 +5,7 @@ import Icon from '../../styleguide/Icon'
 import { STATS, HP_MAX } from '../../lib'
 import './Order.css'
 
-const Order = ({ playing, order, characters, status, removeCharacter, onChangeHp }) => (
+const Order = ({ playing, order, characters, status, removeCharacter, onChangeHp, onApplyStatus }) => (
   <div className={`order order__${status}`}>
     {order.map(idCharacter => {
       const character = characters[idCharacter]
@@ -52,6 +52,18 @@ const Order = ({ playing, order, characters, status, removeCharacter, onChangeHp
                 </div>
                 <div className="order--char--life--max">/ {HP_MAX(stats, equipment)}</div>
               </div>
+              <div className="order--char--status">
+                <select name="status" id="status" onChange={onApplyStatus(idCharacter)}>
+                  <option value="none">None</option>
+                  <option value="frozen">Frozen</option>
+                  <option value="slowed">Slowed</option>
+                  <option value="blinded">Blinded</option>
+                  <option value="charmed">Charmed</option>
+                  <option value="crippled">Crippled</option>
+                  <option value="dazed">Dazed</option>
+                  <option value="knocked">Knocked down</option>
+                </select>
+              </div>
               <div className="order--char--button">
                 <Button onClick={() => removeCharacter(idCharacter)} size="small" variant="accent-1">
                   X
@@ -71,7 +83,8 @@ Order.propTypes = {
   characters: PropTypes.object,
   status: PropTypes.string,
   removeCharacter: PropTypes.func,
-  onChangeHp: PropTypes.func
+  onChangeHp: PropTypes.func,
+  onApplyStatus: PropTypes.func
 }
 
 export default Order

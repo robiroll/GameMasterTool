@@ -8,8 +8,10 @@ import { STATS } from '../../lib'
 import './FightActions.css'
 
 const FightActions = ({ character, onUseSkill, onAttack, onMove, onUpSp, onEndTurn, onDelayTurn, skills }) => {
-  const { cooldowns, ap, sp, combatSkills, equipment } = character
+  const { cooldowns, ap, sp, combatSkills, equipment, status } = character
   const stats = STATS(character)
+  const attackDisabled = ['frozen', 'knocked'].indexOf(status) > -1
+  const movementDisabled = ['frozen', 'knocked', 'crippled'].indexOf(status) > -1
   let weapons = []
   if (equipment && equipment.weapon1) weapons.push(equipment.weapon1)
   if (equipment && equipment.weapon2) weapons.push(equipment.weapon2)
@@ -25,7 +27,7 @@ const FightActions = ({ character, onUseSkill, onAttack, onMove, onUpSp, onEndTu
               return (
                 <div key={weapon.name} className="fight-actions--standard--item">
                   <Button
-                    disabled={!(ap - weapon.size >= 0)}
+                    disabled={!(ap - weapon.size >= 0) || attackDisabled}
                     onClick={() => {
                       onAttack(weapon)
                     }}
@@ -51,7 +53,7 @@ const FightActions = ({ character, onUseSkill, onAttack, onMove, onUpSp, onEndTu
             })}
           <Button
             className="fight-actions--standard--item"
-            disabled={!(ap > 0)}
+            disabled={!(ap > 0) || movementDisabled}
             onClick={() => {
               onMove()
             }}
@@ -79,12 +81,12 @@ const FightActions = ({ character, onUseSkill, onAttack, onMove, onUpSp, onEndTu
                   <div className="fight-actions--skills--action">
                     <Button
                       className="fight-actions--skills--item"
-                      disabled={!(points - skill.cost >= 0) || (cooldowns && cooldowns[key] > 0)}
+                      disabled={!(points - skill.cost >= 0) || (cooldowns && cooldowns[key] > 0) || attackDisabled}
                       variant={`${skill.type === 'symbiosis' && 'accent-1'}`}
                       onClick={() => {
                         onUseSkill(key, skill)
                       }}
-                      progress={cooldowns[key] / skill.cooldown * 100}
+                      progress={(cooldowns[key] / skill.cooldown) * 100}
                     >
                       <span className="fight-actions--standard--item--button">
                         <span>{key}</span>

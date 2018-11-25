@@ -239,6 +239,25 @@ textarea {
   }
 }
 
+.select {
+  position: relative;
+
+  select {
+    border-radius: 0;
+  }
+
+  &::before {
+    position: absolute;
+    display: block;
+    top: 50%;
+    right: $g1;
+    margin-top: -2px;
+    border: 4px solid transparent;
+    border-top-color: $white;
+    content: ' ';
+  }
+}
+
 input[type='checkbox'] {
   -webkit-appearance: initial;
   width: $g3;

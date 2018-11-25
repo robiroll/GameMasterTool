@@ -70,7 +70,24 @@
     }
 
     &--status {
+      display: flex;
+      align-items: center;
       margin-top: $g1;
+
+      &--options {
+        flex: 1 1 100%;
+      }
+
+      &--value {
+        flex: 0 0 auto;
+        margin: 0 $g1;
+        width: $g3;
+        text-align: center;
+      }
+
+      &--button {
+        flex: 0 0 auto;
+      }
     }
 
     &--button {

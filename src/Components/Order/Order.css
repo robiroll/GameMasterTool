@@ -39,7 +39,18 @@
       .order--char--life--max {
         flex: 1 0 auto; }
     .order--char--status {
+      display: flex;
+      align-items: center;
       margin-top: 8px; }
+      .order--char--status--options {
+        flex: 1 1 100%; }
+      .order--char--status--value {
+        flex: 0 0 auto;
+        margin: 0 8px;
+        width: 24px;
+        text-align: center; }
+      .order--char--status--button {
+        flex: 0 0 auto; }
     .order--char--button {
       position: absolute;
       top: 8px;

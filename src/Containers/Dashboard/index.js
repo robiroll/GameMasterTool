@@ -42,8 +42,8 @@ class Dashboard extends Component {
   removeStatuses = () => {
     const { firebase, characters } = this.props
     Object.keys(characters).map(char => {
-      const { status } = characters[char]
-      if (status) firebase.update(`characters/${char}`, { status: null })
+      const { statuses } = characters[char]
+      if (statuses) firebase.update(`characters/${char}`, { statuses: null })
     })
   }
 
@@ -51,30 +51,39 @@ class Dashboard extends Component {
     const { order, firebase, characters, nextRound } = this.props
     order.map(char => {
       const character = characters[char]
-      const { ap, cooldowns, status } = character
+      const { ap, cooldowns, statuses } = character
       const { base, max } = AP(STATS(character))
       let newCooldowns = cooldowns || null
+      let newStatuses = statuses || null
       if (cooldowns)
         Object.keys(cooldowns).map(cd => {
           if (newCooldowns[cd] > 0) newCooldowns[cd] -= 1
         })
       let newAp = ap
-      let newStatus = status || null
-      switch (status) {
-        case 'frozen':
-          newAp += 0
-          break
-        case 'slowed':
-          newAp += Math.round(base / 2)
-          break
-        default:
-          newAp += base
-      }
+      if (newStatuses) {
+        Object.entries(newStatuses).map(([key, value]) => {
+          const newValue = value - 1
+          if (newValue < 1) delete newStatuses[key]
+          else {
+            newStatuses[key] = newValue
+            switch (key) {
+              case 'frozen':
+                newAp += 0
+                break
+              case 'slowed':
+                newAp += Math.round(base / 2)
+                break
+              default:
+                newAp += base
+            }
+          }
+        })
+      } else newAp += base
       if (newAp > max) newAp = max
       firebase.update(`characters/${char}`, {
         ap: newAp,
         cooldowns: newCooldowns,
-        status: newStatus
+        statuses: newStatuses
       })
     })
     nextRound()

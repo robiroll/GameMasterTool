@@ -15,8 +15,7 @@ const FightActions = ({ character, onUseSkill, onAttack, onMove, onUpSp, onEndTu
   if (statuses)
     Object.keys(statuses).forEach(key => {
       if (['frozen', 'knocked'].indexOf(key) > -1) attackDisabled = true
-
-      // ['frozen', 'knocked', 'crippled'].indexOf(status) > -1
+      if (['frozen', 'knocked', 'crippled'].indexOf(key) > -1) movementDisabled = true
     })
   let weapons = []
   if (equipment && equipment.weapon1) weapons.push(equipment.weapon1)

@@ -8,10 +8,16 @@ import { STATS } from '../../lib'
 import './FightActions.css'
 
 const FightActions = ({ character, onUseSkill, onAttack, onMove, onUpSp, onEndTurn, onDelayTurn, skills }) => {
-  const { cooldowns, ap, sp, combatSkills, equipment, status } = character
+  const { cooldowns, ap, sp, combatSkills, equipment, statuses } = character
   const stats = STATS(character)
-  const attackDisabled = ['frozen', 'knocked'].indexOf(status) > -1
-  const movementDisabled = ['frozen', 'knocked', 'crippled'].indexOf(status) > -1
+  let attackDisabled = false
+  let movementDisabled = false
+  if (statuses)
+    Object.keys(statuses).forEach(key => {
+      if (['frozen', 'knocked'].indexOf(key) > -1) attackDisabled = true
+
+      // ['frozen', 'knocked', 'crippled'].indexOf(status) > -1
+    })
   let weapons = []
   if (equipment && equipment.weapon1) weapons.push(equipment.weapon1)
   if (equipment && equipment.weapon2) weapons.push(equipment.weapon2)

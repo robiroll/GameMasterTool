@@ -23,7 +23,9 @@ class Order extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      hp: 0
+      hp: 0,
+      duration: 0,
+      status: ''
     }
   }
 
@@ -32,9 +34,18 @@ class Order extends Component {
     firebase.update(`characters/${idCharacter}`, { hp: Number(e.target.value) })
   }
 
-  handleApplyStatus = idCharacter => e => {
+  handleApplyStatus = idCharacter => () => {
     const { firebase } = this.props
-    firebase.update(`characters/${idCharacter}`, { status: e.target.value })
+    this.setState({ duration: 0, status: '' })
+    firebase.update(`characters/${idCharacter}/statuses`, { [this.state.status]: Number(this.state.duration) })
+  }
+
+  handleChangeStatus = e => {
+    this.setState({ status: e.target.value })
+  }
+
+  handleChangeDuration = e => {
+    this.setState({ duration: e.target.value })
   }
 
   render() {
@@ -50,6 +61,10 @@ class Order extends Component {
         characters={characters}
         onChangeHp={this.handleUpdateHp}
         onApplyStatus={this.handleApplyStatus}
+        onChangeDuration={this.handleChangeDuration}
+        onChangeStatus={this.handleChangeStatus}
+        statusEffect={this.state.status}
+        duration={this.state.duration}
       />
     )
   }

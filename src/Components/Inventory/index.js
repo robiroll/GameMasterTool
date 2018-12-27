@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import Button from '../../styleguide/Button'
 import Icon from '../../styleguide/Icon'
 import ItemStats from '../ItemStats'
-import './Inventory.css'
+import './Inventory.scss'
 
 const Inventory = ({ items, onSelect, onEquip, onUse, onDropItem, selectedItem }) => {
   if (!items) return 'You have no items'

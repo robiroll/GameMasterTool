@@ -1,18 +1,15 @@
-import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
-import Card from '../../styleguide/Card';
-import Button from '../../styleguide/Button';
-import Difficulty from '../Difficulty';
-import Passion from '../../Containers/Passion';
-import Equipment from '../../Containers/Equipment';
-import Inventory from '../../Containers/Inventory';
-import { AP, HP_MAX } from '../../lib';
-import './Character.css';
+import React, { Fragment } from 'react'
+import PropTypes from 'prop-types'
+import Card from '../../styleguide/Card'
+import Button from '../../styleguide/Button'
+import Difficulty from '../Difficulty'
+import Passion from '../../Containers/Passion'
+import Equipment from '../../Containers/Equipment'
+import Inventory from '../../Containers/Inventory'
+import { AP, HP_MAX } from '../../lib'
+import './Character.scss'
 
-import {
-  standardSkills as standardSkillsBonuses,
-  proSkills as proSkillsBonuses
-} from './config';
+import { standardSkills as standardSkillsBonuses, proSkills as proSkillsBonuses } from './config'
 
 const BONUS_NAME = {
   str: 'Force',
@@ -22,20 +19,10 @@ const BONUS_NAME = {
   siz: 'Taille',
   cha: 'Charisme',
   pow: 'Power'
-};
+}
 
 const Character = ({
-  data: {
-    hp,
-    name,
-    attributes,
-    combatSkills,
-    standardSkills,
-    proSkills,
-    talents,
-    equipment,
-    credits
-  },
+  data: { hp, name, attributes, combatSkills, standardSkills, proSkills, talents, equipment, credits },
   idCharacter,
   onUpdateHp,
   onChangeHp,
@@ -51,9 +38,9 @@ const Character = ({
   isStandardSkillsOpen,
   isProSkillsOpen
 }) => {
-  let weapons = [];
-  if (equipment && equipment.weapon1) weapons.push(equipment.weapon1);
-  if (equipment && equipment.weapon2) weapons.push(equipment.weapon2);
+  let weapons = []
+  if (equipment && equipment.weapon1) weapons.push(equipment.weapon1)
+  if (equipment && equipment.weapon2) weapons.push(equipment.weapon2)
   let bonuses = {
     str: 0,
     dex: 0,
@@ -62,52 +49,47 @@ const Character = ({
     cha: 0,
     int: 0,
     siz: 0
-  };
+  }
   if (equipment)
     Object.keys(equipment).map(key => {
-      const eq = equipment[key];
-      if (eq.bonus)
-        Object.keys(eq.bonus).map(bns => (bonuses[bns] += eq.bonus[bns]));
-    });
-  let totalStats = {};
-  Object.keys(attributes).map(
-    attr => (totalStats[attr] = bonuses[attr] + attributes[attr])
-  );
+      const eq = equipment[key]
+      if (eq.bonus) Object.keys(eq.bonus).map(bns => (bonuses[bns] += eq.bonus[bns]))
+    })
+  let totalStats = {}
+  Object.keys(attributes).map(attr => (totalStats[attr] = bonuses[attr] + attributes[attr]))
 
-  let armor = 0;
-  let magicArmor = 0;
-  let bonusHP = 0;
+  let armor = 0
+  let magicArmor = 0
+  let bonusHP = 0
   if (equipment)
     Object.values(equipment).forEach(eq => {
-      armor += eq.armor || 0;
-      magicArmor += eq.magicArmor || 0;
-      bonusHP += eq.hp || 0;
-    });
-  const apBase = AP(totalStats).base;
-  const apStart = AP(totalStats).start;
-  const apMax = AP(totalStats).max;
-  const hpMax = HP_MAX(totalStats, equipment);
+      armor += eq.armor || 0
+      magicArmor += eq.magicArmor || 0
+      bonusHP += eq.hp || 0
+    })
+  const apBase = AP(totalStats).base
+  const apStart = AP(totalStats).start
+  const apMax = AP(totalStats).max
+  const hpMax = HP_MAX(totalStats, equipment)
 
-  let totalStandardSkills = 0;
+  let totalStandardSkills = 0
   Object.keys(standardSkillsBonuses).forEach(key => {
-    const value = standardSkills[key] || 0;
-    totalStandardSkills += value;
-  });
+    const value = standardSkills[key] || 0
+    totalStandardSkills += value
+  })
 
-  let totalProSkills = 0;
+  let totalProSkills = 0
   Object.keys(proSkillsBonuses).forEach(key => {
-    const value = proSkills[key] || 0;
-    totalProSkills += value;
-  });
+    const value = proSkills[key] || 0
+    totalProSkills += value
+  })
 
   return (
     <Card title={<h2>{name}</h2>}>
       <div className="character">
         <div className="character--stats">
           <div className="character--stats--attributes">
-            <h4 className="character--title">
-              Attributes ({Object.values(totalStats).reduce((a, v) => a + v)})
-            </h4>
+            <h4 className="character--title">Attributes ({Object.values(totalStats).reduce((a, v) => a + v)})</h4>
             {Object.keys(bonuses).map(bns => {
               return (
                 <div
@@ -115,9 +97,7 @@ const Character = ({
                   className={`character--stats--attributes--elem character--stats--attributes--elem--${bns}`}
                 >
                   <span>
-                    {BONUS_NAME[bns]} : {totalStats[bns]} ({attributes[bns]}+{
-                      bonuses[bns]
-                    })
+                    {BONUS_NAME[bns]} : {totalStats[bns]} ({attributes[bns]}+{bonuses[bns]})
                   </span>
                   <Button onClick={onChangeAttr('add', bns)} size="small">
                     +
@@ -126,7 +106,7 @@ const Character = ({
                     -
                   </Button>
                 </div>
-              );
+              )
             })}
           </div>
           <div className="character--stats--defenses">
@@ -136,63 +116,47 @@ const Character = ({
                 <div className="character--action--item">
                   Attack:{' '}
                   {weapons.map((weapon, index) => {
-                    const isLast = index === weapons.length - 1;
-                    const damage =
-                      totalStats[weapon.damageType] + weapon.damage;
-                    const dps =
-                      damage % weapon.size === 0
-                        ? damage / weapon.size
-                        : (damage / weapon.size).toFixed(1);
+                    const isLast = index === weapons.length - 1
+                    const damage = totalStats[weapon.damageType] + weapon.damage
+                    const dps = damage % weapon.size === 0 ? damage / weapon.size : (damage / weapon.size).toFixed(1)
                     return (
                       <span key={weapon.name}>
                         {damage} ({dps} dps)
                         {!isLast && ' / '}
                       </span>
-                    );
+                    )
                   })}
                 </div>
                 <div className="character--action--item">
                   Hit chance:{' '}
                   {weapons.map((weapon, index) => {
-                    const isLast = index === weapons.length - 1;
-                    const hitPercent = 50 + totalStats[weapon.damageType] * 2;
+                    const isLast = index === weapons.length - 1
+                    const hitPercent = 50 + totalStats[weapon.damageType] * 2
                     return (
-                      <span
-                        key={weapon.name}
-                        className="character--action--item"
-                      >
+                      <span key={weapon.name} className="character--action--item">
                         {hitPercent}
                         {!isLast && ' / '}
                       </span>
-                    );
+                    )
                   })}
                 </div>
                 <div className="character--action--item">
                   Range:{' '}
                   {weapons.map((weapon, index) => {
-                    const isLast = index === weapons.length - 1;
+                    const isLast = index === weapons.length - 1
                     return (
-                      <span
-                        key={weapon.name}
-                        className="character--action--item"
-                      >
+                      <span key={weapon.name} className="character--action--item">
                         {weapon.size}
                         {!isLast && ' / '}
                       </span>
-                    );
+                    )
                   })}
                 </div>
               </Fragment>
             )}
-            <div className="character--stats--defenses--physical">
-              Armor: {armor}
-            </div>
-            <div className="character--stats--defenses--magical">
-              Magic Armor: {magicArmor}
-            </div>
-            <div className="character--stats--defenses--hp">
-              Bonus Health: {bonusHP}
-            </div>
+            <div className="character--stats--defenses--physical">Armor: {armor}</div>
+            <div className="character--stats--defenses--magical">Magic Armor: {magicArmor}</div>
+            <div className="character--stats--defenses--hp">Bonus Health: {bonusHP}</div>
             <div className="character--hp">
               HP: {hp.toLocaleString('fr')} / {hpMax.toLocaleString('fr')}
             </div>
@@ -207,9 +171,7 @@ const Character = ({
           </div>
           <div className="character--stats--general">
             <h4 className="character--title">Fight</h4>
-            <div className="character--initiative">
-              Initiative: {Math.ceil((totalStats.int + totalStats.dex) / 2)}
-            </div>
+            <div className="character--initiative">Initiative: {Math.ceil((totalStats.int + totalStats.dex) / 2)}</div>
             <div className="character--ap">
               AP start: {apStart}
               <br />
@@ -226,21 +188,20 @@ const Character = ({
           </div>
         </div>
         <h3 className="character--title" onClick={onToggleStandardSkills}>
-          Standard Skills ({totalStandardSkills}){' '}
-          <span>{isStandardSkillsOpen ? '⇡' : '⇣'}</span>
+          Standard Skills ({totalStandardSkills}) <span>{isStandardSkillsOpen ? '⇡' : '⇣'}</span>
         </h3>
         {isStandardSkillsOpen && (
           <div className="character--skills character--skills__standard">
             {Object.keys(standardSkillsBonuses).map(key => {
-              const base = standardSkills[key] || 0;
-              let total = base;
+              const base = standardSkills[key] || 0
+              let total = base
               if (standardSkillsBonuses[key])
                 standardSkillsBonuses[key].map(skill => {
                   if (typeof skill === 'string') {
-                    total += attributes[skill];
-                    total += bonuses[skill];
-                  } else total += skill;
-                });
+                    total += attributes[skill]
+                    total += bonuses[skill]
+                  } else total += skill
+                })
               return (
                 <div key={key} className="character--skills--item">
                   <div className="character--skills--item--base">
@@ -250,41 +211,33 @@ const Character = ({
                     </div>
                   </div>
                   <div>
-                    <Button
-                      onClick={onChangeSkill('add', key, 'standard')}
-                      size="small"
-                    >
+                    <Button onClick={onChangeSkill('add', key, 'standard')} size="small">
                       +
                     </Button>
-                    <Button
-                      onClick={onChangeSkill('remove', key, 'standard')}
-                      size="small"
-                    >
+                    <Button onClick={onChangeSkill('remove', key, 'standard')} size="small">
                       -
                     </Button>
                   </div>
                 </div>
-              );
+              )
             })}
           </div>
         )}
         <h3 className="character--title" onClick={onToggleProSkills}>
-          Professional Skills ({totalProSkills})<span>
-            {isProSkillsOpen ? '⇡' : '⇣'}
-          </span>
+          Professional Skills ({totalProSkills})<span>{isProSkillsOpen ? '⇡' : '⇣'}</span>
         </h3>
         {isProSkillsOpen && (
           <div className="character--skills character--skills__pro">
             {Object.keys(proSkillsBonuses).map(key => {
-              const base = proSkills[key] || 0;
-              let total = base;
+              const base = proSkills[key] || 0
+              let total = base
               if (proSkillsBonuses[key])
                 proSkillsBonuses[key].map(skill => {
                   if (typeof skill === 'string') {
-                    total += attributes[skill];
-                    total += bonuses[skill];
-                  } else total += skill;
-                });
+                    total += attributes[skill]
+                    total += bonuses[skill]
+                  } else total += skill
+                })
               return (
                 <div key={key} className="character--skills--item">
                   <div className="character--skills--item--base">
@@ -294,36 +247,24 @@ const Character = ({
                     </div>
                   </div>
                   <div>
-                    <Button
-                      onClick={onChangeSkill('add', key, 'pro')}
-                      size="small"
-                    >
+                    <Button onClick={onChangeSkill('add', key, 'pro')} size="small">
                       +
                     </Button>
-                    <Button
-                      onClick={onChangeSkill('remove', key, 'pro')}
-                      size="small"
-                    >
+                    <Button onClick={onChangeSkill('remove', key, 'pro')} size="small">
                       -
                     </Button>
                   </div>
                 </div>
-              );
+              )
             })}
           </div>
         )}
         <h3 className="character--title">Inventaire</h3>
         <Inventory idCharacter={idCharacter} />
-        <h5 className="character--credits--title">
-          credits: {(credits || 0).toLocaleString('fr')}
-        </h5>
+        <h5 className="character--credits--title">credits: {(credits || 0).toLocaleString('fr')}</h5>
         <div className="character--credits">
           <div className="character--credits--input">
-            <input
-              type="number"
-              value={creditsToUpdate}
-              onChange={onChangeCredits}
-            />
+            <input type="number" value={creditsToUpdate} onChange={onChangeCredits} />
           </div>
           <div className="character--credits--button">
             <Button onClick={onUpdateCredits} size="small" format="full">
@@ -337,12 +278,12 @@ const Character = ({
         {talents && (
           <div className="character--talents">
             {Object.keys(talents).map(key => {
-              const talent = talents[key];
+              const talent = talents[key]
               return (
                 <div key={key} className="character--talents--item">
                   {talent.name}
                 </div>
-              );
+              )
             })}
           </div>
         )}
@@ -350,29 +291,18 @@ const Character = ({
         {combatSkills && (
           <div className="character--combat-skills">
             {Object.keys(combatSkills).map(key => {
-              const skill = skills[key];
-              const success =
-                totalStats[skill.attr1] +
-                totalStats[skill.attr2] +
-                combatSkills[key];
-              let successString = `${skill.attr1} + ${skill.attr2} + ${
-                combatSkills[key]
-              }`;
+              const skill = skills[key]
+              const success = totalStats[skill.attr1] + totalStats[skill.attr2] + combatSkills[key]
+              let successString = `${skill.attr1} + ${skill.attr2} + ${combatSkills[key]}`
               return (
                 <div className="character--combat-skills--item" key={key}>
                   <h5 className="character--combat-skills--item--title">
                     {key}: {combatSkills[key]}
                     <div>
-                      <Button
-                        onClick={onChangeSkill('add', key, 'combat')}
-                        size="small"
-                      >
+                      <Button onClick={onChangeSkill('add', key, 'combat')} size="small">
                         +
                       </Button>
-                      <Button
-                        onClick={onChangeSkill('remove', key, 'combat')}
-                        size="small"
-                      >
+                      <Button onClick={onChangeSkill('remove', key, 'combat')} size="small">
                         -
                       </Button>
                     </div>
@@ -390,14 +320,14 @@ const Character = ({
                     </li>
                   </ul>
                 </div>
-              );
+              )
             })}
           </div>
         )}
       </div>
     </Card>
-  );
-};
+  )
+}
 
 Character.propTypes = {
   data: PropTypes.object,
@@ -415,6 +345,6 @@ Character.propTypes = {
   onUpdateCredits: PropTypes.func,
   isStandardSkillsOpen: PropTypes.bool,
   isProSkillsOpen: PropTypes.bool
-};
+}
 
-export default Character;
+export default Character

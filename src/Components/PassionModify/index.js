@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Button from '../../styleguide/Button'
 import Difficulty from '../Difficulty'
-import './PassionModify.css'
+import './PassionModify.scss'
 
 const PassionModify = ({ name, value, onUpdate, total }) => (
   <div className="passion-modify">

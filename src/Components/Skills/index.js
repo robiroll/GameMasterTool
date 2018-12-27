@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import Modal from 'react-modal'
 import Button from '../../styleguide/Button'
 import Card from '../../styleguide/Card'
-import './Skills.css'
+import './Skills.scss'
 
 const SkillForm = ({
   fields,

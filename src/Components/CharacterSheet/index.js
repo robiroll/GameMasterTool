@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import Button from '../../styleguide/Button'
 import fields from './config'
-import './CharacterSheet.css'
+import './CharacterSheet.scss'
 
 const CharacterSheet = ({ character, onAddCharacter, onClose, onChange, onChangeAttributes }) => {
   return (

@@ -4,7 +4,7 @@ import Character from '../../Containers/Character'
 import CharacterSheet from '../CharacterSheet'
 import Modal from 'react-modal'
 import Button from '../../styleguide/Button'
-import './Character.css'
+import './Character.scss'
 
 const Characters = ({ data, character, isOpen, onAddCharacter, onOpen, onClose, onChange, onChangeAttributes }) => {
   return (

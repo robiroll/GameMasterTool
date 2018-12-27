@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import './Difficulty.css'
+import './Difficulty.scss'
 
 const Difficulty = ({ title, total }) => {
   const veryEasy = total * 2

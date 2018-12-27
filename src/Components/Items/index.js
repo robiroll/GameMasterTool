@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import Item from '../../Containers/Item'
 import Button from '../../styleguide/Button'
 import Card from '../../styleguide/Card'
-import './Items.css'
+import './Items.scss'
 
 const Items = ({ items, onCreate, onChangeField, onChangeBonus, fields, bonuses }) => {
   const {

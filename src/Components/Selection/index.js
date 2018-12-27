@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { STATS } from '../../lib'
 import Button from '../../styleguide/Button'
-import './Selection.css'
+import './Selection.scss'
 
 class Character extends Component {
   static propTypes = {

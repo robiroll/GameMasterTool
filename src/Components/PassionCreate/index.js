@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Button from '../../styleguide/Button'
-import './PassionCreate.css'
+import './PassionCreate.scss'
 
 const PassionCreate = ({ name, onChangeInput, attr1, attr2, onChangeAttr, onCreate }) => (
   <div className="passion-create">

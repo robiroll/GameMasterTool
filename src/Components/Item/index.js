@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import Button from '../../styleguide/Button'
 import ItemStats from '../ItemStats'
-import './Item.css'
+import './Item.scss'
 
 export default class Item extends PureComponent {
   static propTypes = {

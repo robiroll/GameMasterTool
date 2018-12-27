@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import './Button.css'
+import './Button.scss'
 
 const Button = ({ children, onClick, disabled, progress, size, variant, format }) => {
   const handleClick = !disabled ? onClick : undefined

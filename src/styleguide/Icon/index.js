@@ -22,7 +22,7 @@ import {
   weapon1,
   weapon2
 } from './src'
-import './Icon.css'
+import './Icon.scss'
 
 const ICONS = {
   armor,

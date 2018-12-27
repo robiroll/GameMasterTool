@@ -9,7 +9,7 @@ import Selection from '../../Components/Selection'
 import Modal from 'react-modal'
 import Button from '../../styleguide/Button'
 import Card from '../../styleguide/Card'
-import './Dashboard.css'
+import './Dashboard.scss'
 
 const Dashboard = ({
   isOpen,

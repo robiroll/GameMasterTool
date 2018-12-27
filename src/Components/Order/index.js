@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import Button from '../../styleguide/Button'
 import Icon from '../../styleguide/Icon'
 import { STATS, HP_MAX } from '../../lib'
-import './Order.css'
+import './Order.scss'
 
 const Order = ({
   playing,

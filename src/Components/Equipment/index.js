@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import Button from '../../styleguide/Button'
 import Icon from '../../styleguide/Icon'
 import ItemStats from '../ItemStats'
-import './Equipment.css'
+import './Equipment.scss'
 
 const ITEMS = [
   'back',

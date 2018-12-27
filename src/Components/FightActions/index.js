@@ -5,7 +5,7 @@ import Card from '../../styleguide/Card'
 import Button from '../../styleguide/Button'
 import Icon from '../../styleguide/Icon'
 import { STATS } from '../../lib'
-import './FightActions.css'
+import './FightActions.scss'
 
 const FightActions = ({ character, onUseSkill, onAttack, onMove, onUpSp, onEndTurn, onDelayTurn, skills }) => {
   const { cooldowns, ap, sp, combatSkills, equipment, statuses } = character

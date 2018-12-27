@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { firebaseConnect, isLoaded } from 'react-redux-firebase'
 import Menu from '../Containers/Menu'
 import Spinner from '../styleguide/Spinner'
-import './style.css'
+import './style.scss'
 
 class Layout extends Component {
   static propTypes = {
@@ -38,4 +38,7 @@ const mapStateToProps = state => ({
   items: state.firebase.data.items
 })
 
-export default compose(firebaseConnect(['characters', 'skills', 'items']), connect(mapStateToProps))(Layout)
+export default compose(
+  firebaseConnect(['characters', 'skills', 'items']),
+  connect(mapStateToProps)
+)(Layout)

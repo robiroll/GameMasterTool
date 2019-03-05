@@ -1,0 +1,147 @@
+@import '../../scss/layout.scss';
+@import '../../scss/colors.scss';
+
+.player {
+  padding: $g2;
+
+  &--title {
+    margin: $g1 0;
+    border-bottom: 1px solid rgba($primary-1, 0.6);
+  }
+
+  &--name {
+    border: 1px solid rgba($primary-1, 0.3);
+    text-align: center;
+    margin-bottom: $g2;
+    padding: $g2;
+  }
+
+  .inventory--single--button,
+  .equipment--single--button {
+    display: none;
+  }
+
+  &--health {
+    display: flex;
+    align-items: center;
+
+    input {
+      width: 50px;
+      margin-right: $g1;
+      text-align: right;
+    }
+
+    &--button {
+      flex: 0 1 50%;
+    }
+  }
+
+  &--stats {
+    // display: grid;
+    // grid-template-columns: repeat(3, 1fr);
+    // grid-gap: $g2;
+
+    &--attributes {
+      &--elem {
+        display: flex;
+
+        span {
+          flex-grow: 1;
+        }
+      }
+    }
+  }
+
+  &--skills {
+    // overflow: hidden;
+    // display: grid;
+    // grid-template-columns: repeat(3, 1fr);
+    // grid-auto-flow: column;
+    // grid-column-gap: $g2;
+    // grid-auto-flow: column;
+    // padding: 1px 1px 1px 0;
+
+    &__standard {
+      grid-template-rows: repeat(8, 1fr);
+    }
+
+    &__pro {
+      grid-template-rows: repeat(13, 1fr);
+    }
+
+    &:hover {
+      overflow: visible;
+    }
+
+    &--item {
+      position: relative;
+      display: flex;
+      justify-content: space-between;
+
+      &--difficulty {
+        position: absolute;
+        top: 0;
+        right: $g8;
+        left: 0;
+        z-index: 1;
+        opacity: 0;
+      }
+
+      &--base:hover {
+        .character--skills--item--difficulty {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  &--combat-skills {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-gap: $g2;
+
+    &--item {
+      border: 1px solid rgba($neutral-5, 0.1);
+      padding: $g2;
+      box-shadow: 0 0 10px 0px rgba($neutral-5, 0.1);
+      transition: all 300ms ease-in-out;
+
+      &:hover {
+        border-color: rgba($neutral-5, 0.2);
+        box-shadow: 0 0 20px rgba($neutral-5, 0.2);
+      }
+
+      &--title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: $g1;
+      }
+    }
+  }
+
+  &--credits {
+    display: flex;
+    align-items: center;
+
+    &--title {
+      margin-top: $g1;
+      padding-top: $g1;
+      border-top: 1px solid rgba($neutral-4, 0.5);
+    }
+
+    &--input {
+      margin-right: $g2;
+      width: $g10;
+
+      input {
+        text-align: right;
+        width: 100%;
+      }
+    }
+
+    &--button {
+      width: 144px;
+    }
+  }
+}

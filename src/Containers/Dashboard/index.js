@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { compose } from 'redux'
 import { firebaseConnect } from 'react-redux-firebase'
 import { nextRound, startFight, endFight, selectCharacter, validateCharacters } from '../../redux/actions/fight'
-import { AP, STATS } from '../../lib'
+import { AP } from '../../lib'
 
 class Dashboard extends Component {
   static propTypes = {
@@ -52,14 +52,14 @@ class Dashboard extends Component {
     order.map(char => {
       const character = characters[char]
       const { ap, cooldowns, statuses } = character
-      const { base, max } = AP(STATS(character))
+      const { base, max } = AP
       let newCooldowns = cooldowns || null
       let newStatuses = statuses || null
       if (cooldowns)
         Object.keys(cooldowns).map(cd => {
           if (newCooldowns[cd] > 0) newCooldowns[cd] -= 1
         })
-      let newAp = ap
+      let newAp = ap + base
       if (newStatuses) {
         Object.entries(newStatuses).map(([key, value]) => {
           const newValue = value - 1
@@ -68,17 +68,15 @@ class Dashboard extends Component {
             newStatuses[key] = newValue
             switch (key) {
               case 'frozen':
-                newAp += 0
+                newAp -= base
                 break
               case 'slowed':
-                newAp += Math.round(base / 2)
+                if (!newStatuses.frozen) newAp -= Math.round(base / 2)
                 break
-              default:
-                newAp += base
             }
           }
         })
-      } else newAp += base
+      }
       if (newAp > max) newAp = max
       firebase.update(`characters/${char}`, {
         ap: newAp,
@@ -95,12 +93,11 @@ class Dashboard extends Component {
     this.props.startFight()
   }
   handleValidateCharacters = () => {
-    const { validateCharacters, orderSelection, characters, firebase } = this.props
+    const { validateCharacters, orderSelection, firebase } = this.props
     this.handleCloseSelection()
     validateCharacters()
     Object.keys(orderSelection).forEach(char => {
-      const character = characters[char]
-      const ap = AP(STATS(character)).start
+      const ap = AP.start
       firebase.update(`characters/${char}`, { ap, sp: 0 })
     })
   }

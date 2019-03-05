@@ -5,10 +5,17 @@
   display: flex;
   align-items: flex-start;
   min-height: 200px;
+  
+  @media screen and (max-width: 720px) {
+    flex-direction: column;
+  }
 
   &--items {
     display: flex;
     flex-wrap: wrap;
+    @media screen and (max-width: 720px) {
+      order: -1;
+    }
 
     &--item {
       opacity: 0.1;
@@ -30,10 +37,12 @@
     box-shadow: 0 0 $g1 rgba($neutral-5, 0.5);
     margin-right: $g3;
     min-width: 200px;
-
-    &--button {
-      // margin-top: $g1;
+    @media screen and (max-width: 720px) {
+      margin-top: $g1;
+      margin-right: 0;
+      width: 100%;
     }
+
   }
 
   &--stats {

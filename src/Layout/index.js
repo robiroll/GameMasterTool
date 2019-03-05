@@ -20,12 +20,13 @@ class Layout extends Component {
   }
   render() {
     const { children, characters, skills, items } = this.props
+    const { pathname } = this.context.router.route.location
     if (!isLoaded(characters)) return <Spinner />
     if (!isLoaded(skills)) return <Spinner />
     if (!isLoaded(items)) return <Spinner />
     return (
       <div className="layout">
-        <Menu active={this.context.router.route.location.pathname.substr(1)} />
+        {pathname.indexOf('/players') !== 0 && <Menu active={pathname.substr(1)} />}
         <div className="wrapper">{children}</div>
       </div>
     )

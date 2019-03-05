@@ -58,8 +58,8 @@ const Character = ({
   let totalStats = {}
   Object.keys(attributes).map(attr => (totalStats[attr] = bonuses[attr] + attributes[attr]))
 
-  let armor = 0
-  let magicArmor = 0
+  let armor = totalStats.con
+  let magicArmor = totalStats.pow
   let bonusHP = 0
   if (equipment)
     Object.values(equipment).forEach(eq => {
@@ -67,9 +67,9 @@ const Character = ({
       magicArmor += eq.magicArmor || 0
       bonusHP += eq.hp || 0
     })
-  const apBase = AP(totalStats).base
-  const apStart = AP(totalStats).start
-  const apMax = AP(totalStats).max
+  const apBase = AP.base
+  const apStart = AP.start
+  const apMax = AP.max
   const hpMax = HP_MAX(totalStats, equipment)
 
   let totalStandardSkills = 0

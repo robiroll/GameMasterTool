@@ -1,0 +1,25 @@
+@import '../../scss/layout.scss';
+@import '../../scss/colors.scss';
+
+.players-menu {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  &__link {
+    margin: 1px;
+    border: 1px solid $primary-1;
+    padding: $g1 $g2;
+    background: rgba($primary-1, 0.3);
+    text-align: center;
+
+    &:hover {
+      background: rgba($primary-1, 0.2);
+    }
+
+    &--active {
+      background: $neutral-3;
+      &:hover {
+        background: $neutral-3;
+      }
+    }
+  }
+}

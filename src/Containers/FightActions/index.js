@@ -42,10 +42,10 @@ class FightActions extends Component {
     const character = characters[idCharacter]
     this.updateCharacter({ ap: character.ap - (character.sp + 2), sp: character.sp + 1 })
   }
-  handleAttack = weapon => {
+  handleAttack = () => {
     const { characters, idCharacter } = this.props
     const character = characters[idCharacter]
-    this.updateCharacter({ ap: character.ap - weapon.size })
+    this.updateCharacter({ ap: character.ap - 2 })
   }
   handleMove = () => {
     const { characters, idCharacter } = this.props
@@ -98,5 +98,8 @@ const mapDispatchToProps = dispatch => ({
 })
 export default compose(
   firebaseConnect(['characters', 'skills', 'items']),
-  connect(mapStateToProps, mapDispatchToProps)
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
 )(FightActions)

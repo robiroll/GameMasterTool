@@ -1,12 +1,7 @@
-export const AP = stats => {
-  const base = Math.ceil((stats.str + stats.dex + stats.int) / 6)
-  const start = Math.ceil((stats.pow + stats.siz) / 4 + 2)
-  const max = Math.ceil((stats.con + stats.siz) / 4 + 5)
-  return {
-    base,
-    start,
-    max
-  }
+export const AP = {
+  base: 4,
+  start: 4,
+  max: 6
 }
 
 export const HP_MAX = (stats, equipment) => {

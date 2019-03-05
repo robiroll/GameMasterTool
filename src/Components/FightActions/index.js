@@ -31,12 +31,7 @@ const FightActions = ({ character, onUseSkill, onAttack, onMove, onUpSp, onEndTu
               const hitPercent = 50 + stats[weapon.damageType] * 2
               return (
                 <div key={weapon.name} className="fight-actions--standard--item">
-                  <Button
-                    disabled={!(ap - weapon.size >= 0) || attackDisabled}
-                    onClick={() => {
-                      onAttack(weapon)
-                    }}
-                  >
+                  <Button disabled={!(ap - 2 >= 0) || attackDisabled} onClick={onAttack}>
                     <span className="fight-actions--standard--item--button">
                       <span>Attack</span>
                       <span>
@@ -47,7 +42,7 @@ const FightActions = ({ character, onUseSkill, onAttack, onMove, onUpSp, onEndTu
                         <Icon name="damage" />
                         {stats[weapon.damageType] + weapon.damage} + <Icon name="dice" />
                       </span>
-                      <span>({weapon.size})</span>
+                      <span>(2)</span>
                     </span>
                   </Button>
                   <div className="fight-actions--standard--item--button--difficulty">
@@ -56,13 +51,7 @@ const FightActions = ({ character, onUseSkill, onAttack, onMove, onUpSp, onEndTu
                 </div>
               )
             })}
-          <Button
-            className="fight-actions--standard--item"
-            disabled={!(ap > 0) || movementDisabled}
-            onClick={() => {
-              onMove()
-            }}
-          >
+          <Button className="fight-actions--standard--item" disabled={!(ap > 0) || movementDisabled} onClick={onMove}>
             Move (1)
           </Button>
           <Button className="character--action--item" disabled={!(ap >= sp + 2) || sp >= 5} onClick={onUpSp}>

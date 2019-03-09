@@ -1,19 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-// import './Button.css'
+import Modal from 'react-modal'
 
-const Button = ({ children, onClick }) => (
-  <div className="dialog" onClick={onClick}>
+const Dialog = ({ children, ...props }) => (
+  <Modal className="card modal--content" overlayClassName="modal--overlay" ariaHideApp={false} {...props}>
     {children}
-  </div>
+  </Modal>
 )
 
-Button.propTypes = {
-  children: PropTypes.node.isRequired,
-  onClick: PropTypes.func
-}
-Button.defaultProps = {
-  onClick: () => {}
+Dialog.propTypes = {
+  children: PropTypes.node.isRequired
 }
 
-export default Button
+export default Dialog

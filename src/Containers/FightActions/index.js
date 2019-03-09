@@ -4,6 +4,7 @@ import FightActionsComponent from '../../Components/FightActions'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firebaseConnect } from 'react-redux-firebase'
+import { STATS, EQUIPEMENT_STATS } from '../../lib'
 
 import { useSkill, useAction, delayTurn, endTurn } from '../../redux/actions/fight'
 
@@ -21,9 +22,14 @@ class FightActions extends Component {
     delayTurn: PropTypes.func.isRequired
   }
 
-  updateCharacter = changes => {
+  state = {
+    isTargetOpen: false
+  }
+
+  updateCharacter = (changes, idChar) => {
     const { firebase, idCharacter } = this.props
-    firebase.update(`characters/${idCharacter}`, changes)
+    const id = idChar || idCharacter
+    firebase.update(`characters/${id}`, changes)
   }
 
   handleUseSkill = (name, skill) => {
@@ -42,10 +48,32 @@ class FightActions extends Component {
     const character = characters[idCharacter]
     this.updateCharacter({ ap: character.ap - (character.sp + 2), sp: character.sp + 1 })
   }
-  handleAttack = () => {
+  handleAttack = (selectedCharacterId, modifier = 0) => {
     const { characters, idCharacter } = this.props
     const character = characters[idCharacter]
+    const target = characters[selectedCharacterId]
+    const { weapon1, weapon2 } = character.equipment
+    let totalDamage = modifier
+    const primaryWeapon = weapon1 || weapon2
+    const secondaryWeapon = [weapon1, weapon2].filter(Boolean).length > 1 && weapon2
+    const stats = STATS(character)
+    const targetStats = EQUIPEMENT_STATS(target.equipment)
+    if (primaryWeapon) {
+      const { damage, damageType } = primaryWeapon
+      totalDamage += damage
+      totalDamage += stats[damageType]
+      if (damageType === 'pow') totalDamage -= target.attributes.pow + targetStats.magicArmor + targetStats.pow
+      else totalDamage -= target.attributes.con + targetStats.con + targetStats.armor
+    }
+    if (secondaryWeapon) {
+      const { damage, damageType } = secondaryWeapon
+      let secondaryDamage = damage / 2 + stats[damageType] / 2
+      if (damageType === 'pow') secondaryDamage -= (target.attributes.pow + targetStats.pow) / 2
+      else secondaryDamage -= (target.attributes.con + targetStats.con) / 2
+      if (secondaryDamage > 0) totalDamage += secondaryDamage
+    }
     this.updateCharacter({ ap: character.ap - 2 })
+    if (totalDamage > 0) this.updateCharacter({ hp: target.hp - totalDamage }, selectedCharacterId)
   }
   handleMove = () => {
     const { characters, idCharacter } = this.props
@@ -54,6 +82,9 @@ class FightActions extends Component {
   }
   handleEndTurn = () => this.props.endTurn()
   handleDelayTurn = () => this.props.delayTurn()
+
+  handleOpenTarget = () => this.setState({ isTargetOpen: true })
+  handleCloseTarget = () => this.setState({ isTargetOpen: false })
 
   render() {
     const { characters, idCharacter, skills } = this.props
@@ -68,6 +99,9 @@ class FightActions extends Component {
         onUpSp={this.handleUpSp}
         onEndTurn={this.handleEndTurn}
         onDelayTurn={this.handleDelayTurn}
+        onOpenTarget={this.handleOpenTarget}
+        onCloseTarget={this.handleCloseTarget}
+        isTargetOpen={this.state.isTargetOpen}
       />
     )
   }

@@ -1,0 +1,15 @@
+@import '../../scss/layout.scss';
+@import '../../scss/colors.scss';
+
+.target {
+  h2 {
+    margin-bottom: $g2;
+  }
+
+  &--section {
+    border: 1px solid rgba($primary-1, 0.6);
+    box-shadow: 0 0 20px 4px rgba($neutral-1, 0.2);
+    padding: $g1 $g2;
+    margin-bottom: $g2;
+  }
+}

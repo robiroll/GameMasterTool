@@ -1,13 +1,24 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import Difficulty from '../Difficulty'
-import Card from '../../styleguide/Card'
-import Button from '../../styleguide/Button'
-import Icon from '../../styleguide/Icon'
+import { Card, Button, Icon, Dialog } from '../../styleguide'
+import Target from '../../Containers/Target'
 import { STATS } from '../../lib'
 import './FightActions.scss'
 
-const FightActions = ({ character, onUseSkill, onAttack, onMove, onUpSp, onEndTurn, onDelayTurn, skills }) => {
+const FightActions = ({
+  character,
+  onUseSkill,
+  onAttack,
+  onMove,
+  onUpSp,
+  onEndTurn,
+  onDelayTurn,
+  skills,
+  isTargetOpen,
+  onOpenTarget,
+  onCloseTarget
+}) => {
   const { cooldowns, ap, sp, combatSkills, equipment, statuses } = character
   const stats = STATS(character)
   let attackDisabled = false
@@ -31,7 +42,7 @@ const FightActions = ({ character, onUseSkill, onAttack, onMove, onUpSp, onEndTu
               const hitPercent = 50 + stats[weapon.damageType] * 2
               return (
                 <div key={weapon.name} className="fight-actions--standard--item">
-                  <Button disabled={!(ap - 2 >= 0) || attackDisabled} onClick={onAttack}>
+                  <Button disabled={!(ap - 2 >= 0) || attackDisabled} onClick={onOpenTarget}>
                     <span className="fight-actions--standard--item--button">
                       <span>Attack</span>
                       <span>
@@ -45,6 +56,9 @@ const FightActions = ({ character, onUseSkill, onAttack, onMove, onUpSp, onEndTu
                       <span>(2)</span>
                     </span>
                   </Button>
+                  <Dialog isOpen={isTargetOpen} onRequestClose={onCloseTarget}>
+                    <Target onCloseTarget={onCloseTarget} onAttack={onAttack} character={character} />
+                  </Dialog>
                   <div className="fight-actions--standard--item--button--difficulty">
                     <Difficulty title="attack" total={hitPercent} />
                   </div>
@@ -127,7 +141,10 @@ FightActions.propTypes = {
   onUpSp: PropTypes.func,
   onEndTurn: PropTypes.func,
   onDelayTurn: PropTypes.func,
-  skills: PropTypes.object
+  skills: PropTypes.object,
+  isTargetOpen: PropTypes.bool,
+  onOpenTarget: PropTypes.func,
+  onCloseTarget: PropTypes.func
 }
 
 export default FightActions

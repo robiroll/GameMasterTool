@@ -55,7 +55,7 @@ const Order = ({
                   <input
                     className="order--char--life--current--input"
                     type="number"
-                    defaultValue={character.hp}
+                    value={character.hp}
                     onChange={onChangeHp(idCharacter)}
                   />
                   <div className="order--char--life--current--icon">

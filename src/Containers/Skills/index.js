@@ -84,7 +84,14 @@ class Skills extends Component {
 
   render() {
     const { skills, characters } = this.props
-    const { fields, fields: { name }, assignedCharacter, assignedSkill, assignedValue, isSymbiosis } = this.state
+    const {
+      fields,
+      fields: { name },
+      assignedCharacter,
+      assignedSkill,
+      assignedValue,
+      isSymbiosis
+    } = this.state
     let disabled = false
     skills &&
       Object.keys(skills).map(skill => {
@@ -120,4 +127,7 @@ const mapStateToProps = state => ({
   characters: state.firebase.data.characters
 })
 
-export default compose(firebaseConnect(['skills', 'characters']), connect(mapStateToProps))(Skills)
+export default compose(
+  firebaseConnect(['skills', 'characters']),
+  connect(mapStateToProps)
+)(Skills)

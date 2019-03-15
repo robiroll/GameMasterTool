@@ -10,40 +10,89 @@ class Target extends Component {
     character: PropTypes.object,
     characters: PropTypes.object,
     order: PropTypes.array,
-    onAttack: PropTypes.func.isRequired,
+    onAttack: PropTypes.func,
+    onUseSkill: PropTypes.func,
+    idSkill: PropTypes.string,
+    skill: PropTypes.object,
     onCloseTarget: PropTypes.func.isRequired
   }
 
-  state = {
-    targetedCharacter: '',
-    modifier: 0
+  constructor(props) {
+    super(props)
+    const { type, weapon, pow, str, dex, ignoreArmor, multiplicator, multitarget, status } = props.skill || {}
+    this.state = {
+      targetedCharacter: '',
+      modifier: 1,
+      targets: [],
+      fields: {
+        type,
+        weapon,
+        pow,
+        str,
+        dex,
+        ignoreArmor,
+        multiplicator,
+        multitarget,
+        status
+      }
+    }
   }
 
   characters = this.props.order.map(id => ({ id, ...this.props.characters[id] }))
+
+  handleTargetsUp = () =>
+    this.setState(prevState => ({
+      targets: [...prevState.targets, { id: '', multiplicator: prevState.fields.multiplicator }]
+    }))
+  handleTargetsDown = () =>
+    this.setState(prevState => ({ targets: prevState.targets.slice(0, prevState.targets.length - 1) }))
+  handleChangeAdditionalTarget = index => e => {
+    let { value, id } = e.target
+    if (['multiplicator'].indexOf(id) > -1) value = Number(value)
+    const targets = [...this.state.targets]
+    targets[index][id] = value
+    this.setState({ targets })
+  }
 
   handleChangeTarget = e => this.setState({ targetedCharacter: e.target.value })
 
   handleChangeModifier = e => this.setState({ modifier: Number(e.target.value) })
 
-  handleValidate = () => {
-    const { targetedCharacter, modifier } = this.state
-    this.props.onAttack(targetedCharacter, modifier)
-    this.props.onCloseTarget()
+  handleChangeField = e => {
+    let { id, value, checked } = e.target
+    const { fields } = this.state
+    if (['multiplicator'].indexOf(id) > -1) value = Number(value)
+    if (['weapon', 'pow', 'dex', 'str', 'ignoreArmor'].indexOf(id) > -1) value = checked
+    Object.assign(fields, { [id]: value })
+    this.setState({ fields })
+  }
+
+  handleValidate = async () => {
+    const { onAttack, onUseSkill, onCloseTarget } = this.props
+    const { targetedCharacter, modifier, fields, targets } = this.state
+    if (onAttack) await onAttack(targetedCharacter, modifier)
+    if (onUseSkill) await onUseSkill(targetedCharacter, fields, modifier, targets)
+    onCloseTarget()
   }
 
   render() {
     return (
-      <div>
-        <TargetComponent
-          {...this.props}
-          characters={this.characters}
-          onChangeTarget={this.handleChangeTarget}
-          targetedCharacter={this.state.targetedCharacter}
-          modifier={this.state.modifier}
-          onChangeModifier={this.handleChangeModifier}
-          onValidate={this.handleValidate}
-        />
-      </div>
+      <TargetComponent
+        {...this.props}
+        type={this.props.onAttack ? 'attack' : 'skill'}
+        characters={this.characters}
+        onChangeTarget={this.handleChangeTarget}
+        targetedCharacter={this.state.targetedCharacter}
+        modifier={this.state.modifier}
+        onChangeModifier={this.handleChangeModifier}
+        onChangeField={this.handleChangeField}
+        fields={this.state.fields}
+        onTargetsUp={this.handleTargetsUp}
+        onTargetsDown={this.handleTargetsDown}
+        onChangeAdditionalTarget={this.handleChangeAdditionalTarget}
+        targets={this.state.targets}
+        onValidate={this.handleValidate}
+      />
     )
   }
 }

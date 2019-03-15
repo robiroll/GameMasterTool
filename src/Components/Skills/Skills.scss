@@ -9,6 +9,9 @@
   }
 
   &--create {
+    display: flex;
+    flex-wrap: wrap;
+
     &--title {
       border-bottom: 1px solid rgba($primary-1, 0.7);
       margin-bottom: $g2;
@@ -32,6 +35,8 @@
     }
 
     &--actions {
+      flex-grow: 1;
+      flex-basis: 100%;
       margin-top: $g2;
       padding-top: $g2;
       border-top: 1px solid rgba($primary-1, 0.7);

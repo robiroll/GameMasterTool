@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import { firebaseConnect } from 'react-redux-firebase'
 
 const initialStateFields = {
+  isSymbiosis: false,
   name: '',
   cooldown: 0,
   cost: 0,
@@ -14,7 +15,17 @@ const initialStateFields = {
   description: '',
   attr1: 'str',
   attr2: 'str',
-  damage: ''
+  damage: '',
+  type: 'damage', // one of ['damage', 'heal', 'status']
+  weapon: true,
+  pow: false,
+  str: false,
+  dex: false,
+  ignoreArmor: false,
+  modifier: '1D10',
+  multiplicator: 1,
+  multitarget: [],
+  status: []
 }
 class Skills extends Component {
   static propTypes = {
@@ -30,20 +41,18 @@ class Skills extends Component {
       isModifyOpen: false,
       assignedCharacter: '',
       assignedSkill: '',
-      assignedValue: '50',
-      isSymbiosis: false
+      assignedValue: '50'
     }
   }
 
   handleChangeField = e => {
-    let { id, value } = e.target
+    let { id, value, checked } = e.target
     const { fields } = this.state
-    if (['cooldown', 'cost', 'distance', 'range'].indexOf(id) > -1) value = Number(value)
+    if (['cooldown', 'cost', 'distance', 'range', 'multiplicator'].indexOf(id) > -1) value = Number(value)
+    if (['isSymbiosis', 'weapon', 'pow', 'dex', 'str', 'ignoreArmor'].indexOf(id) > -1) value = checked
     Object.assign(fields, { [id]: value })
     this.setState({ fields })
   }
-
-  handleToggleSymbioses = () => this.setState({ isSymbiosis: !this.state.isSymbiosis })
 
   handleClearFields = () => {
     this.setState({ fields: { ...initialStateFields } })
@@ -51,9 +60,8 @@ class Skills extends Component {
 
   handleCreate = () => {
     const { firebase } = this.props
-    const skill = { ...this.state.fields, type: this.state.isSymbiosis ? 'symbiosis' : 'default' }
-    delete skill.name
-    firebase.set(`skills/${this.state.fields.name}`, skill)
+    const skill = { ...this.state.fields }
+    firebase.set(`skills/${this.state.fields.name.toLowerCase().replace(' ', '-')}`, skill)
   }
 
   handleUpdate = () => {
@@ -89,13 +97,12 @@ class Skills extends Component {
       fields: { name },
       assignedCharacter,
       assignedSkill,
-      assignedValue,
-      isSymbiosis
+      assignedValue
     } = this.state
     let disabled = false
     skills &&
       Object.keys(skills).map(skill => {
-        if (skill === name) disabled = true
+        if (skill === name.toLowerCase().replace(' ', '-')) disabled = true
       })
     return (
       <SkillsComponent
@@ -115,8 +122,7 @@ class Skills extends Component {
         assignedCharacter={assignedCharacter}
         assignedSkill={assignedSkill}
         assignedValue={assignedValue}
-        isSymbiosis={isSymbiosis}
-        onToggleSymbiosis={this.handleToggleSymbioses}
+        onToggleSkill={this.handleToggleSkill}
       />
     )
   }

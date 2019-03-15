@@ -297,7 +297,7 @@ const Character = ({
               return (
                 <div className="character--combat-skills--item" key={key}>
                   <h5 className="character--combat-skills--item--title">
-                    {key}: {combatSkills[key]}
+                    {skill.name}: {combatSkills[key]}
                     <div>
                       <Button onClick={onChangeSkill('add', key, 'combat')} size="small">
                         +

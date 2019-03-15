@@ -2,6 +2,14 @@
 @import '../../scss/colors.scss';
 
 .spinner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  background: rgba($neutral-1, 0.8);
+
   &--outer {
     border-top: 5px solid $primary-1;
     border-bottom: 5px solid $primary-1;

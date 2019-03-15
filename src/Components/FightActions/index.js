@@ -15,9 +15,13 @@ const FightActions = ({
   onEndTurn,
   onDelayTurn,
   skills,
-  isTargetOpen,
-  onOpenTarget,
-  onCloseTarget
+  isTargetAttackOpen,
+  onOpenTargetAttack,
+  onCloseTargetAttack,
+  isTargetSkillsOpen,
+  onOpenTargetSkills,
+  onCloseTargetSkills,
+  currentSkill
 }) => {
   const { cooldowns, ap, sp, combatSkills, equipment, statuses } = character
   const stats = STATS(character)
@@ -42,7 +46,7 @@ const FightActions = ({
               const hitPercent = 50 + stats[weapon.damageType] * 2
               return (
                 <div key={weapon.name} className="fight-actions--standard--item">
-                  <Button disabled={!(ap - 2 >= 0) || attackDisabled} onClick={onOpenTarget}>
+                  <Button disabled={!(ap - 2 >= 0) || attackDisabled} onClick={onOpenTargetAttack}>
                     <span className="fight-actions--standard--item--button">
                       <span>Attack</span>
                       <span>
@@ -56,15 +60,15 @@ const FightActions = ({
                       <span>(2)</span>
                     </span>
                   </Button>
-                  <Dialog isOpen={isTargetOpen} onRequestClose={onCloseTarget}>
-                    <Target onCloseTarget={onCloseTarget} onAttack={onAttack} character={character} />
-                  </Dialog>
                   <div className="fight-actions--standard--item--button--difficulty">
                     <Difficulty title="attack" total={hitPercent} />
                   </div>
                 </div>
               )
             })}
+          <Dialog isOpen={isTargetAttackOpen} onRequestClose={onCloseTargetAttack}>
+            <Target onCloseTarget={onCloseTargetAttack} onAttack={onAttack} character={character} />
+          </Dialog>
           <Button className="fight-actions--standard--item" disabled={!(ap > 0) || movementDisabled} onClick={onMove}>
             Move (1)
           </Button>
@@ -84,21 +88,29 @@ const FightActions = ({
               const skill = skills[key]
               const points = skill.type === 'symbiosis' ? sp : ap
               const hitPercent = character.combatSkills[key] + stats[skill.attr1] + stats[skill.attr2]
+              const handleOpenTargetSkills = () => onOpenTargetSkills(key, skill)
               return (
                 <Fragment key={key}>
                   <div className="fight-actions--skills--action">
+                    <Dialog isOpen={isTargetSkillsOpen && key === currentSkill} onRequestClose={onCloseTargetSkills}>
+                      <Target
+                        onCloseTarget={onCloseTargetSkills}
+                        onUseSkill={onUseSkill}
+                        character={character}
+                        skillId={key}
+                        skill={skill}
+                      />
+                    </Dialog>
                     <Button
                       className="fight-actions--skills--item"
                       disabled={!(points - skill.cost >= 0) || (cooldowns && cooldowns[key] > 0) || attackDisabled}
-                      variant={`${skill.type === 'symbiosis' && 'accent-1'}`}
-                      onClick={() => {
-                        onUseSkill(key, skill)
-                      }}
+                      variant={`${skill.isSymbiosis && 'accent-1'}`}
+                      onClick={handleOpenTargetSkills}
                       progress={(cooldowns[key] / skill.cooldown) * 100}
                     >
                       <span className="fight-actions--standard--item--button">
                         <span>{key}</span>
-                        {skill.type !== 'symbiosis' && (
+                        {!skill.isSymbiosis && (
                           <span>
                             <Icon name="target" />
                             {hitPercent}%
@@ -142,9 +154,13 @@ FightActions.propTypes = {
   onEndTurn: PropTypes.func,
   onDelayTurn: PropTypes.func,
   skills: PropTypes.object,
-  isTargetOpen: PropTypes.bool,
-  onOpenTarget: PropTypes.func,
-  onCloseTarget: PropTypes.func
+  isTargetAttackOpen: PropTypes.bool,
+  onOpenTargetAttack: PropTypes.func,
+  onCloseTargetAttack: PropTypes.func,
+  isTargetSkillsOpen: PropTypes.bool,
+  onOpenTargetSkills: PropTypes.func,
+  onCloseTargetSkills: PropTypes.func,
+  currentSkill: PropTypes.string
 }
 
 export default FightActions

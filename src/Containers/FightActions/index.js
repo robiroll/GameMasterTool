@@ -4,7 +4,7 @@ import FightActionsComponent from '../../Components/FightActions'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firebaseConnect } from 'react-redux-firebase'
-import { STATS, EQUIPEMENT_STATS } from '../../lib'
+import { STATS, EQUIPEMENT_STATS, HP_MAX } from '../../lib'
 
 import { useSkill, useAction, delayTurn, endTurn } from '../../redux/actions/fight'
 
@@ -16,14 +16,58 @@ class FightActions extends Component {
     items: PropTypes.object,
     idCharacter: PropTypes.string,
     round: PropTypes.number,
-    useSkill: PropTypes.func.isRequired,
-    useAction: PropTypes.func.isRequired,
+    useSkill: PropTypes.func,
+    useAction: PropTypes.func,
     endTurn: PropTypes.func.isRequired,
     delayTurn: PropTypes.func.isRequired
   }
 
   state = {
-    isTargetOpen: false
+    isTargetAttackOpen: false,
+    isTargetSkillsOpen: false,
+    idSkill: '',
+    skill: {},
+    loading: false
+  }
+
+  characterDamage = () => {
+    const { characters, idCharacter } = this.props
+    const character = characters[idCharacter]
+    const { weapon1, weapon2 } = character.equipment
+    let totalDamage = 0
+    let physical = 0
+    let magical = 0
+    const primaryWeapon = weapon1 || weapon2
+    const secondaryWeapon = [weapon1, weapon2].filter(Boolean).length > 1 && weapon2
+    const stats = STATS(character)
+    if (primaryWeapon) {
+      const { damage, damageType } = primaryWeapon
+      const dmg = stats[damageType]
+      totalDamage += damage
+      if (damageType === 'pow') magical += dmg
+      else physical += dmg
+    }
+    if (secondaryWeapon) {
+      const { damage, damageType } = secondaryWeapon
+      const dmg = stats[damageType] / 2
+      totalDamage += damage / 2
+      if (damageType === 'pow') magical += dmg
+      else physical += dmg
+    }
+    return {
+      damage: totalDamage,
+      physical,
+      magical
+    }
+  }
+
+  targetDefense = target => {
+    const targetArmor = EQUIPEMENT_STATS(target.equipment)
+    const stats = STATS(target)
+    return {
+      armor: targetArmor.armor + stats.con,
+      magicArmor: targetArmor.magicArmor + stats.pow
+    }
   }
 
   updateCharacter = (changes, idChar) => {
@@ -32,14 +76,68 @@ class FightActions extends Component {
     firebase.update(`characters/${id}`, changes)
   }
 
-  handleUseSkill = (name, skill) => {
+  handleUseSkill = async (selectedCharacterId, fields, modifier, targets = []) => {
+    const { idSkill, skill } = this.state
     const { characters, idCharacter } = this.props
     const character = characters[idCharacter]
+    const stats = STATS(character)
+    const target = characters[selectedCharacterId]
     const cooldowns = Object.assign({}, character.cooldowns, {
-      [name]: skill.cooldown
+      [idSkill]: skill.cooldown
     })
+    const { type, weapon, str, pow, dex, ignoreArmor, multiplicator } = fields
+    let totalDamage = modifier
+    let physicalDamage = 0
+    let magicalDamage = 0
+    if (weapon) {
+      const { damage, physical, magical } = this.characterDamage()
+      totalDamage += damage
+      physicalDamage += physical
+      magicalDamage += magical
+    }
+    if (str) physicalDamage += stats.str
+    if (dex) physicalDamage += stats.dex
+    if (pow) magicalDamage += stats.pow
+    totalDamage *= multiplicator
+    physicalDamage *= multiplicator
+    magicalDamage *= multiplicator
+    if (type === 'heal') {
+      let hp = target.hp
+      const maxHp = HP_MAX(STATS(target), target.equipment)
+      const bonusHp = totalDamage + physicalDamage + magicalDamage
+      hp += bonusHp
+      if (hp > maxHp) hp = maxHp
+      const targetChanges = { hp: Math.round(hp) }
+      await this.updateCharacter(targetChanges, selectedCharacterId)
+    }
+    if (type === 'damage') {
+      let hp = target.hp
+      if (ignoreArmor) {
+        hp -= Math.round(totalDamage + physicalDamage + magicalDamage)
+      } else {
+        const { armor, magicArmor } = this.targetDefense(target)
+        if (physicalDamage > 0) {
+          totalDamage += physicalDamage
+          if (armor >= totalDamage) totalDamage = 0
+          else totalDamage -= armor
+        }
+        if (magicalDamage > 0) {
+          totalDamage += magicalDamage
+          if (magicArmor >= totalDamage) totalDamage = 0
+          else totalDamage -= magicArmor
+        }
+        hp -= Math.round(totalDamage)
+      }
+      await this.updateCharacter({ hp }, selectedCharacterId)
+    }
+    if (targets.length > 0)
+      targets.forEach(({ id, multiplicator }) => {
+        const targetFields = { ...fields, multiplicator }
+        this.handleUseSkill(id, targetFields, modifier)
+      })
+
     const changes = { cooldowns }
-    if (skill.type === 'symbiosis') Object.assign(changes, { sp: character.sp - skill.cost })
+    if (skill.isSymbiosis) Object.assign(changes, { sp: character.sp - skill.cost })
     else Object.assign(changes, { ap: character.ap - skill.cost })
     this.updateCharacter(changes)
   }
@@ -83,8 +181,12 @@ class FightActions extends Component {
   handleEndTurn = () => this.props.endTurn()
   handleDelayTurn = () => this.props.delayTurn()
 
-  handleOpenTarget = () => this.setState({ isTargetOpen: true })
-  handleCloseTarget = () => this.setState({ isTargetOpen: false })
+  handleOpenTargetAttack = () => this.setState({ isTargetAttackOpen: true })
+  handleCloseTargetAttack = () => this.setState({ isTargetAttackOpen: false })
+  handleOpenTargetSkills = (idSkill, skill) => {
+    this.setState({ isTargetSkillsOpen: true, idSkill, skill })
+  }
+  handleCloseTargetSkills = () => this.setState({ isTargetSkillsOpen: false })
 
   render() {
     const { characters, idCharacter, skills } = this.props
@@ -99,9 +201,13 @@ class FightActions extends Component {
         onUpSp={this.handleUpSp}
         onEndTurn={this.handleEndTurn}
         onDelayTurn={this.handleDelayTurn}
-        onOpenTarget={this.handleOpenTarget}
-        onCloseTarget={this.handleCloseTarget}
-        isTargetOpen={this.state.isTargetOpen}
+        onOpenTargetAttack={this.handleOpenTargetAttack}
+        onCloseTargetAttack={this.handleCloseTargetAttack}
+        isTargetAttackOpen={this.state.isTargetAttackOpen}
+        onOpenTargetSkills={this.handleOpenTargetSkills}
+        onCloseTargetSkills={this.handleCloseTargetSkills}
+        isTargetSkillsOpen={this.state.isTargetSkillsOpen}
+        currentSkill={this.state.idSkill}
       />
     )
   }

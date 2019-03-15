@@ -5,90 +5,145 @@ import Button from '../../styleguide/Button'
 import Card from '../../styleguide/Card'
 import './Skills.scss'
 
-const SkillForm = ({
-  fields,
-  onChange,
-  onClear,
-  onSubmit,
-  disabled,
-  disabledMessage,
-  buttonLabel,
-  isNameHidden,
-  isSymbiosis,
-  onToggleSymbiosis
-}) => {
-  const { name, cooldown, cost, distance, range, description, attr1, attr2, damage } = fields
+const SkillForm = ({ fields, onChange, onClear, onSubmit, disabled, disabledMessage, buttonLabel, isNameHidden }) => {
+  const {
+    isSymbiosis,
+    name,
+    cooldown,
+    cost,
+    distance,
+    range,
+    description,
+    attr1,
+    attr2,
+    damage,
+    type,
+    weapon,
+    pow,
+    str,
+    dex,
+    ignoreArmor,
+    modifier,
+    multiplicator,
+    multitarget,
+    status
+  } = fields
 
   return (
     <div className="skills--create">
-      <div className="skills--create--field">
-        <label htmlFor="symbiosis">Symbiosis Skill</label>
-        <input type="checkbox" id="symbiosis" onChange={onToggleSymbiosis} value={isSymbiosis} />
-      </div>
+      <section>
+        {isNameHidden ? (
+          <div className="skills--create--title">
+            <h3>{name}</h3>
+          </div>
+        ) : (
+          <div className="skills--create--field">
+            <label htmlFor="name">Nom</label>
+            <input type="text" id="name" onChange={onChange} value={name} />
+          </div>
+        )}
 
-      {isNameHidden ? (
-        <div className="skills--create--title">
-          <h3>{name}</h3>
-        </div>
-      ) : (
         <div className="skills--create--field">
-          <label htmlFor="name">Nom</label>
-          <input type="text" id="name" onChange={onChange} value={name} />
+          <label htmlFor="cooldown">Cooldown</label>
+          <input type="number" id="cooldown" onChange={onChange} value={cooldown} />
         </div>
-      )}
 
-      <div className="skills--create--field">
-        <label htmlFor="cooldown">Cooldown</label>
-        <input type="number" id="cooldown" onChange={onChange} value={cooldown} />
-      </div>
+        <div className="skills--create--field">
+          <label htmlFor="cost">Coût</label>
+          <input type="number" id="cost" onChange={onChange} value={cost} />
+        </div>
 
-      <div className="skills--create--field">
-        <label htmlFor="cost">Coût</label>
-        <input type="number" id="cost" onChange={onChange} value={cost} />
-      </div>
+        <div className="skills--create--field">
+          <label htmlFor="distance">Distance</label>
+          <input type="number" id="distance" onChange={onChange} value={distance} />
+        </div>
 
-      <div className="skills--create--field">
-        <label htmlFor="distance">Distance</label>
-        <input type="number" id="distance" onChange={onChange} value={distance} />
-      </div>
+        <div className="skills--create--field">
+          <label htmlFor="range">Range</label>
+          <input type="number" id="range" onChange={onChange} value={range} />
+        </div>
 
-      <div className="skills--create--field">
-        <label htmlFor="range">Range</label>
-        <input type="number" id="range" onChange={onChange} value={range} />
-      </div>
+        <div className="skills--create--field">
+          <label htmlFor="description">Description</label>
+          <textarea name="description" id="description" onChange={onChange} value={description} />
+        </div>
 
-      <div className="skills--create--field">
-        <label htmlFor="description">Description</label>
-        <textarea name="description" id="description" onChange={onChange} value={description} />
-      </div>
+        <div className="skills--create--field">
+          <label htmlFor="success">Réussite</label>
+          <select name="" id="attr1" onChange={onChange} value={attr1}>
+            <option value="str">str</option>
+            <option value="siz">siz</option>
+            <option value="con">con</option>
+            <option value="dex">dex</option>
+            <option value="int">int</option>
+            <option value="pow">pow</option>
+            <option value="cha">cha</option>
+          </select>
+          <span className="skills--create--field--additional">+</span>
+          <select name="" id="attr2" onChange={onChange} value={attr2}>
+            <option value="str">str</option>
+            <option value="siz">siz</option>
+            <option value="con">con</option>
+            <option value="dex">dex</option>
+            <option value="int">int</option>
+            <option value="pow">pow</option>
+            <option value="cha">cha</option>
+          </select>
+        </div>
 
-      <div className="skills--create--field">
-        <label htmlFor="success">Réussite</label>
-        <select name="" id="attr1" onChange={onChange} value={attr1}>
-          <option value="str">str</option>
-          <option value="siz">siz</option>
-          <option value="con">con</option>
-          <option value="dex">dex</option>
-          <option value="int">int</option>
-          <option value="pow">pow</option>
-          <option value="cha">cha</option>
-        </select>
-        <span className="skills--create--field--additional">+</span>
-        <select name="" id="attr2" onChange={onChange} value={attr2}>
-          <option value="str">str</option>
-          <option value="siz">siz</option>
-          <option value="con">con</option>
-          <option value="dex">dex</option>
-          <option value="int">int</option>
-          <option value="pow">pow</option>
-          <option value="cha">cha</option>
-        </select>
-      </div>
+        <div className="skills--create--field">
+          <label htmlFor="damage">Dégâts</label>
+          <input type="text" name="damage" id="damage" onChange={onChange} value={damage} />
+        </div>
+      </section>
 
-      <div className="skills--create--field">
-        <label htmlFor="damage">Dégâts</label>
-        <input type="text" name="damage" id="damage" onChange={onChange} value={damage} />
-      </div>
+      <section>
+        <div className="skills--create--field">
+          <label htmlFor="type">Skill type</label>
+          <select name="" id="type" onChange={onChange} value={type}>
+            <option value="damage">damage</option>
+            <option value="heal">heal</option>
+            <option value="status">status</option>
+          </select>
+        </div>
+
+        <div className="skills--create--field">
+          <label htmlFor="weapon">Use weapon</label>
+          <input type="checkbox" id="weapon" onChange={onChange} checked={weapon} />
+        </div>
+
+        <div className="skills--create--field">
+          <label htmlFor="str">Use Strength</label>
+          <input type="checkbox" id="str" onChange={onChange} checked={str} />
+        </div>
+        <div className="skills--create--field">
+          <label htmlFor="dex">Use Dexterity</label>
+          <input type="checkbox" id="dex" onChange={onChange} checked={dex} />
+        </div>
+        <div className="skills--create--field">
+          <label htmlFor="pow">Use Power</label>
+          <input type="checkbox" id="pow" onChange={onChange} checked={pow} />
+        </div>
+        <div className="skills--create--field">
+          <label htmlFor="ignoreArmor">Ignore armor</label>
+          <input type="checkbox" id="ignoreArmor" onChange={onChange} checked={ignoreArmor} />
+        </div>
+
+        <div className="skills--create--field">
+          <label htmlFor="modifier">Modifier</label>
+          <input type="text" id="modifier" onChange={onChange} value={modifier} />
+        </div>
+
+        <div className="skills--create--field">
+          <label htmlFor="multiplicator">Multiplicator</label>
+          <input type="number" id="multiplicator" onChange={onChange} value={multiplicator} step="0.1" />
+        </div>
+
+        <div className="skills--create--field">
+          <label htmlFor="isSymbiosis">Symbiosis Skill</label>
+          <input type="checkbox" id="isSymbiosis" onChange={onChange} checked={isSymbiosis} />
+        </div>
+      </section>
 
       <div className="skills--create--actions">
         {onClear && <Button onClick={onClear}>Clear fields</Button>}
@@ -108,9 +163,7 @@ SkillForm.propTypes = {
   disabled: PropTypes.bool,
   isNameHidden: PropTypes.bool,
   disabledMessage: PropTypes.string,
-  buttonLabel: PropTypes.string,
-  isSymbiosis: PropTypes.bool,
-  onToggleSymbiosis: PropTypes.func
+  buttonLabel: PropTypes.string
 }
 
 export default class Skills extends Component {
@@ -131,9 +184,7 @@ export default class Skills extends Component {
     assignedCharacter: PropTypes.string,
     assignedSkill: PropTypes.string,
     assignedValue: PropTypes.string,
-    onAssign: PropTypes.func,
-    isSymbiosis: PropTypes.bool,
-    onToggleSymbiosis: PropTypes.func
+    onAssign: PropTypes.func
   }
   state = {
     isOpen: false
@@ -156,15 +207,11 @@ export default class Skills extends Component {
       assignedCharacter,
       assignedSkill,
       assignedValue,
-      onAssign,
-      isSymbiosis,
-      onToggleSymbiosis
+      onAssign
     } = this.props
     const skillFormProps = {
       fields,
-      onChange,
-      isSymbiosis,
-      onToggleSymbiosis
+      onChange
     }
     const { isOpen } = this.state
 
@@ -237,22 +284,23 @@ export default class Skills extends Component {
 
         <Card title={<h3>Skills List</h3>}>
           {skills ? (
-            Object.keys(skills).map(skill => {
+            Object.keys(skills).map(skillID => {
+              const skill = skills[skillID]
               return (
-                <div key={skill} className="skills--list">
+                <div key={skillID} className="skills--list">
                   <div className="skills--list--title">
                     <h4 onClick={this.handleToggleDetails}>
-                      {skill}
+                      {skill.name}
                       <span>{isOpen ? '⇡' : '⇣'}</span>
                     </h4>
                     <Button onClick={() => onOpenModify(skill)}>modifier</Button>
                   </div>
                   {isOpen && (
                     <div>
-                      {Object.keys(skills[skill]).map(attr => {
+                      {Object.keys(skill).map(attr => {
                         return (
                           <div key={attr}>
-                            {attr} : {skills[skill][attr]}
+                            {attr} : {skill[attr]}
                           </div>
                         )
                       })}

@@ -4,6 +4,7 @@ import SkillsComponent from '../../Components/Skills'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firebaseConnect } from 'react-redux-firebase'
+import { statuses } from '../../config/statuses'
 
 const initialStateFields = {
   isSymbiosis: false,
@@ -24,8 +25,7 @@ const initialStateFields = {
   ignoreArmor: false,
   modifier: '1D10',
   multiplicator: 1,
-  multitarget: [],
-  status: []
+  statuses: []
 }
 class Skills extends Component {
   static propTypes = {
@@ -90,6 +90,28 @@ class Skills extends Component {
     firebase.update(`characters/${assignedCharacter}/cooldowns`, { [assignedSkill]: 0 })
   }
 
+  handleStatusesUp = () =>
+    this.setState(prevState => ({
+      fields: {
+        ...prevState.fields,
+        statuses: [...prevState.fields.statuses, { id: statuses[0].slug, turns: 1, bonuses: {} }]
+      }
+    }))
+  handleStatusesDown = () =>
+    this.setState(prevState => ({
+      fields: {
+        ...prevState.fields,
+        statuses: prevState.fields.statuses.slice(0, prevState.fields.statuses.length - 1)
+      }
+    }))
+  handleChangeAdditionalStatus = (index, key = 'id') => e => {
+    let { value, id } = e.target
+    if (['turns'].indexOf(id) > -1) value = Number(value)
+    const statuses = [...this.state.fields.statuses]
+    statuses[index][key] = value
+    this.setState(prevState => ({ fields: { ...prevState.fields, statuses } }))
+  }
+
   render() {
     const { skills, characters } = this.props
     const {
@@ -97,13 +119,15 @@ class Skills extends Component {
       fields: { name },
       assignedCharacter,
       assignedSkill,
-      assignedValue
+      assignedValue,
+      isModifyOpen
     } = this.state
+    console.log(fields.statuses)
     let disabled = false
-    skills &&
-      Object.keys(skills).map(skill => {
-        if (skill === name.toLowerCase().replace(' ', '-')) disabled = true
-      })
+    // skills &&
+    //   Object.keys(skills).map(skill => {
+    //     if (skill === name.toLowerCase().replace(' ', '-')) disabled = true
+    //   })
     return (
       <SkillsComponent
         skills={skills}
@@ -116,13 +140,16 @@ class Skills extends Component {
         disabled={disabled}
         onOpenModify={this.handleOpenModify}
         onCloseModify={this.handleCloseModify}
-        isModifyOpen={this.state.isModifyOpen}
+        isModifyOpen={isModifyOpen}
         onChangeAssignee={this.handleChangeAssignee}
         onAssign={this.handleAssign}
         assignedCharacter={assignedCharacter}
         assignedSkill={assignedSkill}
         assignedValue={assignedValue}
         onToggleSkill={this.handleToggleSkill}
+        onAddStatus={this.handleStatusesUp}
+        onRemoveStatus={this.handleStatusesDown}
+        onChangeStatus={this.handleChangeAdditionalStatus}
       />
     )
   }

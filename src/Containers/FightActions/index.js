@@ -85,7 +85,8 @@ class FightActions extends Component {
     const cooldowns = Object.assign({}, character.cooldowns, {
       [idSkill]: skill.cooldown
     })
-    const { type, weapon, str, pow, dex, ignoreArmor, multiplicator } = fields
+    const { type, weapon, str, pow, dex, ignoreArmor, multiplicator, statuses } = fields
+    console.log(statuses)
     let totalDamage = modifier
     let physicalDamage = 0
     let magicalDamage = 0
@@ -135,6 +136,14 @@ class FightActions extends Component {
         const targetFields = { ...fields, multiplicator }
         this.handleUseSkill(id, targetFields, modifier)
       })
+
+    if (statuses) {
+      const newStatuses = {}
+      statuses.forEach(({ id, turns }) => {
+        Object.assign(newStatuses, { [id]: turns })
+      })
+      this.updateCharacter({ statuses: newStatuses }, selectedCharacterId)
+    }
 
     const changes = { cooldowns }
     if (skill.isSymbiosis) Object.assign(changes, { sp: character.sp - skill.cost })

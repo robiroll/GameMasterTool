@@ -3,9 +3,22 @@ import PropTypes from 'prop-types'
 import Modal from 'react-modal'
 import Button from '../../styleguide/Button'
 import Card from '../../styleguide/Card'
+import { statuses as statusesOptions } from '../../config/statuses'
 import './Skills.scss'
 
-const SkillForm = ({ fields, onChange, onClear, onSubmit, disabled, disabledMessage, buttonLabel, isNameHidden }) => {
+const SkillForm = ({
+  fields,
+  onChange,
+  onClear,
+  onSubmit,
+  disabled,
+  disabledMessage,
+  buttonLabel,
+  isNameHidden,
+  onAddStatus,
+  onRemoveStatus,
+  onChangeStatus
+}) => {
   const {
     isSymbiosis,
     name,
@@ -25,8 +38,7 @@ const SkillForm = ({ fields, onChange, onClear, onSubmit, disabled, disabledMess
     ignoreArmor,
     modifier,
     multiplicator,
-    multitarget,
-    status
+    statuses
   } = fields
 
   return (
@@ -143,6 +155,38 @@ const SkillForm = ({ fields, onChange, onClear, onSubmit, disabled, disabledMess
           <label htmlFor="isSymbiosis">Symbiosis Skill</label>
           <input type="checkbox" id="isSymbiosis" onChange={onChange} checked={isSymbiosis} />
         </div>
+
+        <div className="skills--create--field">
+          <label htmlFor="isSymbiosis">Apply statuses</label>
+          {statuses.length > 0 && (
+            <Button size="small" onClick={onRemoveStatus}>
+              -
+            </Button>
+          )}
+          <Button size="small" onClick={onAddStatus}>
+            +
+          </Button>
+        </div>
+        {statuses.length > 0 &&
+          statuses.map(({ id, turns }, i) => (
+            <div key={i} className="skills--create--field">
+              <div className="skills--create--field">
+                <label htmlFor="status">Status {i + 1}</label>
+                <select name="" id={id} onChange={onChangeStatus(i, 'id')}>
+                  <option value={'selection'} disabled>
+                    Select status
+                  </option>
+                  {statusesOptions.map(({ slug, name }) => (
+                    <option key={slug} value={slug}>
+                      {name}
+                    </option>
+                  ))}
+                </select>
+
+                <input type="number" id="turns" onChange={onChangeStatus(i, 'turns')} value={turns} />
+              </div>
+            </div>
+          ))}
       </section>
 
       <div className="skills--create--actions">
@@ -163,7 +207,10 @@ SkillForm.propTypes = {
   disabled: PropTypes.bool,
   isNameHidden: PropTypes.bool,
   disabledMessage: PropTypes.string,
-  buttonLabel: PropTypes.string
+  buttonLabel: PropTypes.string,
+  onAddStatus: PropTypes.func,
+  onRemoveStatus: PropTypes.func,
+  onChangeStatus: PropTypes.func
 }
 
 export default class Skills extends Component {
@@ -184,7 +231,11 @@ export default class Skills extends Component {
     assignedCharacter: PropTypes.string,
     assignedSkill: PropTypes.string,
     assignedValue: PropTypes.string,
-    onAssign: PropTypes.func
+    onAssign: PropTypes.func,
+    statuses: PropTypes.array,
+    onAddStatus: PropTypes.func,
+    onRemoveStatus: PropTypes.func,
+    onChangeStatus: PropTypes.func
   }
   state = {
     isOpen: false
@@ -207,7 +258,10 @@ export default class Skills extends Component {
       assignedCharacter,
       assignedSkill,
       assignedValue,
-      onAssign
+      onAssign,
+      onAddStatus,
+      onRemoveStatus,
+      onChangeStatus
     } = this.props
     const skillFormProps = {
       fields,
@@ -277,6 +331,9 @@ export default class Skills extends Component {
             onSubmit={onCreate}
             onClear={onClear}
             disabled={disabled}
+            onAddStatus={onAddStatus}
+            onRemoveStatus={onRemoveStatus}
+            onChangeStatus={onChangeStatus}
             buttonLabel="create skill"
             disabledMessage="this skill aready exists"
           />

@@ -61,7 +61,7 @@ class Skills extends Component {
   handleCreate = () => {
     const { firebase } = this.props
     const skill = { ...this.state.fields }
-    firebase.set(`skills/${this.state.fields.name.toLowerCase().replace(' ', '-')}`, skill)
+    firebase.set(`skills/${this.state.fields.name.toLowerCase().split(' ').join('-')}`, skill)
   }
 
   handleUpdate = () => {
@@ -136,7 +136,7 @@ class Skills extends Component {
     let disabled = false
     skills &&
       Object.keys(skills).map(skill => {
-        if (skill === name.toLowerCase().replace(' ', '-')) disabled = true
+        if (skill === name.toLowerCase().split(' ').join('-')) disabled = true
       })
     return (
       <SkillsComponent

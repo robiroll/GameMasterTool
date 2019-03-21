@@ -2,7 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Button from '../../styleguide/Button'
 import Icon from '../../styleguide/Icon'
-import { STATS, HP_MAX } from '../../lib'
+import { STATS, HP_MAX, STATUSES_STATS } from '../../lib'
+import { statuses as statusesOptions } from '../../config/statuses'
 import './Order.scss'
 
 const Order = ({
@@ -21,12 +22,13 @@ const Order = ({
   <div className={`order order__${status}`}>
     {order.map(idCharacter => {
       const character = characters[idCharacter]
-      const { equipment } = character
+      const { equipment, statuses } = character
       const stats = STATS(character)
+      const bonuses = STATUSES_STATS(statuses)
       const { con, pow } = stats
       const isPlaying = playing === idCharacter
-      let armor = con
-      let magicArmor = pow
+      let armor = con + bonuses.armor
+      let magicArmor = pow + bonuses.magicArmor
       Object.values(equipment).forEach(eq => {
         armor += eq.armor || 0
         magicArmor += eq.magicArmor || 0
@@ -66,10 +68,22 @@ const Order = ({
               </div>
               <div className="order--char--statuses">
                 {character.statuses
-                  ? Object.entries(character.statuses).map(([key, value]) => {
+                  ? Object.entries(character.statuses).map(([key, { turns, bonuses }]) => {
                       return (
                         <div key={key}>
-                          {key} : {value}
+                          <div>
+                            {key} : {turns}
+                          </div>
+                          {bonuses && (
+                            <div>
+                              {Object.entries(bonuses).map(([key, val]) => (
+                                <div key={key}>
+                                  {' - '}
+                                  {key}: {val}
+                                </div>
+                              ))}
+                            </div>
+                          )}
                         </div>
                       )
                     })
@@ -79,13 +93,11 @@ const Order = ({
                 <div className="order--char--status--options select">
                   <select name="status" id="status" onChange={onChangeStatus}>
                     <option value="none">None</option>
-                    <option value="frozen">Frozen</option>
-                    <option value="slowed">Slowed</option>
-                    <option value="blinded">Blinded</option>
-                    <option value="charmed">Charmed</option>
-                    <option value="crippled">Crippled</option>
-                    <option value="dazed">Dazed</option>
-                    <option value="knocked">Knocked down</option>
+                    {statusesOptions.map(({ slug, name }) => (
+                      <option key={slug} value={slug}>
+                        {name}
+                      </option>
+                    ))}
                   </select>
                 </div>
                 <input className="order--char--status--value" type="number" onChange={onChangeDuration} />

@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import Equipment from '../../Containers/Equipment'
 import Inventory from '../../Containers/Inventory'
-import { AP, HP_MAX } from '../../lib'
+import { AP, HP_MAX, STATUSES_STATS } from '../../lib'
 import './Player.scss'
 
 import { standardSkills as standardSkillsBonuses, proSkills as proSkillsBonuses } from '../Character/config'
@@ -31,7 +31,8 @@ const Player = ({
     credits,
     passion1,
     passion2,
-    passion3
+    passion3,
+    statuses
   }
 }) => {
   let weapons = []
@@ -63,6 +64,11 @@ const Player = ({
       magicArmor += eq.magicArmor || 0
       bonusHP += eq.hp || 0
     })
+  if (statuses) {
+    const st = STATUSES_STATS(statuses)
+    armor += st.armor
+    magicArmor += st.magicArmor
+  }
   const apBase = AP.base
   const apStart = AP.start
   const apMax = AP.max

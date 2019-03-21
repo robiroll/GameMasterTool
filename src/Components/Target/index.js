@@ -20,7 +20,8 @@ const Target = ({
   onTargetsUp,
   onTargetsDown,
   onChangeAdditionalTarget,
-  onChangeTurn
+  onChangeTurn,
+  onChangeBonus
 }) => {
   const { weapon, str, dex, pow, ignoreArmor, multiplicator, statuses } = fields
   const selected = characters.find(({ id }) => id === targetedCharacter)
@@ -135,6 +136,12 @@ const Target = ({
                 <div key={i} className="skills--create--field">
                   <label htmlFor="statuses">{statusesOptions.find(status => status.slug === id).name}</label>
                   <input type="number" id={id} onChange={onChangeTurn} value={turns} />
+                  {Object.keys(bonuses).length > 0 &&
+                    Object.entries(bonuses).map(([key, value]) => (
+                      <div key={key} className="skills--create--field">
+                        {key}: <input type="number" bonus={key} onChange={onChangeBonus} value={value} status={id} />
+                      </div>
+                    ))}
                 </div>
               ))}
           </div>
@@ -185,7 +192,8 @@ Target.propTypes = {
   targets: PropTypes.array.isRequired,
   onTargetsUp: PropTypes.func.isRequired,
   onTargetsDown: PropTypes.func.isRequired,
-  onChangeTurn: PropTypes.func.isRequired
+  onChangeTurn: PropTypes.func.isRequired,
+  onChangeBonus: PropTypes.func.isRequired
 }
 
 Target.defaultProps = {

@@ -6,7 +6,7 @@ import Difficulty from '../Difficulty'
 import Passion from '../../Containers/Passion'
 import Equipment from '../../Containers/Equipment'
 import Inventory from '../../Containers/Inventory'
-import { AP, HP_MAX } from '../../lib'
+import { AP, HP_MAX, STATUSES_STATS } from '../../lib'
 import './Character.scss'
 
 import { standardSkills as standardSkillsBonuses, proSkills as proSkillsBonuses } from './config'
@@ -22,7 +22,7 @@ const BONUS_NAME = {
 }
 
 const Character = ({
-  data: { hp, name, attributes, combatSkills, standardSkills, proSkills, talents, equipment, credits },
+  data: { hp, name, attributes, combatSkills, standardSkills, proSkills, talents, equipment, statuses, credits },
   idCharacter,
   onUpdateHp,
   onChangeHp,
@@ -67,6 +67,11 @@ const Character = ({
       magicArmor += eq.magicArmor || 0
       bonusHP += eq.hp || 0
     })
+  if (statuses) {
+    const st = STATUSES_STATS(statuses)
+    armor += st.armor
+    magicArmor += st.magicArmor
+  }
   const apBase = AP.base
   const apStart = AP.start
   const apMax = AP.max

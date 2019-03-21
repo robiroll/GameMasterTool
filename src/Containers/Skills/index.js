@@ -94,7 +94,7 @@ class Skills extends Component {
     this.setState(prevState => ({
       fields: {
         ...prevState.fields,
-        statuses: [...prevState.fields.statuses, { id: statuses[0].slug, turns: 1, bonuses: {} }]
+        statuses: [...prevState.fields.statuses, { id: statuses[0].slug, turns: 1, bonuses: statuses[0].bonuses || {} }]
       }
     }))
   handleStatusesDown = () =>
@@ -107,9 +107,20 @@ class Skills extends Component {
   handleChangeAdditionalStatus = (index, key = 'id') => e => {
     let { value, id } = e.target
     if (['turns'].indexOf(id) > -1) value = Number(value)
-    const statuses = [...this.state.fields.statuses]
-    statuses[index][key] = value
-    this.setState(prevState => ({ fields: { ...prevState.fields, statuses } }))
+    const fieldStatuses = [...this.state.fields.statuses]
+    fieldStatuses[index][key] = value
+    if (key === 'id') {
+      const { bonuses } = statuses.find(status => status.slug === value)
+      if (bonuses) fieldStatuses[index].bonuses = bonuses
+    }
+    this.setState(prevState => ({ fields: { ...prevState.fields, statuses: fieldStatuses } }))
+  }
+  handleChangeBonus = index => e => {
+    const { id } = e.target
+    const value = Number(e.target.value)
+    const fieldStatuses = [...this.state.fields.statuses]
+    fieldStatuses[index].bonuses[id] = value
+    this.setState(prevState => ({ fields: { ...prevState.fields, statuses: fieldStatuses } }))
   }
 
   render() {
@@ -122,12 +133,11 @@ class Skills extends Component {
       assignedValue,
       isModifyOpen
     } = this.state
-    console.log(fields.statuses)
     let disabled = false
-    // skills &&
-    //   Object.keys(skills).map(skill => {
-    //     if (skill === name.toLowerCase().replace(' ', '-')) disabled = true
-    //   })
+    skills &&
+      Object.keys(skills).map(skill => {
+        if (skill === name.toLowerCase().replace(' ', '-')) disabled = true
+      })
     return (
       <SkillsComponent
         skills={skills}
@@ -150,6 +160,7 @@ class Skills extends Component {
         onAddStatus={this.handleStatusesUp}
         onRemoveStatus={this.handleStatusesDown}
         onChangeStatus={this.handleChangeAdditionalStatus}
+        onChangeBonus={this.handleChangeBonus}
       />
     )
   }

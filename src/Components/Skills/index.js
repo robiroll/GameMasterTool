@@ -17,7 +17,8 @@ const SkillForm = ({
   isNameHidden,
   onAddStatus,
   onRemoveStatus,
-  onChangeStatus
+  onChangeStatus,
+  onChangeBonus
 }) => {
   const {
     isSymbiosis,
@@ -168,7 +169,7 @@ const SkillForm = ({
           </Button>
         </div>
         {statuses.length > 0 &&
-          statuses.map(({ id, turns }, i) => (
+          statuses.map(({ id, turns, bonuses }, i) => (
             <div key={i} className="skills--create--field">
               <div className="skills--create--field">
                 <label htmlFor="status">Status {i + 1}</label>
@@ -185,6 +186,12 @@ const SkillForm = ({
 
                 <input type="number" id="turns" onChange={onChangeStatus(i, 'turns')} value={turns} />
               </div>
+              {Object.keys(bonuses).length > 0 &&
+                Object.entries(bonuses).map(([key, value]) => (
+                  <div key={key} className="skills--create--field">
+                    {key}: <input type="number" id={key} onChange={onChangeBonus(i)} value={value} />
+                  </div>
+                ))}
             </div>
           ))}
       </section>
@@ -210,7 +217,8 @@ SkillForm.propTypes = {
   buttonLabel: PropTypes.string,
   onAddStatus: PropTypes.func,
   onRemoveStatus: PropTypes.func,
-  onChangeStatus: PropTypes.func
+  onChangeStatus: PropTypes.func,
+  onChangeBonus: PropTypes.func
 }
 
 export default class Skills extends Component {
@@ -235,7 +243,8 @@ export default class Skills extends Component {
     statuses: PropTypes.array,
     onAddStatus: PropTypes.func,
     onRemoveStatus: PropTypes.func,
-    onChangeStatus: PropTypes.func
+    onChangeStatus: PropTypes.func,
+    onChangeBonus: PropTypes.func
   }
   state = {
     isOpen: false
@@ -261,7 +270,8 @@ export default class Skills extends Component {
       onAssign,
       onAddStatus,
       onRemoveStatus,
-      onChangeStatus
+      onChangeStatus,
+      onChangeBonus
     } = this.props
     const skillFormProps = {
       fields,
@@ -334,6 +344,7 @@ export default class Skills extends Component {
             onAddStatus={onAddStatus}
             onRemoveStatus={onRemoveStatus}
             onChangeStatus={onChangeStatus}
+            onChangeBonus={onChangeBonus}
             buttonLabel="create skill"
             disabledMessage="this skill aready exists"
           />

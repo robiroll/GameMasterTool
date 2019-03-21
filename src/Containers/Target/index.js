@@ -75,6 +75,16 @@ class Target extends Component {
     statuses[index].turns = Number(value)
     this.setState({ fields: { ...fields, statuses } })
   }
+  handleChangeBonus = e => {
+    const bonus = e.target.getAttribute('bonus')
+    const status = e.target.getAttribute('status')
+    const { fields } = this.state
+    const { statuses: st } = fields
+    const statuses = [...st]
+    const index = findIndex(statuses, { id: status })
+    statuses[index].bonuses[bonus] = Number(e.target.value)
+    this.setState({ fields: { ...fields, statuses } })
+  }
 
   handleValidate = async () => {
     const { onAttack, onUseSkill, onCloseTarget } = this.props
@@ -100,6 +110,7 @@ class Target extends Component {
         onTargetsDown={this.handleTargetsDown}
         onChangeAdditionalTarget={this.handleChangeAdditionalTarget}
         onChangeTurn={this.handleChangeTurn}
+        onChangeBonus={this.handleChangeBonus}
         targets={this.state.targets}
         onValidate={this.handleValidate}
       />

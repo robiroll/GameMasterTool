@@ -4,7 +4,7 @@ import FightActionsComponent from '../../Components/FightActions'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firebaseConnect } from 'react-redux-firebase'
-import { STATS, EQUIPEMENT_STATS, HP_MAX } from '../../lib'
+import { STATS, EQUIPEMENT_STATS, HP_MAX, STATUSES_STATS } from '../../lib'
 
 import { useSkill, useAction, delayTurn, endTurn } from '../../redux/actions/fight'
 
@@ -63,10 +63,11 @@ class FightActions extends Component {
 
   targetDefense = target => {
     const targetArmor = EQUIPEMENT_STATS(target.equipment)
+    const statusArmor = STATUSES_STATS(target.statuses)
     const stats = STATS(target)
     return {
-      armor: targetArmor.armor + stats.con,
-      magicArmor: targetArmor.magicArmor + stats.pow
+      armor: targetArmor.armor + statusArmor.armor + stats.con,
+      magicArmor: targetArmor.magicArmor + statusArmor.magicArmor + stats.pow
     }
   }
 
@@ -82,11 +83,11 @@ class FightActions extends Component {
     const character = characters[idCharacter]
     const stats = STATS(character)
     const target = characters[selectedCharacterId]
+    const maxHp = HP_MAX(STATS(target), target.equipment)
     const cooldowns = Object.assign({}, character.cooldowns, {
       [idSkill]: skill.cooldown
     })
     const { type, weapon, str, pow, dex, ignoreArmor, multiplicator, statuses } = fields
-    console.log(statuses)
     let totalDamage = modifier
     let physicalDamage = 0
     let magicalDamage = 0
@@ -104,7 +105,6 @@ class FightActions extends Component {
     magicalDamage *= multiplicator
     if (type === 'heal') {
       let hp = target.hp
-      const maxHp = HP_MAX(STATS(target), target.equipment)
       const bonusHp = totalDamage + physicalDamage + magicalDamage
       hp += bonusHp
       if (hp > maxHp) hp = maxHp
@@ -129,6 +129,12 @@ class FightActions extends Component {
         }
         hp -= Math.round(totalDamage)
       }
+      const { lifeSteal } = STATUSES_STATS(character.statuses)
+      if (lifeSteal) {
+        const stolen = (totalDamage * lifeSteal) / 100
+        const newHp = character.hp + stolen > maxHp ? maxHp : character.hp + stolen
+        this.updateCharacter({ hp: Math.round(newHp) })
+      }
       await this.updateCharacter({ hp }, selectedCharacterId)
     }
     if (targets.length > 0)
@@ -139,8 +145,8 @@ class FightActions extends Component {
 
     if (statuses) {
       const newStatuses = {}
-      statuses.forEach(({ id, turns }) => {
-        Object.assign(newStatuses, { [id]: turns })
+      statuses.forEach(({ id, turns, bonuses }) => {
+        Object.assign(newStatuses, { [id]: { turns, bonuses } })
       })
       this.updateCharacter({ statuses: newStatuses }, selectedCharacterId)
     }
@@ -159,28 +165,36 @@ class FightActions extends Component {
     const { characters, idCharacter } = this.props
     const character = characters[idCharacter]
     const target = characters[selectedCharacterId]
-    const { weapon1, weapon2 } = character.equipment
     let totalDamage = modifier
-    const primaryWeapon = weapon1 || weapon2
-    const secondaryWeapon = [weapon1, weapon2].filter(Boolean).length > 1 && weapon2
-    const stats = STATS(character)
-    const targetStats = EQUIPEMENT_STATS(target.equipment)
-    if (primaryWeapon) {
-      const { damage, damageType } = primaryWeapon
-      totalDamage += damage
-      totalDamage += stats[damageType]
-      if (damageType === 'pow') totalDamage -= target.attributes.pow + targetStats.magicArmor + targetStats.pow
-      else totalDamage -= target.attributes.con + targetStats.con + targetStats.armor
+    let physicalDamage = 0
+    let magicalDamage = 0
+    const { damage, physical, magical } = this.characterDamage()
+    totalDamage += damage
+    physicalDamage += physical
+    magicalDamage += magical
+    let hp = target.hp
+    const { armor, magicArmor } = this.targetDefense(target)
+    if (physicalDamage > 0) {
+      totalDamage += physicalDamage
+      if (armor >= totalDamage) totalDamage = 0
+      else totalDamage -= armor
     }
-    if (secondaryWeapon) {
-      const { damage, damageType } = secondaryWeapon
-      let secondaryDamage = damage / 2 + stats[damageType] / 2
-      if (damageType === 'pow') secondaryDamage -= (target.attributes.pow + targetStats.pow) / 2
-      else secondaryDamage -= (target.attributes.con + targetStats.con) / 2
-      if (secondaryDamage > 0) totalDamage += secondaryDamage
+    if (magicalDamage > 0) {
+      totalDamage += magicalDamage
+      if (magicArmor >= totalDamage) totalDamage = 0
+      else totalDamage -= magicArmor
     }
-    this.updateCharacter({ ap: character.ap - 2 })
-    if (totalDamage > 0) this.updateCharacter({ hp: target.hp - totalDamage }, selectedCharacterId)
+    hp -= Math.round(totalDamage)
+    const changes = { ap: character.ap - 2 }
+    const { lifeSteal } = STATUSES_STATS(character.statuses)
+    if (lifeSteal) {
+      const maxHp = HP_MAX(STATS(character), character.equipment)
+      const stolen = (totalDamage * lifeSteal) / 100
+      const newHp = character.hp + stolen > maxHp ? maxHp : character.hp + stolen
+      Object.assign(changes, { hp: Math.round(newHp) })
+    }
+    this.updateCharacter(changes)
+    this.updateCharacter({ hp }, selectedCharacterId)
   }
   handleMove = () => {
     const { characters, idCharacter } = this.props

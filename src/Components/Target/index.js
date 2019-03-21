@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import { Button } from '../../styleguide'
+import { statuses as statusesOptions } from '../../config/statuses'
 import './Target.scss'
 
 const Target = ({
@@ -18,9 +19,11 @@ const Target = ({
   targets,
   onTargetsUp,
   onTargetsDown,
-  onChangeAdditionalTarget
+  onChangeAdditionalTarget,
+  onChangeTurn,
+  onChangeBonus
 }) => {
-  const { weapon, str, dex, pow, ignoreArmor, multiplicator } = fields
+  const { weapon, str, dex, pow, ignoreArmor, multiplicator, statuses } = fields
   const selected = characters.find(({ id }) => id === targetedCharacter)
   return (
     <div className="target">
@@ -128,6 +131,19 @@ const Target = ({
               <label htmlFor="multiplicator">Multiplicator</label>
               <input type="number" id="multiplicator" onChange={onChangeField} value={multiplicator} step="0.1" />
             </div>
+            {statuses &&
+              statuses.map(({ id, turns, bonuses }, i) => (
+                <div key={i} className="skills--create--field">
+                  <label htmlFor="statuses">{statusesOptions.find(status => status.slug === id).name}</label>
+                  <input type="number" id={id} onChange={onChangeTurn} value={turns} />
+                  {Object.keys(bonuses).length > 0 &&
+                    Object.entries(bonuses).map(([key, value]) => (
+                      <div key={key} className="skills--create--field">
+                        {key}: <input type="number" bonus={key} onChange={onChangeBonus} value={value} status={id} />
+                      </div>
+                    ))}
+                </div>
+              ))}
           </div>
         )}
       </div>
@@ -144,7 +160,7 @@ const Target = ({
                   <input
                     type="number"
                     id="multiplicator"
-                    onChange={onChangeAdditionalTarget(i)}
+                    onChange={onChangeAdditionalTarget(i, 'multiplicator')}
                     value={multiplicator}
                     step="0.1"
                   />
@@ -175,7 +191,9 @@ Target.propTypes = {
   fields: PropTypes.object.isRequired,
   targets: PropTypes.array.isRequired,
   onTargetsUp: PropTypes.func.isRequired,
-  onTargetsDown: PropTypes.func.isRequired
+  onTargetsDown: PropTypes.func.isRequired,
+  onChangeTurn: PropTypes.func.isRequired,
+  onChangeBonus: PropTypes.func.isRequired
 }
 
 Target.defaultProps = {

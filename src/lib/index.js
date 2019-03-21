@@ -4,7 +4,8 @@ export const AP = {
   max: 6
 }
 
-export const HP_MAX = (stats, equipment) => {
+// TODO: hp max by character + statuses
+export const HP_MAX = (stats, equipment, statuses) => {
   const { con, siz } = stats
   let hpMax = con * 5 + siz * 15
   if (equipment)
@@ -16,7 +17,7 @@ export const HP_MAX = (stats, equipment) => {
 }
 
 export const STATS = character => {
-  const { equipment, attributes } = character
+  const { equipment, attributes, statuses } = character
   let bonuses = {
     str: 0,
     siz: 0,
@@ -31,6 +32,13 @@ export const STATS = character => {
     Object.keys(equipment).map(key => {
       const eq = equipment[key]
       if (eq.bonus) Object.keys(eq.bonus).map(bns => (bonuses[bns] += eq.bonus[bns]))
+    })
+  if (statuses)
+    Object.values(statuses).map(({ bonuses: b }) => {
+      if (b)
+        Object.entries(b).map(([key, bns]) => {
+          if (bonuses[key]) bonuses[key] += bns
+        })
     })
   let totalStats = {}
   Object.keys(attributes).map(attr => (totalStats[attr] = bonuses[attr] + attributes[attr]))
@@ -79,5 +87,40 @@ export const EQUIPEMENT_STATS = equipment => {
     int: ttlint,
     siz: ttlsiz,
     credits: ttlcreditsValue
+  }
+}
+
+export const STATUSES_STATS = statuses => {
+  let ttlarmor = 0
+  let ttlmagicArmor = 0
+  let ttlhp = 0
+  let ttlstr = 0
+  let ttldex = 0
+  let ttlcon = 0
+  let ttlpow = 0
+  let ttlcha = 0
+  let ttlint = 0
+  let ttlsiz = 0
+  let ttlLifeSteal = 0
+  if (statuses)
+    Object.values(statuses).map(({ bonuses }) => {
+      const { armor, magicArmor, hp, lifeSteal } = bonuses
+      if (armor) ttlarmor += armor
+      if (magicArmor) ttlmagicArmor += magicArmor
+      if (hp) ttlhp += hp
+      if (lifeSteal) ttlLifeSteal += lifeSteal
+    })
+  return {
+    armor: ttlarmor,
+    magicArmor: ttlmagicArmor,
+    hp: ttlhp,
+    str: ttlstr,
+    dex: ttldex,
+    con: ttlcon,
+    pow: ttlpow,
+    cha: ttlcha,
+    int: ttlint,
+    siz: ttlsiz,
+    lifeSteal: ttlLifeSteal
   }
 }

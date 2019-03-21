@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { firebaseConnect } from 'react-redux-firebase'
 import { removeCharacter } from '../../redux/actions/fight'
 import OrderComponent from '../../Components/Order'
+import { statuses } from '../../config/statuses'
 
 class Order extends Component {
   static propTypes = {
@@ -36,8 +37,10 @@ class Order extends Component {
 
   handleApplyStatus = idCharacter => () => {
     const { firebase } = this.props
+    const { status, duration } = this.state
+    const { bonuses } = statuses.find(({ slug }) => slug === status)
+    firebase.update(`characters/${idCharacter}/statuses/${status}`, { turns: Number(duration), bonuses })
     this.setState({ duration: 0, status: '' })
-    firebase.update(`characters/${idCharacter}/statuses`, { [this.state.status]: Number(this.state.duration) })
   }
 
   handleChangeStatus = e => {

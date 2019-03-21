@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { findIndex } from 'lodash'
 import TargetComponent from '../../Components/Target'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
@@ -19,7 +20,7 @@ class Target extends Component {
 
   constructor(props) {
     super(props)
-    const { type, weapon, pow, str, dex, ignoreArmor, multiplicator, multitarget, status } = props.skill || {}
+    const { type, weapon, pow, str, dex, ignoreArmor, multiplicator, multitarget, statuses } = props.skill || {}
     this.state = {
       targetedCharacter: '',
       modifier: 1,
@@ -33,7 +34,7 @@ class Target extends Component {
         ignoreArmor,
         multiplicator,
         multitarget,
-        status
+        statuses
       }
     }
   }
@@ -61,10 +62,28 @@ class Target extends Component {
   handleChangeField = e => {
     let { id, value, checked } = e.target
     const { fields } = this.state
-    if (['multiplicator'].indexOf(id) > -1) value = Number(value)
+    if (['multiplicator', 'turns'].indexOf(id) > -1) value = Number(value)
     if (['weapon', 'pow', 'dex', 'str', 'ignoreArmor'].indexOf(id) > -1) value = checked
-    Object.assign(fields, { [id]: value })
-    this.setState({ fields })
+    this.setState({ fields: { ...fields, [id]: value } })
+  }
+  handleChangeTurn = e => {
+    let { id, value } = e.target
+    const { fields } = this.state
+    const { statuses: st } = fields
+    const statuses = [...st]
+    const index = findIndex(statuses, { id })
+    statuses[index].turns = Number(value)
+    this.setState({ fields: { ...fields, statuses } })
+  }
+  handleChangeBonus = e => {
+    const bonus = e.target.getAttribute('bonus')
+    const status = e.target.getAttribute('status')
+    const { fields } = this.state
+    const { statuses: st } = fields
+    const statuses = [...st]
+    const index = findIndex(statuses, { id: status })
+    statuses[index].bonuses[bonus] = Number(e.target.value)
+    this.setState({ fields: { ...fields, statuses } })
   }
 
   handleValidate = async () => {
@@ -90,6 +109,8 @@ class Target extends Component {
         onTargetsUp={this.handleTargetsUp}
         onTargetsDown={this.handleTargetsDown}
         onChangeAdditionalTarget={this.handleChangeAdditionalTarget}
+        onChangeTurn={this.handleChangeTurn}
+        onChangeBonus={this.handleChangeBonus}
         targets={this.state.targets}
         onValidate={this.handleValidate}
       />

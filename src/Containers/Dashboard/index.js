@@ -61,11 +61,11 @@ class Dashboard extends Component {
         })
       let newAp = ap + base
       if (newStatuses) {
-        Object.entries(newStatuses).map(([key, value]) => {
-          const newValue = value - 1
-          if (newValue < 1) delete newStatuses[key]
+        Object.entries(newStatuses).map(([key, { turns }]) => {
+          const newTurns = turns - 1
+          if (newTurns < 1) delete newStatuses[key]
           else {
-            newStatuses[key] = newValue
+            newStatuses[key].turns = newTurns
             switch (key) {
               case 'frozen':
                 newAp -= base

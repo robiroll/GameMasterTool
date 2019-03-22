@@ -36,10 +36,12 @@ const SkillForm = ({
     pow,
     str,
     dex,
+    siz,
     ignoreArmor,
     modifier,
     multiplicator,
-    statuses
+    statuses,
+    damageType
   } = fields
 
   return (
@@ -114,11 +116,21 @@ const SkillForm = ({
         <div className="skills--create--field">
           <label htmlFor="type">Skill type</label>
           <select name="" id="type" onChange={onChange} value={type}>
-            <option value="damage">damage</option>
-            <option value="heal">heal</option>
-            <option value="status">status</option>
+            <option value="damage">Damage</option>
+            <option value="heal">Heal</option>
+            <option value="status">Status</option>
           </select>
         </div>
+
+        {type === 'damage' && (
+          <div className="skills--create--field">
+            <label htmlFor="damageType">Damage type</label>
+            <select name="" id="damageType" onChange={onChange} value={damageType}>
+              <option value="physical">Physical</option>
+              <option value="magical">Magical</option>
+            </select>
+          </div>
+        )}
 
         <div className="skills--create--field">
           <label htmlFor="weapon">Use weapon</label>
@@ -136,6 +148,10 @@ const SkillForm = ({
         <div className="skills--create--field">
           <label htmlFor="pow">Use Power</label>
           <input type="checkbox" id="pow" onChange={onChange} checked={pow} />
+        </div>
+        <div className="skills--create--field">
+          <label htmlFor="siz">Use Size</label>
+          <input type="checkbox" id="siz" onChange={onChange} checked={siz} />
         </div>
         <div className="skills--create--field">
           <label htmlFor="ignoreArmor">Ignore armor</label>

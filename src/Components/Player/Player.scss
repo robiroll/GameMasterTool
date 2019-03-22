@@ -7,6 +7,16 @@
   &--title {
     margin: $g1 0;
     border-bottom: 1px solid rgba($primary-1, 0.6);
+
+    &--wrapper {
+      position: relative;
+    }
+  }
+
+  &--ap {
+    position: absolute;
+    right: 0;
+    bottom: 0;
   }
 
   &--name {

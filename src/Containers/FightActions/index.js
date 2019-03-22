@@ -34,6 +34,7 @@ class FightActions extends Component {
     const { characters, idCharacter } = this.props
     const character = characters[idCharacter]
     const { weapon1, weapon2 } = character.equipment
+    let damageType = 'physical'
     let totalDamage = 0
     let physical = 0
     let magical = 0
@@ -54,10 +55,10 @@ class FightActions extends Component {
       if (damageType === 'pow') magical += dmg
       else physical += dmg
     }
+    if (magical > physical) damageType = 'magical'
     return {
-      damage: totalDamage,
-      physical,
-      magical
+      damage: totalDamage + physical + magical,
+      damageType
     }
   }
 
@@ -87,26 +88,20 @@ class FightActions extends Component {
     const cooldowns = Object.assign({}, character.cooldowns, {
       [idSkill]: skill.cooldown
     })
-    const { type, weapon, str, pow, dex, ignoreArmor, multiplicator, statuses } = fields
+    const { type, weapon, str, pow, dex, siz, ignoreArmor, multiplicator, statuses } = fields
     let totalDamage = modifier
-    let physicalDamage = 0
-    let magicalDamage = 0
     if (weapon) {
-      const { damage, physical, magical } = this.characterDamage()
+      const { damage } = this.characterDamage()
       totalDamage += damage
-      physicalDamage += physical
-      magicalDamage += magical
     }
-    if (str) physicalDamage += stats.str
-    if (dex) physicalDamage += stats.dex
-    if (pow) magicalDamage += stats.pow
+    if (str) totalDamage += stats.str
+    if (dex) totalDamage += stats.dex
+    if (pow) totalDamage += stats.pow
+    if (siz) totalDamage += stats.siz
     totalDamage *= multiplicator
-    physicalDamage *= multiplicator
-    magicalDamage *= multiplicator
     if (type === 'heal') {
       let hp = target.hp
-      const bonusHp = totalDamage + physicalDamage + magicalDamage
-      hp += bonusHp
+      hp += totalDamage
       if (hp > maxHp) hp = maxHp
       const targetChanges = { hp: Math.round(hp) }
       await this.updateCharacter(targetChanges, selectedCharacterId)
@@ -114,19 +109,12 @@ class FightActions extends Component {
     if (type === 'damage') {
       let hp = target.hp
       if (ignoreArmor) {
-        hp -= Math.round(totalDamage + physicalDamage + magicalDamage)
+        hp -= Math.round(totalDamage)
       } else {
         const { armor, magicArmor } = this.targetDefense(target)
-        if (physicalDamage > 0) {
-          totalDamage += physicalDamage
-          if (armor >= totalDamage) totalDamage = 0
-          else totalDamage -= armor
-        }
-        if (magicalDamage > 0) {
-          totalDamage += magicalDamage
-          if (magicArmor >= totalDamage) totalDamage = 0
-          else totalDamage -= magicArmor
-        }
+        const absorbed = skill.damageType === 'magical' ? magicArmor : armor
+        if (absorbed >= totalDamage) totalDamage = 0
+        else totalDamage -= absorbed
         hp -= Math.round(totalDamage)
       }
       const { lifeSteal } = STATUSES_STATS(character.statuses)
@@ -166,24 +154,13 @@ class FightActions extends Component {
     const character = characters[idCharacter]
     const target = characters[selectedCharacterId]
     let totalDamage = modifier
-    let physicalDamage = 0
-    let magicalDamage = 0
-    const { damage, physical, magical } = this.characterDamage()
+    const { damage, damageType } = this.characterDamage()
     totalDamage += damage
-    physicalDamage += physical
-    magicalDamage += magical
     let hp = target.hp
     const { armor, magicArmor } = this.targetDefense(target)
-    if (physicalDamage > 0) {
-      totalDamage += physicalDamage
-      if (armor >= totalDamage) totalDamage = 0
-      else totalDamage -= armor
-    }
-    if (magicalDamage > 0) {
-      totalDamage += magicalDamage
-      if (magicArmor >= totalDamage) totalDamage = 0
-      else totalDamage -= magicArmor
-    }
+    const absorbed = damageType === 'magical' ? magicArmor : armor
+    if (absorbed >= totalDamage) totalDamage = 0
+    else totalDamage -= absorbed
     hp -= Math.round(totalDamage)
     const changes = { ap: character.ap - 2 }
     const { lifeSteal } = STATUSES_STATS(character.statuses)

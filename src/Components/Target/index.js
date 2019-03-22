@@ -23,7 +23,7 @@ const Target = ({
   onChangeTurn,
   onChangeBonus
 }) => {
-  const { weapon, str, dex, pow, ignoreArmor, multiplicator, statuses } = fields
+  const { weapon, str, dex, pow, siz, ignoreArmor, multiplicator, statuses } = fields
   const selected = characters.find(({ id }) => id === targetedCharacter)
   return (
     <div className="target">
@@ -121,6 +121,10 @@ const Target = ({
             <div className="skills--create--field">
               <label htmlFor="pow">Use Power</label>
               <input type="checkbox" id="pow" onChange={onChangeField} checked={pow} />
+            </div>
+            <div className="skills--create--field">
+              <label htmlFor="siz">Use Size</label>
+              <input type="checkbox" id="siz" onChange={onChangeField} checked={siz} />
             </div>
             <div className="skills--create--field">
               <label htmlFor="ignoreArmor">Ignore armor</label>

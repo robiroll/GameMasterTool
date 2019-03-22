@@ -20,7 +20,7 @@ class Target extends Component {
 
   constructor(props) {
     super(props)
-    const { type, weapon, pow, str, dex, ignoreArmor, multiplicator, multitarget, statuses } = props.skill || {}
+    const { type, weapon, pow, str, dex, siz, ignoreArmor, multiplicator, multitarget, statuses } = props.skill || {}
     this.state = {
       targetedCharacter: '',
       modifier: 1,
@@ -31,6 +31,7 @@ class Target extends Component {
         pow,
         str,
         dex,
+        siz,
         ignoreArmor,
         multiplicator,
         multitarget,
@@ -63,7 +64,7 @@ class Target extends Component {
     let { id, value, checked } = e.target
     const { fields } = this.state
     if (['multiplicator', 'turns'].indexOf(id) > -1) value = Number(value)
-    if (['weapon', 'pow', 'dex', 'str', 'ignoreArmor'].indexOf(id) > -1) value = checked
+    if (['weapon', 'pow', 'dex', 'str', 'siz', 'ignoreArmor'].indexOf(id) > -1) value = checked
     this.setState({ fields: { ...fields, [id]: value } })
   }
   handleChangeTurn = e => {

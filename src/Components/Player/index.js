@@ -20,6 +20,7 @@ const BONUS_NAME = {
 const Player = ({
   skills,
   character: {
+    ap: apCurrent,
     idCharacter,
     hp,
     name,
@@ -159,6 +160,8 @@ const Player = ({
             <h4 className="player--title">Fight</h4>
             <div className="player--initiative">Initiative: {Math.ceil((totalStats.int + totalStats.dex) / 2)}</div>
             <div className="player--ap">
+              AP current : {apCurrent}
+              <br />
               AP start: {apStart}
               <br />
               AP per turn: {apBase}
@@ -233,7 +236,11 @@ const Player = ({
         <h5 className="player--credits--title">credits: {(credits || 0).toLocaleString('fr')}</h5>
         <h3 className="player--title">Équipement</h3>
         <Equipment idCharacter={idCharacter} />
-        <h3 className="player--title">Compétences</h3>
+        <div className="player--title--wrapper">
+          <h3 className="player--title">Compétences</h3>
+          <h5 className="player--ap">Action points : {apCurrent}</h5>
+        </div>
+
         {combatSkills && (
           <div className="player--combat-skills">
             {Object.keys(combatSkills).map(key => {

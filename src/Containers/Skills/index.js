@@ -22,10 +22,12 @@ const initialStateFields = {
   pow: false,
   str: false,
   dex: false,
+  siz: false,
   ignoreArmor: false,
   modifier: '1D10',
   multiplicator: 1,
-  statuses: []
+  statuses: [],
+  damageType: 'physical' // one of ['physical', 'magical']
 }
 class Skills extends Component {
   static propTypes = {
@@ -49,7 +51,7 @@ class Skills extends Component {
     let { id, value, checked } = e.target
     const { fields } = this.state
     if (['cooldown', 'cost', 'distance', 'range', 'multiplicator'].indexOf(id) > -1) value = Number(value)
-    if (['isSymbiosis', 'weapon', 'pow', 'dex', 'str', 'ignoreArmor'].indexOf(id) > -1) value = checked
+    if (['isSymbiosis', 'weapon', 'pow', 'dex', 'str', 'siz', 'ignoreArmor'].indexOf(id) > -1) value = checked
     Object.assign(fields, { [id]: value })
     this.setState({ fields })
   }
@@ -61,7 +63,13 @@ class Skills extends Component {
   handleCreate = () => {
     const { firebase } = this.props
     const skill = { ...this.state.fields }
-    firebase.set(`skills/${this.state.fields.name.toLowerCase().split(' ').join('-')}`, skill)
+    firebase.set(
+      `skills/${this.state.fields.name
+        .toLowerCase()
+        .split(' ')
+        .join('-')}`,
+      skill
+    )
   }
 
   handleUpdate = () => {
@@ -136,7 +144,14 @@ class Skills extends Component {
     let disabled = false
     skills &&
       Object.keys(skills).map(skill => {
-        if (skill === name.toLowerCase().split(' ').join('-')) disabled = true
+        if (
+          skill ===
+          name
+            .toLowerCase()
+            .split(' ')
+            .join('-')
+        )
+          disabled = true
       })
     return (
       <SkillsComponent

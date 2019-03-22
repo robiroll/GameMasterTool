@@ -27,6 +27,7 @@
 
     &--item {
       opacity: 0.1;
+      transition: all 150ms linear;
 
       &__equipped {
         opacity: 0.8;
@@ -34,8 +35,10 @@
       }
 
       &__selected {
+        $c: rgba($neutral-1, 0.8);
         opacity: 1;
-        filter: drop-shadow(0 0 5px rgba($white, 0.8));
+        filter: drop-shadow(1px 1px 0px $c) drop-shadow(-1px -1px 0px $c) drop-shadow(1px -1px 0px $c)
+          drop-shadow(-1px 1px 0px $c) drop-shadow(2px 2px 0px $c) drop-shadow(0 0 5px rgba($white, 0.8));
       }
 
       $placements: head chest back shoulders neck ring1 ring2 hands belt legs feet weapon1 weapon2 offhand;

@@ -5,7 +5,7 @@
   display: flex;
   align-items: flex-start;
   min-height: 200px;
-  
+
   @media screen and (max-width: 720px) {
     flex-direction: column;
   }
@@ -24,10 +24,13 @@
       padding: $g1;
       border: 1px dashed rgba($white, 0.5);
       cursor: pointer;
+      transition: all 150ms linear;
 
       &__selected {
+        $c: rgba($neutral-1, 0.8);
         opacity: 1;
-        filter: drop-shadow(0 0 5px rgba($white, 0.8));
+        filter: drop-shadow(1px 1px 0px $c) drop-shadow(-1px -1px 0px $c) drop-shadow(1px -1px 0px $c)
+          drop-shadow(-1px 1px 0px $c) drop-shadow(2px 2px 0px $c) drop-shadow(0 0 5px rgba($white, 0.8));
       }
     }
   }
@@ -42,7 +45,6 @@
       margin-right: 0;
       width: 100%;
     }
-
   }
 
   &--stats {

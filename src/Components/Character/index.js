@@ -4,6 +4,7 @@ import Modal from 'react-modal'
 import Card from '../../styleguide/Card'
 import Button from '../../styleguide/Button'
 import Difficulty from '../Difficulty'
+import SkillSheet from '../SkillSheet'
 import Passion from '../../Containers/Passion'
 import Equipment from '../../Containers/Equipment'
 import Inventory from '../../Containers/Inventory'
@@ -55,9 +56,9 @@ const Character = ({
   isProSkillsOpen,
   isDeleteModalOpen,
   onOpenDeleteModal,
-  onDelete,
   onCancel,
-  useAp
+  useAp,
+  onDeleteCharacter
 }) => {
   let weapons = []
   if (equipment && equipment.weapon1) weapons.push(equipment.weapon1)
@@ -111,7 +112,7 @@ const Character = ({
   })
 
   return (
-    <div>
+    <div className="character--wrapper">
       <Card
         title={
           <S.Title>
@@ -126,7 +127,7 @@ const Character = ({
               <div>
                 <div>You are willing to delete {name}</div>
                 <S.ModalTitle>Are you sure?</S.ModalTitle>
-                <Button variant="accent-1" onClick={onDelete}>
+                <Button variant="accent-1" onClick={onDeleteCharacter}>
                   Confirm
                 </Button>
                 <Button onClick={onCancel}>Cancel</Button>
@@ -345,35 +346,19 @@ const Character = ({
             <div className="character--combat-skills">
               {Object.keys(combatSkills).map(key => {
                 const skill = skills[key]
-                const success = totalStats[skill.attr1] + totalStats[skill.attr2] + combatSkills[key]
-                let successString = `${skill.attr1} + ${skill.attr2} + ${combatSkills[key]}`
-                return (
-                  <div className="character--combat-skills--item" key={key}>
-                    <h5 className="character--combat-skills--item--title">
-                      {skill.name}: {combatSkills[key]}
-                      <div>
-                        <Button onClick={onChangeSkill('add', key, 'combat')} size="small">
-                          +
-                        </Button>
-                        <Button onClick={onChangeSkill('remove', key, 'combat')} size="small">
-                          -
-                        </Button>
-                      </div>
-                    </h5>
-                    <ul className="character--combat-skills--item--infos">
-                      <li>type: {skill.type}</li>
-                      <li>damage: {skill.damage}</li>
-                      <li>CD: {skill.cooldown}</li>
-                      <li>cost: {skill.cost}</li>
-                      <li>distance: {skill.distance}</li>
-                      <li>range: {skill.range}</li>
-                      <li>description: {skill.description}</li>
-                      <li>
-                        success: {success} ({successString})
-                      </li>
-                    </ul>
-                  </div>
-                )
+                const skillValue = combatSkills[key]
+                const stats = totalStats
+                const onAddSkill = onChangeSkill('add', key, 'combat')
+                const onRemoveSkill = onChangeSkill('remove', key, 'combat')
+                const props = {
+                  skill,
+                  skillValue,
+                  stats,
+                  onAddSkill,
+                  onRemoveSkill,
+                  weapons
+                }
+                return <SkillSheet key={key} {...props} />
               })}
             </div>
           )}
@@ -405,11 +390,11 @@ Character.propTypes = {
   onToggleStandardSkills: PropTypes.func,
   onToggleProSkills: PropTypes.func,
   onUpdateCredits: PropTypes.func,
+  onDeleteCharacter: PropTypes.func,
   isStandardSkillsOpen: PropTypes.bool,
   isProSkillsOpen: PropTypes.bool,
   isDeleteModalOpen: PropTypes.bool.isRequired,
   onOpenDeleteModal: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
   useAp: PropTypes.bool
 }

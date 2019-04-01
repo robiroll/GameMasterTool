@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 import Modal from 'react-modal'
 import Button from '../../styleguide/Button'
@@ -173,43 +173,47 @@ const SkillForm = ({
           <input type="checkbox" id="isSymbiosis" onChange={onChange} checked={isSymbiosis} />
         </div>
 
-        <div className="skills--create--field">
-          <label htmlFor="isSymbiosis">Apply statuses</label>
-          {statuses.length > 0 && (
-            <Button size="small" onClick={onRemoveStatus}>
-              -
-            </Button>
-          )}
-          <Button size="small" onClick={onAddStatus}>
-            +
-          </Button>
-        </div>
-        {statuses.length > 0 &&
-          statuses.map(({ id, turns, bonuses }, i) => (
-            <div key={i} className="skills--create--field">
-              <div className="skills--create--field">
-                <label htmlFor="status">Status {i + 1}</label>
-                <select name="" id={id} onChange={onChangeStatus(i, 'id')}>
-                  <option value={'selection'} disabled>
-                    Select status
-                  </option>
-                  {statusesOptions.map(({ slug, name }) => (
-                    <option key={slug} value={slug}>
-                      {name}
-                    </option>
-                  ))}
-                </select>
-
-                <input type="number" id="turns" onChange={onChangeStatus(i, 'turns')} value={turns} />
-              </div>
-              {Object.keys(bonuses).length > 0 &&
-                Object.entries(bonuses).map(([key, value]) => (
-                  <div key={key} className="skills--create--field">
-                    {key}: <input type="number" id={key} onChange={onChangeBonus(i)} value={value} />
-                  </div>
-                ))}
+        {statuses && (
+          <Fragment>
+            <div className="skills--create--field">
+              <label htmlFor="isSymbiosis">Apply statuses</label>
+              {statuses.length > 0 && (
+                <Button size="small" onClick={onRemoveStatus}>
+                  -
+                </Button>
+              )}
+              <Button size="small" onClick={onAddStatus}>
+                +
+              </Button>
             </div>
-          ))}
+            {statuses.length > 0 &&
+              statuses.map(({ id, turns, bonuses }, i) => (
+                <div key={i} className="skills--create--field">
+                  <div className="skills--create--field">
+                    <label htmlFor="status">Status {i + 1}</label>
+                    <select name="" id={id} onChange={onChangeStatus(i, 'id')} value={id}>
+                      <option value="selection" disabled>
+                        Select status
+                      </option>
+                      {statusesOptions.map(({ slug, name }) => (
+                        <option key={slug} value={slug}>
+                          {name}
+                        </option>
+                      ))}
+                    </select>
+
+                    <input type="number" id="turns" onChange={onChangeStatus(i, 'turns')} value={turns} />
+                  </div>
+                  {Object.keys(bonuses).length > 0 &&
+                    Object.entries(bonuses).map(([key, value]) => (
+                      <div key={key} className="skills--create--field">
+                        {key}: <input type="number" id={key} onChange={onChangeBonus(i)} value={value} />
+                      </div>
+                    ))}
+                </div>
+              ))}
+          </Fragment>
+        )}
       </section>
 
       <div className="skills--create--actions">
@@ -262,10 +266,6 @@ export default class Skills extends Component {
     onChangeStatus: PropTypes.func,
     onChangeBonus: PropTypes.func
   }
-  state = {
-    isOpen: false
-  }
-  handleToggleDetails = () => this.setState({ isOpen: !this.state.isOpen })
   render() {
     const {
       skills,
@@ -291,9 +291,12 @@ export default class Skills extends Component {
     } = this.props
     const skillFormProps = {
       fields,
-      onChange
+      onChange,
+      onAddStatus,
+      onRemoveStatus,
+      onChangeStatus,
+      onChangeBonus
     }
-    const { isOpen } = this.state
 
     return (
       <div className="skills">
@@ -357,10 +360,6 @@ export default class Skills extends Component {
             onSubmit={onCreate}
             onClear={onClear}
             disabled={disabled}
-            onAddStatus={onAddStatus}
-            onRemoveStatus={onRemoveStatus}
-            onChangeStatus={onChangeStatus}
-            onChangeBonus={onChangeBonus}
             buttonLabel="create skill"
             disabledMessage="this skill aready exists"
           />
@@ -368,40 +367,27 @@ export default class Skills extends Component {
 
         <Card title={<h3>Skills List</h3>}>
           {skills ? (
-            Object.keys(skills).map(skillID => {
-              const skill = skills[skillID]
-              return (
-                <div key={skillID} className="skills--list">
-                  <div className="skills--list--title">
-                    <h4 onClick={this.handleToggleDetails}>
+            <div className="skills--list">
+              {Object.keys(skills).map(skillID => {
+                const skill = skills[skillID]
+                return (
+                  <div key={skillID} className="skills--list--item">
+                    <Button format="full" onClick={() => onOpenModify(skill)}>
                       {skill.name}
-                      <span>{isOpen ? '⇡' : '⇣'}</span>
-                    </h4>
-                    <Button onClick={() => onOpenModify(skill)}>modifier</Button>
+                    </Button>
+                    <Modal
+                      isOpen={isModifyOpen}
+                      className="card modal--content"
+                      overlayClassName="modal--overlay"
+                      ariaHideApp={false}
+                      onRequestClose={onCloseModify}
+                    >
+                      <SkillForm {...skillFormProps} onSubmit={onUpdate} buttonLabel="update skill" isNameHidden />
+                    </Modal>
                   </div>
-                  {isOpen && (
-                    <div>
-                      {Object.keys(skill).map(attr => {
-                        return (
-                          <div key={attr}>
-                            {attr} : {skill[attr]}
-                          </div>
-                        )
-                      })}
-                    </div>
-                  )}
-                  <Modal
-                    isOpen={isModifyOpen}
-                    className="card modal--content"
-                    overlayClassName="modal--overlay"
-                    ariaHideApp={false}
-                    onRequestClose={onCloseModify}
-                  >
-                    <SkillForm {...skillFormProps} onSubmit={onUpdate} buttonLabel="update skill" isNameHidden />
-                  </Modal>
-                </div>
-              )
-            })
+                )
+              })}
+            </div>
           ) : (
             <h3>No skill yet</h3>
           )}

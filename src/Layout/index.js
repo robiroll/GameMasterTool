@@ -24,9 +24,10 @@ class Layout extends Component {
     if (!isLoaded(characters)) return <Spinner />
     if (!isLoaded(skills)) return <Spinner />
     if (!isLoaded(items)) return <Spinner />
+    const paths = pathname.split('/')
     return (
       <div className="layout">
-        {pathname.indexOf('/players') !== 0 && <Menu active={pathname.substr(1)} />}
+        {pathname.indexOf('/players') !== 0 && <Menu active={paths[paths.length - 1]} />}
         <div className="wrapper">{children}</div>
       </div>
     )

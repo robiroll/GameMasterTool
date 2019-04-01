@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import Button from '../../styleguide/Button'
 import Icon from '../../styleguide/Icon'
 import * as S from './styles'
+import Players from '../../Containers/Players'
 
 const filterCharacterByType = (characters, type) =>
   Object.entries(characters)

@@ -16,9 +16,21 @@
     }
 
     &--active {
-      background: $neutral-3;
+      position: relative;
+
       &:hover {
-        background: $neutral-3;
+        background: rgba($primary-1, 0.1);
+      }
+
+      &:before {
+        position: absolute;
+        display: block;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        height: 3px;
+        background: $primary-1;
+        content: '';
       }
     }
   }

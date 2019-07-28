@@ -28,11 +28,14 @@ class Character extends Component {
     }
   }
 
-  UNSAFE_componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.characters) {
       const { idCharacter } = nextProps
-      this.setState({ hp: nextProps.characters[idCharacter].hp })
+      return {
+        hp: nextProps.characters[idCharacter].hp
+      }
     }
+    return null
   }
 
   handleToggleStandardSkills = () => this.setState({ isStandardSkillsOpen: !this.state.isStandardSkillsOpen })

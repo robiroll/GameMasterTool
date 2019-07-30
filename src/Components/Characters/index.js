@@ -1,14 +1,36 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
-import Character from '../../Containers/Character'
 import CharacterSheet from '../CharacterSheet'
 import Modal from 'react-modal'
+import { Link } from 'react-router-dom'
 import Button from '../../styleguide/Button'
-import './Character.scss'
+import * as S from './styles'
+
+const filterCharacterByType = (characters, type) =>
+  Object.entries(characters)
+    .filter(([, char]) => char.kind === type)
+    .map(([key, char]) => ({ ...char, id: key }))
+
+const CharactersList = ({ title, characters }) => (
+  <S.Characters>
+    <S.Title>{title}</S.Title>
+    {characters.map(({ id, name }) => (
+      <Link to={`/characters/${id}`} key={id}>
+        <S.Link>{name}</S.Link>
+      </Link>
+    ))}
+  </S.Characters>
+)
+CharactersList.propTypes = {
+  title: PropTypes.string.isRequired,
+  characters: PropTypes.array.isRequired
+}
 
 const Characters = ({ data, character, isOpen, onAddCharacter, onOpen, onClose, onChange, onChangeAttributes }) => {
+  const heroes = filterCharacterByType(data, 'hero')
+  const foes = filterCharacterByType(data, 'foe')
   return (
-    <div className="characters">
+    <S.Content>
       <Button onClick={onOpen} variant="accent-1">
         Create Character
       </Button>
@@ -22,11 +44,13 @@ const Characters = ({ data, character, isOpen, onAddCharacter, onOpen, onClose, 
           character={character}
         />
       </Modal>
-      {data &&
-        Object.keys(data).map(char => {
-          return <Character key={char} idCharacter={char} characters={data} />
-        })}
-    </div>
+      {data && (
+        <Fragment>
+          <CharactersList title="heroes" characters={heroes} />
+          <CharactersList title="foes" characters={foes} />
+        </Fragment>
+      )}
+    </S.Content>
   )
 }
 

@@ -4,6 +4,7 @@ import CharacterComponent from '../../Components/Character'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firebaseConnect } from 'react-redux-firebase'
+import Spinner from '../../styleguide/Spinner'
 
 class Character extends Component {
   static propTypes = {
@@ -11,6 +12,9 @@ class Character extends Component {
     characters: PropTypes.object,
     skills: PropTypes.object,
     idCharacter: PropTypes.string
+  }
+  static contextTypes = {
+    router: PropTypes.object
   }
 
   constructor(props) {
@@ -24,16 +28,20 @@ class Character extends Component {
       hp,
       credits,
       isStandardSkillsOpen: true,
-      isProSkillsOpen: true
+      isProSkillsOpen: true,
+      isDeleteModalOpen: false,
+      loading: false
     }
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.characters) {
-      const { idCharacter } = nextProps
-      return {
-        hp: nextProps.characters[idCharacter].hp
-      }
+  static getDerivedStateFromProps(nextProps) {
+    const { idCharacter, characters } = nextProps
+    if (characters) {
+      const character = characters[idCharacter]
+      if (character)
+        return {
+          hp: character.hp
+        }
     }
     return null
   }
@@ -45,6 +53,16 @@ class Character extends Component {
     const { firebase, idCharacter } = this.props
     firebase.update(`characters/${idCharacter}`, changes)
   }
+
+  handleDeleteCharacter = async () => {
+    this.setState({ loading: true })
+    const { firebase, idCharacter } = this.props
+    await firebase.remove(`characters/${idCharacter}`)
+    this.context.router.history.push('/characters')
+  }
+
+  handleOpenDeleteModal = () => this.setState({ isDeleteModalOpen: true })
+  handleCloseDeleteModal = () => this.setState({ isDeleteModalOpen: false })
 
   handleChangeHp = e => {
     this.setState({ hp: Number(e.target.value) })
@@ -77,6 +95,7 @@ class Character extends Component {
   render() {
     const { characters, idCharacter, skills } = this.props
     const character = characters[idCharacter]
+    if (this.state.loading) return <Spinner />
     return (
       <CharacterComponent
         data={character}
@@ -94,6 +113,10 @@ class Character extends Component {
         onToggleProSkills={this.handleToggleProSkills}
         isStandardSkillsOpen={this.state.isStandardSkillsOpen}
         isProSkillsOpen={this.state.isProSkillsOpen}
+        isDeleteModalOpen={this.state.isDeleteModalOpen}
+        onOpenDeleteModal={this.handleOpenDeleteModal}
+        onDelete={this.handleDeleteCharacter}
+        onCancel={this.handleCloseDeleteModal}
       />
     )
   }

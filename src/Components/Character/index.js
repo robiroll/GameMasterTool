@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
+import Modal from 'react-modal'
 import Card from '../../styleguide/Card'
 import Button from '../../styleguide/Button'
 import Difficulty from '../Difficulty'
@@ -7,6 +8,7 @@ import Passion from '../../Containers/Passion'
 import Equipment from '../../Containers/Equipment'
 import Inventory from '../../Containers/Inventory'
 import { AP, HP_MAX, STATUSES_STATS } from '../../lib'
+import * as S from './styles'
 import './Character.scss'
 
 import { standardSkills as standardSkillsBonuses, proSkills as proSkillsBonuses } from './config'
@@ -36,7 +38,11 @@ const Character = ({
   onToggleStandardSkills,
   onToggleProSkills,
   isStandardSkillsOpen,
-  isProSkillsOpen
+  isProSkillsOpen,
+  isDeleteModalOpen,
+  onOpenDeleteModal,
+  onDelete,
+  onCancel
 }) => {
   let weapons = []
   if (equipment && equipment.weapon1) weapons.push(equipment.weapon1)
@@ -90,7 +96,29 @@ const Character = ({
   })
 
   return (
-    <Card title={<h2>{name}</h2>}>
+    <Card
+      title={
+        <S.Title>
+          <h2>{name}</h2>
+          <S.Delete onClick={onOpenDeleteModal}>Delete</S.Delete>
+          <Modal
+            isOpen={isDeleteModalOpen}
+            className="card modal--content"
+            overlayClassName="modal--overlay"
+            ariaHideApp={false}
+          >
+            <div>
+              <div>You are willing to delete {name}</div>
+              <S.ModalTitle>Are you sure?</S.ModalTitle>
+              <Button variant="accent-1" onClick={onDelete}>
+                Confirm
+              </Button>
+              <Button onClick={onCancel}>Cancel</Button>
+            </div>
+          </Modal>
+        </S.Title>
+      }
+    >
       <div className="character">
         <div className="character--stats">
           <div className="character--stats--attributes">
@@ -349,7 +377,11 @@ Character.propTypes = {
   onToggleProSkills: PropTypes.func,
   onUpdateCredits: PropTypes.func,
   isStandardSkillsOpen: PropTypes.bool,
-  isProSkillsOpen: PropTypes.bool
+  isProSkillsOpen: PropTypes.bool,
+  isDeleteModalOpen: PropTypes.bool.isRequired,
+  onOpenDeleteModal: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired
 }
 
 export default Character

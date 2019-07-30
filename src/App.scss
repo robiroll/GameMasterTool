@@ -193,25 +193,28 @@ h6 {
   color: $primary-1;
 }
 
-.modal--overlay {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: rgba($neutral-1, 0.8);
-  z-index: 100;
-}
+.modal {
+  &--overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba($neutral-1, 0.8);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+  }
 
-.modal--content {
-  position: absolute;
-  top: $g10;
-  left: $g10;
-  right: $g10;
-  bottom: $g10;
-  padding: $g3;
-  overflow: auto;
-  outline: 0;
+  &--content {
+    position: absolute;
+    left: $g10;
+    right: $g10;
+    padding: $g3;
+    overflow: auto;
+    outline: 0;
+    margin: 0;
+  }
 }
 
 input,

@@ -75,9 +75,6 @@ export default {
   },
   talents: [],
   skills: [],
-  equipment: {
-    chest: { armor: 1 }
-  },
   inventory: {
     lifePotion: {
       name: 'Potion de vie',

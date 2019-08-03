@@ -16,6 +16,9 @@ class Items extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      assignedCharacter: '',
+      filter: 'all',
+      selected: {},
       fields: {
         name: '',
         type: 'equipment',
@@ -82,12 +85,40 @@ class Items extends Component {
     this.setState({ bonuses })
   }
 
+  handleChangeFilter = e => {
+    this.setState({ filter: e.target.id })
+  }
+
+  handleSelect = id => () => {
+    this.setState(prevState => ({ selected: { ...prevState.selected, [id]: !prevState.selected[id] } }))
+  }
+
+  handleChangeAssignee = e => {
+    const { value } = e.target
+    this.setState({ assignedCharacter: value })
+  }
+
+  handleAssign = () => {
+    const { firebase, items } = this.props
+    const { assignedCharacter, selected } = this.state
+    Object.entries(selected).forEach(([key, isSelected]) => {
+      if (isSelected) firebase.push(`characters/${assignedCharacter}/inventory`, items[key])
+    })
+  }
+
   render() {
     const { items, characters } = this.props
-    const { fields, bonuses } = this.state
+    const { fields, bonuses, filter, selected, assignedCharacter } = this.state
     return (
       <ItemsComponent
         items={items}
+        onChangeFilter={this.handleChangeFilter}
+        onSelect={this.handleSelect}
+        selectedItems={selected}
+        filter={filter}
+        assignedCharacter={assignedCharacter}
+        onChangeAssignee={this.handleChangeAssignee}
+        onAssign={this.handleAssign}
         onCreate={this.handleCreate}
         onChangeField={this.handleChangeField}
         onChangeBonus={this.handleChangeBonus}

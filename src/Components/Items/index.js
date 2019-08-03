@@ -1,11 +1,27 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
-import Item from '../../Containers/Item'
+import Item from '../../Components/Item'
 import Button from '../../styleguide/Button'
 import Card from '../../styleguide/Card'
+import * as S from './styles'
 import './Items.scss'
 
-const Items = ({ items, onCreate, onChangeField, onChangeBonus, fields, bonuses }) => {
+const Items = ({
+  assignedCharacter,
+  onChangeAssignee,
+  onAssign,
+  characters,
+  items,
+  onCreate,
+  onChangeField,
+  onChangeBonus,
+  fields,
+  bonuses,
+  filter,
+  onChangeFilter,
+  onSelect,
+  selectedItems
+}) => {
   const {
     name,
     type,
@@ -169,16 +185,84 @@ const Items = ({ items, onCreate, onChangeField, onChangeBonus, fields, bonuses 
           Create item
         </Button>
       </Card>
-      <Card title={<h3>Items list</h3>}>
-        <div className="equipment--title">
+      <Card>
+        <h4>Assign items</h4>
+        <S.SelectedList>
+          {Object.entries(selectedItems).map(
+            ([key, isActive]) =>
+              isActive && (
+                <S.SelectedItem key={key}>
+                  <Button size="small" onClick={onSelect(key)}>
+                    <S.SelectedButtonContent>{items[key].name}</S.SelectedButtonContent>
+                  </Button>
+                </S.SelectedItem>
+              )
+          )}
+        </S.SelectedList>
+        <S.Assign>
+          <Button
+            onClick={onAssign}
+            variant="accent-1"
+            disabled={Object.values(selectedItems).filter(Boolean).length === 0}
+          >
+            Assign
+          </Button>
+          <div>to</div>
+          <select name="assignedCharacter" id="assignedCharacter" onChange={onChangeAssignee} value={assignedCharacter}>
+            <option value="" disabled>
+              CHARACTER
+            </option>
+            <option value="---" disabled>
+              --------------
+            </option>
+            {Object.keys(characters).map(charId => {
+              return (
+                <option key={charId} value={charId}>
+                  {characters[charId].name}
+                </option>
+              )
+            })}
+          </select>
+        </S.Assign>
+      </Card>
+      <Card
+        title={
+          <S.Filters>
+            <h3>Items list</h3>
+            <S.Inputs>
+              {[
+                'all',
+                'weapon',
+                'back',
+                'belt',
+                'chest',
+                'feet',
+                'hands',
+                'head',
+                'legs',
+                'neck',
+                'ring',
+                'offhand',
+                'shoulders'
+              ].map(f => (
+                <Fragment key={f}>
+                  <S.Input type="radio" id={f} onChange={onChangeFilter} checked={f === filter} />
+                  <label htmlFor={f}>{f}</label>
+                </Fragment>
+              ))}
+            </S.Inputs>
+          </S.Filters>
+        }
+      >
+        <S.ItemsList>
           {items ? (
-            Object.keys(items).map(id => {
-              return <Item key={id} item={items[id]} />
-            })
+            Object.keys(items)
+              .filter(id => filter === 'all' || filter === items[id].slot)
+              .map(id => <Item key={id} item={items[id]} onSelect={onSelect(id)} isSelected={selectedItems[id]} />)
           ) : (
             <h3>No item yet</h3>
           )}
-        </div>
+        </S.ItemsList>
       </Card>
     </div>
   )
@@ -194,7 +278,11 @@ Items.propTypes = {
   onChangeBonus: PropTypes.func,
   onChangeAssignee: PropTypes.func,
   onAssign: PropTypes.func,
-  assignedCharacter: PropTypes.string
+  onSelect: PropTypes.func,
+  assignedCharacter: PropTypes.string,
+  filter: PropTypes.string.isRequired,
+  onChangeFilter: PropTypes.func.isRequired,
+  selectedItems: PropTypes.array.isRequired
 }
 
 export default Items

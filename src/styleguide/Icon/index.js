@@ -15,10 +15,12 @@ import {
   head,
   legs,
   neck,
+  ring1 as ring,
   ring1,
   ring2,
   offhand,
   shoulders,
+  weapon1 as weapon,
   weapon1,
   weapon2
 } from './src'
@@ -39,10 +41,12 @@ const ICONS = {
   head,
   legs,
   neck,
+  ring,
   ring1,
   ring2,
   offhand,
   shoulders,
+  weapon,
   weapon1,
   weapon2
 }

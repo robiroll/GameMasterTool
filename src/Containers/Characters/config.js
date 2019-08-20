@@ -80,7 +80,8 @@ export default {
       name: 'Potion de vie',
       quantity: 1,
       cost: 2,
-      recovery: 20
+      recovery: 20,
+      type: 'usable'
     }
   },
   credits: 500

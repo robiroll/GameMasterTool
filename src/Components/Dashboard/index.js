@@ -77,7 +77,7 @@ const Dashboard = ({
       </Card>
       {characterPlaying && (
         <div className="dashboard--characters--content">
-          <Character idCharacter={characterPlaying} onUseSkill={onUseSkill} />
+          <Character idCharacter={characterPlaying} onUseSkill={onUseSkill} useAp />
         </div>
       )}
     </div>

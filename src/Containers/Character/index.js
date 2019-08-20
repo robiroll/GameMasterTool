@@ -93,7 +93,7 @@ class Character extends Component {
   }
 
   render() {
-    const { characters, idCharacter, skills } = this.props
+    const { characters, idCharacter, skills, ...props } = this.props
     const character = characters[idCharacter]
     if (this.state.loading) return <Spinner />
     return (
@@ -117,6 +117,7 @@ class Character extends Component {
         onOpenDeleteModal={this.handleOpenDeleteModal}
         onDelete={this.handleDeleteCharacter}
         onCancel={this.handleCloseDeleteModal}
+        {...props}
       />
     )
   }

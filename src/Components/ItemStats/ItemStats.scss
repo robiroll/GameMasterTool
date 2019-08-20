@@ -6,6 +6,12 @@
     padding: $g1;
   }
 
+  &--description {
+    font-style: italic;
+    font-size: 14px;
+    padding: $g1;
+  }
+
   &--divider {
     height: 1px;
     background-color: $neutral-3;

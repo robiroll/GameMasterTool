@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import './ItemStats.scss'
 
@@ -12,7 +12,20 @@ const LABELS = {
   siz: 'Size'
 }
 const ItemStats = ({ item, hideTitle }) => {
-  const { name, slot, weaponType, damage, size, damageType, armor, magicArmor, hp, bonus, creditsValue } = item
+  const {
+    name,
+    slot,
+    weaponType,
+    damage,
+    size,
+    damageType,
+    armor,
+    magicArmor,
+    hp,
+    bonus,
+    creditsValue,
+    description
+  } = item
   return (
     <div className="item-stats">
       <div className="item-stats--block">
@@ -23,6 +36,7 @@ const ItemStats = ({ item, hideTitle }) => {
           </h5>
         )}
       </div>
+      {description && <div className="item-stats--description">{description}</div>}
       <div className="item-stats--divider" />
       <div className="item-stats--block">
         <div className="item-stats--item">Slot: {slot}</div>

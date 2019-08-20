@@ -36,7 +36,8 @@ const Items = ({
     hp,
     weaponHands,
     damage,
-    damageType
+    damageType,
+    description
   } = fields
   const { str, siz, con, dex, int, pow, cha } = bonuses
   return (
@@ -54,7 +55,6 @@ const Items = ({
               <select name="type" id="type" onChange={onChangeField} value={type}>
                 <option value="equipment">equipment</option>
                 <option value="usable">usable</option>
-                <option value="permanent">permanent</option>
               </select>
             </div>
 
@@ -80,6 +80,10 @@ const Items = ({
             <div className="items--fieldset">
               <label htmlFor="creditsValue">Value (credits)</label>
               <input type="number" id="creditsValue" onChange={onChangeField} value={creditsValue} />
+            </div>
+            <div className="items--fieldset">
+              <label htmlFor="description">Description</label>
+              <textarea id="description" onChange={onChangeField} value={description} />
             </div>
           </div>
           {type === 'equipment' && (

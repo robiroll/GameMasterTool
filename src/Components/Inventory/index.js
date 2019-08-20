@@ -5,17 +5,17 @@ import Icon from '../../styleguide/Icon'
 import ItemStats from '../ItemStats'
 import './Inventory.scss'
 
-const Inventory = ({ items, onSelect, onEquip, onUse, onDropItem, selectedItem }) => {
+const Inventory = ({ items, onSelect, onEquip, onUse, onDropItem, selectedItem, useAp }) => {
   if (!items) return 'You have no items'
   const selected = items[selectedItem]
 
   const equipmentProps = {
     onClick: onEquip(selectedItem, selected),
-    children: 'Equip'
+    children: `Equip${selected && useAp ? ` (${selected.apCost})` : ''}`
   }
   const usableProps = {
     onClick: onUse(selectedItem, selected),
-    children: `Use (${selected && selected.quantity})`
+    children: `Use${selected && useAp ? ` (${selected.apCost})` : ''}`
   }
   const buttonProps =
     selected && (selected.type === 'equipment' ? equipmentProps : selected.type === 'usable' && usableProps)
@@ -64,7 +64,8 @@ Inventory.propTypes = {
   onEquip: PropTypes.func,
   onUse: PropTypes.func,
   onDropItem: PropTypes.string,
-  selectedItem: PropTypes.string
+  selectedItem: PropTypes.string,
+  useAp: PropTypes.bool
 }
 
 export default Inventory

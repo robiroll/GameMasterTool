@@ -33,7 +33,8 @@ class Items extends Component {
         creditsValue: 100,
         armor: 0,
         magicArmor: 0,
-        hp: 0
+        hp: 0,
+        description: ''
       },
       bonuses: {
         str: 0,

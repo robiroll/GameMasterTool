@@ -42,7 +42,8 @@ const Character = ({
   isDeleteModalOpen,
   onOpenDeleteModal,
   onDelete,
-  onCancel
+  onCancel,
+  useAp
 }) => {
   let weapons = []
   if (equipment && equipment.weapon1) weapons.push(equipment.weapon1)
@@ -293,7 +294,7 @@ const Character = ({
           </div>
         )}
         <h3 className="character--title">Inventaire</h3>
-        <Inventory idCharacter={idCharacter} />
+        <Inventory idCharacter={idCharacter} useAp={useAp} />
         <h5 className="character--credits--title">credits: {(credits || 0).toLocaleString('fr')}</h5>
         <div className="character--credits">
           <div className="character--credits--input">
@@ -381,7 +382,8 @@ Character.propTypes = {
   isDeleteModalOpen: PropTypes.bool.isRequired,
   onOpenDeleteModal: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
-  onCancel: PropTypes.func.isRequired
+  onCancel: PropTypes.func.isRequired,
+  useAp: PropTypes.bool
 }
 
 export default Character

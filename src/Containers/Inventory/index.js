@@ -11,7 +11,8 @@ class Inventory extends PureComponent {
     firebase: PropTypes.object,
     characters: PropTypes.object,
     // props
-    idCharacter: PropTypes.string
+    idCharacter: PropTypes.string,
+    useAp: PropTypes.bool
   }
 
   constructor(props) {
@@ -83,17 +84,25 @@ class Inventory extends PureComponent {
   }
 
   handleUse = (key, item) => () => {
-    const { firebase, idCharacter } = this.props
-    firebase.update(`characters/${idCharacter}/inventory/${key}`, { quantity: item.quantity - 1 })
+    const { firebase, idCharacter, characters, useAp } = this.props
+    const newQuantity = item.quantity - 1
+    if (newQuantity > 0) {
+      firebase.update(`characters/${idCharacter}/inventory/${key}`, { quantity: newQuantity })
+      if (useAp) {
+        const character = characters[idCharacter]
+        firebase.update(`characters/${idCharacter}`, { ap: character.ap - item.apCost })
+      }
+    } else firebase.remove(`characters/${idCharacter}/inventory/${key}`)
   }
 
   handleSelectItem = key => () => this.setState({ selected: key })
 
   render() {
-    const { characters, idCharacter } = this.props
+    const { characters, idCharacter, ...props } = this.props
     const { inventory } = characters[idCharacter]
     return (
       <InventoryComponent
+        {...props}
         items={inventory}
         onEquip={this.handleEquip}
         onSelect={this.handleSelectItem}

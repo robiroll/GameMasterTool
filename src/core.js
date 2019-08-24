@@ -14,6 +14,20 @@ export const colors = {
   white: '#fff'
 }
 
+export const variants = {
+  'primary-1': colors.primary1,
+  'accent-1': colors.acent1,
+  'accent-2': colors.acent2,
+  'accent-3': colors.acent3,
+  'accent-4': colors.acent4,
+  'neutral-1': colors.neutral1,
+  'neutral-2': colors.neutral2,
+  'neutral-3': colors.neutral3,
+  'neutral-4': colors.neutral4,
+  'neutral-5': colors.neutral5,
+  white: colors.white
+}
+
 export const rgba = (hex, a) => {
   var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex)
   const r = parseInt(result[1], 16)

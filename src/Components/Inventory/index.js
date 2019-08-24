@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Button from '../../styleguide/Button'
 import Icon from '../../styleguide/Icon'
+import { MATCH_ICON } from '../../lib'
 import ItemStats from '../ItemStats'
 import './Inventory.scss'
 
@@ -49,7 +50,7 @@ const Inventory = ({ items, onSelect, onEquip, onUse, onDropItem, selectedItem, 
               className={`inventory--items--item inventory--items--item__${slot}${isSelectedClass}`}
               onClick={onSelect(key)}
             >
-              <Icon name={slot} size="full" />
+              <Icon name={MATCH_ICON[slot] || slot} size="l" />
             </div>
           )
         })}

@@ -4,6 +4,7 @@ import CharacterSheet from '../CharacterSheet'
 import Modal from 'react-modal'
 import { Link } from 'react-router-dom'
 import Button from '../../styleguide/Button'
+import Icon from '../../styleguide/Icon'
 import * as S from './styles'
 
 const filterCharacterByType = (characters, type) =>
@@ -27,10 +28,11 @@ CharactersList.propTypes = {
 }
 
 const Characters = ({ data, character, isOpen, onAddCharacter, onOpen, onClose, onChange, onChangeAttributes }) => {
-  const heroes = filterCharacterByType(data, 'hero')
-  const foes = filterCharacterByType(data, 'foe')
+  const heroes = data && filterCharacterByType(data, 'hero')
+  const foes = data && filterCharacterByType(data, 'foe')
   return (
     <S.Content>
+      <Icon name="helmet" variant="accent-1" />
       <Button onClick={onOpen} variant="accent-1">
         Create Character
       </Button>

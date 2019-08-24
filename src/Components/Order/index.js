@@ -41,13 +41,13 @@ const Order = ({
               <div className="order--char--def">
                 <div className="order--char--def--item">
                   <div className="order--char--def--item--icon">
-                    <Icon name="armor" />
+                    <Icon name="chest" />
                   </div>
                   <span>{armor}</span>
                 </div>
                 <div className="order--char--def--item">
                   <div className="order--char--def--item--icon">
-                    <Icon name="magic" />
+                    <Icon name="aura" />
                   </div>
                   <span>{magicArmor}</span>
                 </div>
@@ -61,7 +61,7 @@ const Order = ({
                     onChange={onChangeHp(idCharacter)}
                   />
                   <div className="order--char--life--current--icon">
-                    <Icon name="life" />
+                    <Icon name="techno-heart" />
                   </div>
                 </div>
                 <div className="order--char--life--max">/ {HP_MAX(stats, equipment)}</div>

@@ -170,18 +170,24 @@ const Player = ({
             </div>
             <h4 className="player--title">Passions</h4>
             <div className="player--passion">
-              <div>
-                {passion1.name}: {passion1.value} (
-                {passion1.value + totalStats[passion1.attr1] + totalStats[passion1.attr2]} %)
-              </div>
-              <div>
-                {passion2.name}: {passion2.value} (
-                {passion2.value + totalStats[passion2.attr1] + totalStats[passion2.attr2]} %)
-              </div>
-              <div>
-                {passion3.name}: {passion3.value} (
-                {passion3.value + totalStats[passion3.attr1] + totalStats[passion3.attr2]} %)
-              </div>
+              {passion1 && (
+                <div>
+                  {passion1.name}: {passion1.value} (
+                  {passion1.value + totalStats[passion1.attr1] + totalStats[passion1.attr2]} %)
+                </div>
+              )}
+              {passion2 && (
+                <div>
+                  {passion2.name}: {passion2.value} (
+                  {passion2.value + totalStats[passion2.attr1] + totalStats[passion2.attr2]} %)
+                </div>
+              )}
+              {passion3 && (
+                <div>
+                  {passion3.name}: {passion3.value} (
+                  {passion3.value + totalStats[passion3.attr1] + totalStats[passion3.attr2]} %)
+                </div>
+              )}
             </div>
           </div>
         </div>

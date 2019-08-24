@@ -54,8 +54,8 @@ const FightActions = ({
                         {hitPercent}%
                       </span>
                       <span>
-                        <Icon name="damage" />
-                        {stats[weapon.damageType] + weapon.damage} + <Icon name="dice" />
+                        <Icon name="crossed-swords" />
+                        {stats[weapon.damageType] + weapon.damage} + <Icon name="rolling-dice" />
                       </span>
                       <span>(2)</span>
                     </span>
@@ -117,7 +117,7 @@ const FightActions = ({
                           </span>
                         )}
                         <span>
-                          <Icon name="damage" />
+                          <Icon name="crossed-swords" />
                           {skill.damage}
                         </span>
                         <span>({skill.cost})</span>

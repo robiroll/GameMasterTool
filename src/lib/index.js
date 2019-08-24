@@ -124,3 +124,16 @@ export const STATUSES_STATS = statuses => {
     lifeSteal: ttlLifeSteal
   }
 }
+
+export const MATCH_ICON = {
+  feet: 'boots',
+  hands: 'gloves',
+  head: 'helmet',
+  neck: 'amulet',
+  ring: 'ring1',
+  offhand: 'shield',
+  weapon: 'sword',
+  weapon1: 'sword',
+  weapon2: 'sword',
+  dice: 'rolling-dice'
+}

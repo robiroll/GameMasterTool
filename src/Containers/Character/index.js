@@ -24,6 +24,7 @@ class Character extends Component {
     const hp = characters ? character.hp : 0
     const { credits } = character
     this.state = {
+      idCharacter,
       usedAP: 0,
       hp,
       credits,
@@ -34,13 +35,15 @@ class Character extends Component {
     }
   }
 
-  static getDerivedStateFromProps(nextProps) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     const { idCharacter, characters } = nextProps
     if (characters) {
       const character = characters[idCharacter]
-      if (character)
+      if (character && idCharacter !== prevState.idCharacter)
         return {
-          hp: character.hp
+          hp: character.hp,
+          credits: character.credits,
+          idCharacter
         }
     }
     return null

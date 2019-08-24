@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Button from '../../styleguide/Button'
 import Icon from '../../styleguide/Icon'
+import { MATCH_ICON } from '../../lib'
 import ItemStats from '../ItemStats'
 import './Equipment.scss'
 
@@ -66,22 +67,21 @@ const Equipment = ({ equipment, onSelect, onUnequip, selectedItem }) => {
               className={`equipment--schema--item equipment--schema--item__${item}${isEquippedClass}${isSelectedClass}`}
               onClick={equipment[item] && onSelect(item)}
             >
-              <Icon name={item} size="full" />
+              <Icon name={MATCH_ICON[item] || item} size="xl" />
             </div>
           )
         })}
       </div>
-      {selected &&
-        selectedItem && (
-          <div className="equipment--single">
-            <ItemStats item={selected} />
-            <div className="equipment--single--button">
-              <Button onClick={onUnequip} format="full">
-                Unequip
-              </Button>
-            </div>
+      {selected && selectedItem && (
+        <div className="equipment--single">
+          <ItemStats item={selected} />
+          <div className="equipment--single--button">
+            <Button onClick={onUnequip} format="full">
+              Unequip
+            </Button>
           </div>
-        )}
+        </div>
+      )}
       <div className="equipment--stats">
         <h4>Overall equipment stats</h4>
         <div className="equipment--stats--item">Armor: {ttlarmor}</div>

@@ -1,69 +1,19 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {
-  armor,
-  damage,
-  dice,
-  magic,
-  life,
-  target,
-  back,
-  belt,
-  chest,
-  feet,
-  hands,
-  head,
-  legs,
-  neck,
-  ring1 as ring,
-  ring1,
-  ring2,
-  offhand,
-  shoulders,
-  weapon1 as weapon,
-  weapon1,
-  weapon2
-} from './src'
-import './Icon.scss'
+import * as S from './styles.js'
+import './styles.scss'
 
-const ICONS = {
-  armor,
-  damage,
-  dice,
-  target,
-  magic,
-  life,
-  back,
-  belt,
-  chest,
-  feet,
-  hands,
-  head,
-  legs,
-  neck,
-  ring,
-  ring1,
-  ring2,
-  offhand,
-  shoulders,
-  weapon,
-  weapon1,
-  weapon2
-}
-
-const Icon = ({ name, size }) => (
-  <div className={`icon icon__${size}`}>
-    <img src={ICONS[name]} alt={name} />
-  </div>
-)
+const Icon = ({ name, variant, size }) => <S.Icon variant={variant} size={size} className={`icon-${name}`}></S.Icon>
 
 Icon.propTypes = {
-  name: PropTypes.oneOf(Object.keys(ICONS)),
-  size: PropTypes.string
+  name: PropTypes.string.isRequired,
+  variant: PropTypes.string,
+  size: PropTypes.oneOf(['xs', 's', 'm', 'l', 'xl'])
 }
 
 Icon.defaultProps = {
-  size: 'medium'
+  variant: 'white',
+  size: 's'
 }
 
 export default Icon

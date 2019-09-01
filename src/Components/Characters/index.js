@@ -32,7 +32,6 @@ const Characters = ({ data, character, isOpen, onAddCharacter, onOpen, onClose, 
   const foes = data && filterCharacterByType(data, 'foe')
   return (
     <S.Content>
-      <Icon name="helmet" variant="accent-1" />
       <Button onClick={onOpen} variant="accent-1">
         Create Character
       </Button>

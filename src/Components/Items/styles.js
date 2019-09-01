@@ -1,6 +1,15 @@
 import styled from 'styled-components'
 import { g } from '../../core'
 
+export const IconSelection = styled.div`
+  position: relative;
+`
+export const Icon = styled.div`
+  position: absolute;
+  top: ${g(1)};
+  right: calc(100% + ${g(1)});
+  opacity: 0.5;
+`
 export const ItemsList = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));

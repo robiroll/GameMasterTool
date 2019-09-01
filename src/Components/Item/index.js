@@ -8,7 +8,9 @@ import * as S from './styles'
 const Item = ({ item, onSelect, isSelected }) => (
   <S.Item onClick={onSelect} isSelected={isSelected}>
     <S.Header>
-      <Icon name={item.type === 'equipment' ? MATCH_ICON[item.slot] || item.slot : 'rolling-dice'}></Icon>
+      <Icon
+        name={item.icon || (item.type === 'equipment' ? MATCH_ICON[item.slot] || item.slot : 'rolling-dice')}
+      ></Icon>
       <S.Name>{item.name}</S.Name>
     </S.Header>
     <ItemStats item={item} hideTitle />

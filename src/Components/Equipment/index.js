@@ -59,15 +59,19 @@ const Equipment = ({ equipment, onSelect, onUnequip, selectedItem }) => {
     <div className="equipment">
       <div className="equipment--schema">
         {ITEMS.map(item => {
+          const isEquipped = !!equipment[item]
           const isEquippedClass = equipment[item] ? ' equipment--schema--item__equipped' : ''
           const isSelectedClass = item === selectedItem ? ' equipment--schema--item__selected' : ''
           return (
             <div
               key={item}
               className={`equipment--schema--item equipment--schema--item__${item}${isEquippedClass}${isSelectedClass}`}
-              onClick={equipment[item] && onSelect(item)}
+              onClick={isEquipped && onSelect(item)}
             >
-              <Icon name={MATCH_ICON[item] || item} size="xl" />
+              <Icon
+                name={isEquipped && equipment[item].icon ? equipment[item].icon : MATCH_ICON[item] || item}
+                size="xl"
+              />
             </div>
           )
         })}

@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
 import Item from '../../Components/Item'
-import Button from '../../styleguide/Button'
-import Card from '../../styleguide/Card'
+import { Button, Card, Icon } from '../../styleguide'
+import icons from '../../config/icons'
 import * as S from './styles'
 import './Items.scss'
 
@@ -37,9 +37,11 @@ const Items = ({
     weaponHands,
     damage,
     damageType,
-    description
+    description,
+    icon
   } = fields
   const { str, siz, con, dex, int, pow, cha } = bonuses
+  const filterdIcons = type === 'equipment' ? icons[type][slot] : icons[type]
   return (
     <div className="items">
       <Card title={<h3>Create item</h3>}>
@@ -84,6 +86,21 @@ const Items = ({
             <div className="items--fieldset">
               <label htmlFor="description">Description</label>
               <textarea id="description" onChange={onChangeField} value={description} />
+            </div>
+            <div className="items--fieldset">
+              <label htmlFor="icon">Icon</label>
+              <S.IconSelection>
+                <S.Icon>
+                  <Icon name={icon} />
+                </S.Icon>
+                <select name="icon" id="icon" onChange={onChangeField} value={icon}>
+                  {filterdIcons.map(icon => (
+                    <option key={icon} value={icon}>
+                      {icon}
+                    </option>
+                  ))}
+                </select>
+              </S.IconSelection>
             </div>
           </div>
           {type === 'equipment' && (

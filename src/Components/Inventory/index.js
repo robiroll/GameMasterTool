@@ -40,7 +40,7 @@ const Inventory = ({ items, onSelect, onEquip, onUse, onDropItem, selectedItem, 
       </div>
       <div className="inventory--items">
         {Object.entries(items).map(([key, item]) => {
-          let { slot } = item
+          let { slot, icon } = item
           if (slot === 'weapon' || slot === 'ring') slot += '1'
           if (!slot) slot = 'dice'
           const isSelectedClass = key === selectedItem ? ' inventory--items--item__selected' : ''
@@ -50,7 +50,7 @@ const Inventory = ({ items, onSelect, onEquip, onUse, onDropItem, selectedItem, 
               className={`inventory--items--item inventory--items--item__${slot}${isSelectedClass}`}
               onClick={onSelect(key)}
             >
-              <Icon name={MATCH_ICON[slot] || slot} size="l" />
+              <Icon name={icon || MATCH_ICON[slot] || slot} size="l" />
             </div>
           )
         })}

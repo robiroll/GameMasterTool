@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ItemsComponent from '../../Components/Items'
+import icons from '../../config/icons'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { omit } from 'lodash'
@@ -15,14 +16,16 @@ class Items extends Component {
 
   constructor(props) {
     super(props)
+    const slot = 'weapon'
+    const type = 'equipment'
     this.state = {
       assignedCharacter: '',
       filter: 'all',
       selected: {},
       fields: {
         name: '',
-        type: 'equipment',
-        slot: 'weapon',
+        type,
+        slot,
         weaponHands: '1handed',
         damageType: 'str',
         damage: 1,
@@ -34,7 +37,8 @@ class Items extends Component {
         armor: 0,
         magicArmor: 0,
         hp: 0,
-        description: ''
+        description: '',
+        icon: icons[type][slot][0]
       },
       bonuses: {
         str: 0,
@@ -76,6 +80,9 @@ class Items extends Component {
     )
       value = Number(value)
     Object.assign(fields, { [id]: value })
+    if (id === 'slot' || (id === 'type' && value === 'equipment'))
+      Object.assign(fields, { icon: icons[fields.type][fields.slot][0] })
+    if (id === 'type' && value !== 'equipment') Object.assign(fields, { icon: icons[fields.type][0] })
     this.setState({ fields })
   }
 

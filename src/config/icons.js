@@ -209,7 +209,9 @@ const neck = [
   'amulet',
   'claw-string',
   'emerald-necklace',
+  'gem-chain',
   'gem-necklace',
+  'gem-pendant',
   'heart-necklace',
   'pearl-necklace',
   'primitive-necklace',
@@ -233,5 +235,5 @@ export default {
     ring
   },
   usable: ['potion', 'health-potion', 'magic-potion', 'potion-ball', 'rope-coil', 'skeleton-key'],
-  misc: ['rolling-dice', 'aura', 'target', 'crossed-swords', 'techno-heart', 'half-heart', 'rupee']
+  misc: ['rolling-dice', 'aura', 'target', 'crossed-swords', 'techno-heart', 'half-heart', 'rupee', 'pencil']
 }

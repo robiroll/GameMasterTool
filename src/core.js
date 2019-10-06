@@ -11,7 +11,8 @@ export const colors = {
   neutral3: '#236475',
   neutral4: '#93b8c2',
   neutral5: '#dceff5',
-  white: '#fff'
+  white: '#ffffff',
+  black: '#000000'
 }
 
 export const variants = {

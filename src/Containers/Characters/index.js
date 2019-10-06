@@ -51,6 +51,14 @@ class Characters extends Component {
     character[attr] = attributes
     this.setState({ character })
   }
+  handleToggleFavourite = id => {
+    const character = this.props.characters[id]
+
+    const changes = {
+      isFavourite: !character.isFavourite
+    }
+    this.props.firebase.update(`characters/${id}`, changes)
+  }
 
   render() {
     return (
@@ -62,6 +70,7 @@ class Characters extends Component {
         onClose={this.handleClose}
         onChange={this.handleChange}
         onChangeAttributes={this.handleChangeAttribute}
+        onToggleFavourite={this.handleToggleFavourite}
         character={this.state.character}
       />
     )
@@ -72,4 +81,7 @@ const mapStateToProps = state => ({
   characters: state.firebase.data.characters
 })
 
-export default compose(firebaseConnect(['characters']), connect(mapStateToProps))(Characters)
+export default compose(
+  firebaseConnect(['characters']),
+  connect(mapStateToProps)
+)(Characters)

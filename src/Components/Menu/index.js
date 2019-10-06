@@ -9,8 +9,8 @@ const Menu = ({ characters, active }) => {
   characters &&
     Object.keys(characters).map(idCharacter => {
       const char = characters[idCharacter]
-      if (char.kind === 'hero') Object.assign(heroes, { [idCharacter]: char })
-      if (char.kind === 'foe') Object.assign(foes, { [idCharacter]: char })
+      if (char.kind === 'hero' && char.isFavourite) Object.assign(heroes, { [idCharacter]: char })
+      if (char.kind === 'foe' && char.isFavourite) Object.assign(foes, { [idCharacter]: char })
     })
   return (
     <div className="menu">

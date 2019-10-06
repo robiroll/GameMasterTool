@@ -12,22 +12,48 @@ const filterCharacterByType = (characters, type) =>
     .filter(([, char]) => char.kind === type)
     .map(([key, char]) => ({ ...char, id: key }))
 
-const CharactersList = ({ title, characters }) => (
+const CharactersList = ({ title, characters, onToggleFavourite }) => (
   <S.Characters>
     <S.Title>{title}</S.Title>
-    {characters.map(({ id, name }) => (
-      <Link to={`/characters/${id}`} key={id}>
-        <S.Link>{name}</S.Link>
-      </Link>
-    ))}
+    <S.Items>
+      {characters.map(({ id, name, isFavourite }) => {
+        const handleToggleFavourite = e => {
+          e.preventDefault()
+          onToggleFavourite(id)
+        }
+        return (
+          <S.LinkContainer key={id}>
+            <Link to={`/characters/${id}`}>
+              <S.Item isFavourite={isFavourite}>
+                <S.Link>{name}</S.Link>
+                <S.Icon onClick={handleToggleFavourite}>
+                  <Icon name="star" />
+                </S.Icon>
+              </S.Item>
+            </Link>
+          </S.LinkContainer>
+        )
+      })}
+    </S.Items>
   </S.Characters>
 )
 CharactersList.propTypes = {
   title: PropTypes.string.isRequired,
-  characters: PropTypes.array.isRequired
+  characters: PropTypes.array.isRequired,
+  onToggleFavourite: PropTypes.func.isRequired
 }
 
-const Characters = ({ data, character, isOpen, onAddCharacter, onOpen, onClose, onChange, onChangeAttributes }) => {
+const Characters = ({
+  data,
+  character,
+  isOpen,
+  onAddCharacter,
+  onOpen,
+  onClose,
+  onChange,
+  onChangeAttributes,
+  onToggleFavourite
+}) => {
   const heroes = data && filterCharacterByType(data, 'hero')
   const foes = data && filterCharacterByType(data, 'foe')
   return (
@@ -47,8 +73,8 @@ const Characters = ({ data, character, isOpen, onAddCharacter, onOpen, onClose, 
       </Modal>
       {data && (
         <Fragment>
-          <CharactersList title="heroes" characters={heroes} />
-          <CharactersList title="foes" characters={foes} />
+          <CharactersList title="heroes" characters={heroes} onToggleFavourite={onToggleFavourite} />
+          <CharactersList title="foes" characters={foes} onToggleFavourite={onToggleFavourite} />
         </Fragment>
       )}
     </S.Content>
@@ -63,7 +89,8 @@ Characters.propTypes = {
   onOpen: PropTypes.func,
   onClose: PropTypes.func,
   onChange: PropTypes.func,
-  onChangeAttributes: PropTypes.func
+  onChangeAttributes: PropTypes.func,
+  onToggleFavourite: PropTypes.func
 }
 
 export default Characters

@@ -1,8 +1,11 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
+import { get } from 'lodash'
 import Equipment from '../../Containers/Equipment'
 import Inventory from '../../Containers/Inventory'
+import { entriesToArray, sortArray } from '../Specificities'
 import { AP, HP_MAX, STATUSES_STATS } from '../../lib'
+import * as S from './styles'
 import './Player.scss'
 
 import { standardSkills as standardSkillsBonuses, proSkills as proSkillsBonuses } from '../Character/config'
@@ -14,7 +17,7 @@ const BONUS_NAME = {
   con: 'Constitution',
   siz: 'Taille',
   cha: 'Charisme',
-  pow: 'Power'
+  pow: 'Pouvoir'
 }
 
 const Player = ({
@@ -33,7 +36,8 @@ const Player = ({
     passion1,
     passion2,
     passion3,
-    statuses
+    statuses,
+    details
   }
 }) => {
   let weapons = []
@@ -70,8 +74,6 @@ const Player = ({
     armor += st.armor
     magicArmor += st.magicArmor
   }
-  const apBase = AP.base
-  const apStart = AP.start
   const apMax = AP.max
   const hpMax = HP_MAX(totalStats, equipment)
 
@@ -86,6 +88,9 @@ const Player = ({
     const value = proSkills[key] || 0
     totalProSkills += value
   })
+
+  const characterAdvantages = get(details, 'advantages')
+  const characterFlaws = get(details, 'flaws')
 
   return (
     <div>
@@ -159,15 +164,12 @@ const Player = ({
           <div className="player--stats--general">
             <h4 className="player--title">Fight</h4>
             <div className="player--initiative">Initiative: {Math.ceil((totalStats.int + totalStats.dex) / 2)}</div>
-            <div className="player--ap">
-              AP current : {apCurrent}
-              <br />
-              AP start: {apStart}
-              <br />
-              AP per turn: {apBase}
-              <br />
-              AP max: {apMax}
-            </div>
+            <S.ActionPoints>
+              {Array.from(Array(apMax)).map((_, i) => (
+                <S.ActionPoint key={i} isActive={i < apCurrent}></S.ActionPoint>
+              ))}
+              <S.LifeBar current={hp} max={hpMax} />
+            </S.ActionPoints>
             <h4 className="player--title">Passions</h4>
             <div className="player--passion">
               {passion1 && (
@@ -189,6 +191,34 @@ const Player = ({
                 </div>
               )}
             </div>
+            <h4 className="player--title">Avantages</h4>
+            <div>
+              {characterAdvantages &&
+                sortArray(entriesToArray(characterAdvantages)).map(({ slug, name, points, effects, description }) => (
+                  <S.SpecificityItem key={slug}>
+                    <S.SpecificityContentName>
+                      <S.SpecificityHeading>
+                        {name} ({points})
+                      </S.SpecificityHeading>
+                    </S.SpecificityContentName>
+                    {effects && <S.SpecificityEffects>{effects}</S.SpecificityEffects>}
+                    <S.SpecificityDescription>{description}</S.SpecificityDescription>
+                  </S.SpecificityItem>
+                ))}
+            </div>
+            <h4 className="player--title">Défauts</h4>
+            {characterFlaws &&
+              sortArray(entriesToArray(characterFlaws)).map(({ slug, name, points, effects, description }) => (
+                <S.SpecificityItem key={slug}>
+                  <S.SpecificityContentName>
+                    <S.SpecificityHeading>
+                      {name} ({points})
+                    </S.SpecificityHeading>
+                  </S.SpecificityContentName>
+                  {effects && <S.SpecificityEffects>{effects}</S.SpecificityEffects>}
+                  <S.SpecificityDescription>{description}</S.SpecificityDescription>
+                </S.SpecificityItem>
+              ))}
           </div>
         </div>
         <h3 className="player--title">Standard Skills ({totalStandardSkills})</h3>
@@ -244,7 +274,6 @@ const Player = ({
         <Equipment idCharacter={idCharacter} />
         <div className="player--title--wrapper">
           <h3 className="player--title">Compétences</h3>
-          <h5 className="player--ap">Action points : {apCurrent}</h5>
         </div>
 
         {combatSkills && (

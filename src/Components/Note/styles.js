@@ -60,11 +60,15 @@ export const NoteTitle = styled.div`
 `
 export const NoteHeading = styled.h4`
   margin-right: ${g(2)};
+  text-transform: initial;
+  font-family: fantasy;
 `
 export const NoteDate = styled.div`
+  font-family: cursive;
   font-size: 12px;
   font-style: italic;
 `
 export const NoteContent = styled.div`
   white-space: pre-line;
+  font-family: cursive;
 `

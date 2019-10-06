@@ -3,6 +3,7 @@
 
 .player {
   padding: $g2;
+  padding-bottom: $g6;
 
   &--title {
     margin: $g1 0;
@@ -11,12 +12,6 @@
     &--wrapper {
       position: relative;
     }
-  }
-
-  &--ap {
-    position: absolute;
-    right: 0;
-    bottom: 0;
   }
 
   &--name {

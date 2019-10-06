@@ -8,6 +8,7 @@ import Passion from '../../Containers/Passion'
 import Equipment from '../../Containers/Equipment'
 import Inventory from '../../Containers/Inventory'
 import Note from '../../Containers/Note'
+import Specificities from '../../Containers/Specificities'
 import { AP, HP_MAX, STATUSES_STATS } from '../../lib'
 import * as S from './styles'
 import './Character.scss'
@@ -21,7 +22,7 @@ const BONUS_NAME = {
   con: 'Constitution',
   siz: 'Taille',
   cha: 'Charisme',
-  pow: 'Power'
+  pow: 'Pouvoir'
 }
 
 const Character = ({
@@ -237,6 +238,8 @@ const Character = ({
               </div>
             </div>
           </div>
+
+          <Specificities idCharacter={idCharacter}></Specificities>
           <h3 className="character--title" onClick={onToggleStandardSkills}>
             Standard Skills ({totalStandardSkills}) <span>{isStandardSkillsOpen ? '⇡' : '⇣'}</span>
           </h3>

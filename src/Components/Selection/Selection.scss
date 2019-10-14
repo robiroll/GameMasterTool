@@ -7,14 +7,16 @@
     margin-bottom: $g2;
   }
   &--content {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, auto));
+    grid-gap: $g2;
     margin-bottom: $g4;
   }
   &--button {
     margin-top: $g2;
   }
   &--characters {
-    margin-right: $g2;
+    // margin-right: $g2;
 
     &:last-child {
       margin-right: 0;
@@ -23,6 +25,11 @@
       &--name {
         display: flex;
         flex-direction: column;
+
+        input {
+          width: 100%;
+          text-align: right;
+        }
       }
     }
   }

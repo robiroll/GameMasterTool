@@ -87,13 +87,13 @@ class Dashboard extends Component {
     nextRound()
   }
   handleStartFight = () => {
-    this.resetCooldowns()
-    this.removeStatuses()
     this.setState({ isOpen: true })
-    this.props.startFight()
   }
   handleValidateCharacters = () => {
-    const { validateCharacters, orderSelection, firebase } = this.props
+    const { validateCharacters, orderSelection, firebase, startFight } = this.props
+    this.resetCooldowns()
+    this.removeStatuses()
+    startFight()
     this.handleCloseSelection()
     validateCharacters()
     Object.keys(orderSelection).forEach(char => {

@@ -103,7 +103,7 @@ export const STATUSES_STATS = statuses => {
   let ttlsiz = 0
   let ttlLifeSteal = 0
   if (statuses)
-    Object.values(statuses).map(({ bonuses }) => {
+    Object.values(statuses).map(({ bonuses = {} }) => {
       const { armor, magicArmor, hp, lifeSteal } = bonuses
       if (armor) ttlarmor += armor
       if (magicArmor) ttlmagicArmor += magicArmor

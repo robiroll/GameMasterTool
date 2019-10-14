@@ -31,7 +31,7 @@ class Players extends Component {
     return (
       <div className="players-menu">
         {Object.entries(this.props.characters)
-          .filter(([, { kind }]) => kind === 'hero')
+          .filter(([, { kind, isFavourite }]) => isFavourite && kind === 'hero')
           .map(([key, { name }]) => {
             return (
               <Link

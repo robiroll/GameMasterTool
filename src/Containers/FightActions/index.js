@@ -75,6 +75,7 @@ class FightActions extends Component {
   updateCharacter = (changes, idChar) => {
     const { firebase, idCharacter } = this.props
     const id = idChar || idCharacter
+    console.log('CHANGES', changes)
     firebase.update(`characters/${id}`, changes)
   }
 
@@ -133,7 +134,7 @@ class FightActions extends Component {
 
     if (statuses) {
       const newStatuses = {}
-      statuses.forEach(({ id, turns, bonuses }) => {
+      statuses.forEach(({ id, turns, bonuses = {} }) => {
         Object.assign(newStatuses, { [id]: { turns, bonuses } })
       })
       this.updateCharacter({ statuses: newStatuses }, selectedCharacterId)

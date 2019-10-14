@@ -136,7 +136,7 @@ const Target = ({
               <input type="number" id="multiplicator" onChange={onChangeField} value={multiplicator} step="0.1" />
             </div>
             {statuses &&
-              statuses.map(({ id, turns, bonuses }, i) => (
+              statuses.map(({ id, turns, bonuses = {} }, i) => (
                 <div key={i} className="skills--create--field">
                   <label htmlFor="statuses">{statusesOptions.find(status => status.slug === id).name}</label>
                   <input type="number" id={id} onChange={onChangeTurn} value={turns} />

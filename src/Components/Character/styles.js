@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { g, colors } from '../../core'
 
-export const Title = styled.h3`
+export const Title = styled.div`
   display: flex;
   align-items: baseline;
   justify-content: space-between;

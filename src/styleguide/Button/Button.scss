@@ -15,6 +15,7 @@
   box-shadow: 0 0 2px $primary-1;
   user-select: none;
   text-transform: uppercase;
+  white-space: nowrap;
 
   &:hover {
     background: rgba($primary-1, 0.1);

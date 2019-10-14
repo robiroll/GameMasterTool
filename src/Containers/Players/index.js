@@ -8,7 +8,12 @@ import './Players.scss'
 
 class Players extends Component {
   static propTypes = {
-    characters: PropTypes.object
+    characters: PropTypes.object,
+    path: PropTypes.string
+  }
+
+  static defaultProps = {
+    path: 'players'
   }
 
   static contextTypes = {
@@ -28,9 +33,12 @@ class Players extends Component {
   handleItemClick = idCharacter => () => this.setState({ idCharacter })
 
   render() {
+    const { path, characters } = this.props
+    let links = Object.entries(characters)
+    if (path === 'players') links = links.filter(([, { kind }]) => kind === 'hero')
     return (
       <div className="players-menu">
-        {Object.entries(this.props.characters)
+        {links
           .filter(([, { kind, isFavourite }]) => isFavourite && kind === 'hero')
           .map(([key, { name }]) => {
             return (

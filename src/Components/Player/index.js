@@ -4,6 +4,7 @@ import { get } from 'lodash'
 import Equipment from '../../Containers/Equipment'
 import Inventory from '../../Containers/Inventory'
 import { entriesToArray, sortArray } from '../Specificities'
+import SkillSheet from '../SkillSheet'
 import { AP, HP_MAX, STATUSES_STATS } from '../../lib'
 import * as S from './styles'
 import './Player.scss'
@@ -268,42 +269,29 @@ const Player = ({
           })}
         </div>
         <h3 className="player--title">Inventaire</h3>
-        <Inventory idCharacter={idCharacter} />
+        <Inventory idCharacter={idCharacter} disableActions />
         <h5 className="player--credits--title">credits: {(credits || 0).toLocaleString('fr')}</h5>
         <h3 className="player--title">Équipement</h3>
-        <Equipment idCharacter={idCharacter} />
+        <Equipment idCharacter={idCharacter} disableActions />
         <div className="player--title--wrapper">
           <h3 className="player--title">Compétences</h3>
+          {combatSkills && (
+            <div className="player--combat-skills">
+              {Object.keys(combatSkills).map(key => {
+                const skill = skills[key]
+                const skillValue = combatSkills[key]
+                const stats = totalStats
+                const props = {
+                  skill,
+                  skillValue,
+                  stats,
+                  weapons
+                }
+                return <SkillSheet key={key} {...props} />
+              })}
+            </div>
+          )}
         </div>
-
-        {combatSkills && (
-          <div className="player--combat-skills">
-            {Object.keys(combatSkills).map(key => {
-              const skill = skills[key]
-              const success = totalStats[skill.attr1] + totalStats[skill.attr2] + combatSkills[key]
-              let successString = `${skill.attr1} + ${skill.attr2} + ${combatSkills[key]}`
-              return (
-                <div className="player--combat-skills--item" key={key}>
-                  <h5 className="player--combat-skills--item--title">
-                    {key}: {combatSkills[key]}
-                  </h5>
-                  <ul className="player--combat-skills--item--infos">
-                    <li>type: {skill.type}</li>
-                    <li>damage: {skill.damage}</li>
-                    <li>CD: {skill.cooldown}</li>
-                    <li>cost: {skill.cost}</li>
-                    <li>distance: {skill.distance}</li>
-                    <li>range: {skill.range}</li>
-                    <li>description: {skill.description}</li>
-                    <li>
-                      success: {success} ({successString})
-                    </li>
-                  </ul>
-                </div>
-              )
-            })}
-          </div>
-        )}
       </div>
     </div>
   )

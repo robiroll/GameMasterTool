@@ -6,6 +6,12 @@ import { connect } from 'react-redux'
 import { firebaseConnect } from 'react-redux-firebase'
 import { statuses } from '../../config/statuses'
 
+const slug = name =>
+  name
+    .toLowerCase()
+    .split(' ')
+    .join('-')
+
 const initialStateFields = {
   isSymbiosis: false,
   name: '',
@@ -75,16 +81,13 @@ class Skills extends Component {
   handleUpdate = () => {
     const { firebase } = this.props
     const skill = { ...this.state.fields }
-    delete skill.name
-    firebase.update(`skills/${this.state.fields.name}`, skill)
+    firebase.update(`skills/${slug(skill.name)}`, skill)
     this.handleCloseModify()
   }
 
-  handleOpenModify = skillName => {
-    const fields = { ...this.props.skills[skillName], name: skillName }
-    this.setState({ fields, isModifyOpen: true })
-  }
-  handleCloseModify = () => this.setState({ isModifyOpen: false })
+  handleOpenModify = fields => this.setState({ fields, isModifyOpen: true })
+
+  handleCloseModify = () => this.setState({ fields: initialStateFields, isModifyOpen: false })
 
   handleChangeAssignee = e => {
     const { id, value } = e.target
@@ -144,14 +147,7 @@ class Skills extends Component {
     let disabled = false
     skills &&
       Object.keys(skills).map(skill => {
-        if (
-          skill ===
-          name
-            .toLowerCase()
-            .split(' ')
-            .join('-')
-        )
-          disabled = true
+        if (skill === slug(name)) disabled = true
       })
     return (
       <SkillsComponent

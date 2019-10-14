@@ -6,7 +6,7 @@ import { MATCH_ICON } from '../../lib'
 import ItemStats from '../ItemStats'
 import './Inventory.scss'
 
-const Inventory = ({ items, onSelect, onEquip, onUse, onDropItem, selectedItem, useAp }) => {
+const Inventory = ({ disableActions, items, onSelect, onEquip, onUse, onDropItem, selectedItem, useAp }) => {
   if (!items) return 'You have no items'
   const selected = items[selectedItem]
 
@@ -27,12 +27,14 @@ const Inventory = ({ items, onSelect, onEquip, onUse, onDropItem, selectedItem, 
         {selected ? (
           <React.Fragment>
             <ItemStats item={selected} />
-            <div className="inventory--single--button">
-              <Button {...buttonProps} format="full" />
-              <Button onClick={onDropItem} format="full" variant="accent-1">
-                Drop
-              </Button>
-            </div>
+            {!disableActions && (
+              <div className="inventory--single--button">
+                <Button {...buttonProps} format="full" />
+                <Button onClick={onDropItem} format="full" variant="accent-1">
+                  Drop
+                </Button>
+              </div>
+            )}
           </React.Fragment>
         ) : (
           'Select any item'
@@ -60,6 +62,7 @@ const Inventory = ({ items, onSelect, onEquip, onUse, onDropItem, selectedItem, 
 }
 
 Inventory.propTypes = {
+  disableActions: PropTypes.bool,
   items: PropTypes.object,
   onSelect: PropTypes.func,
   onEquip: PropTypes.func,

@@ -6,6 +6,10 @@
 }
 
 .character {
+  &--wrapper {
+    padding: 0 $g2;
+  }
+
   &--title {
     margin: $g1 0;
     border-bottom: 1px solid rgba($primary-1, 0.6);
@@ -112,9 +116,6 @@
         justify-content: space-between;
         margin-bottom: $g1;
       }
-
-      &--infos {
-      }
     }
   }
 
@@ -141,5 +142,9 @@
     &--button {
       width: 144px;
     }
+  }
+
+  &--delete {
+    margin-top: $g3;
   }
 }

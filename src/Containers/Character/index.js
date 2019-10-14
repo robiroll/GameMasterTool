@@ -25,6 +25,7 @@ class Character extends Component {
     const { credits } = character
     this.state = {
       idCharacter,
+      loading: false,
       usedAP: 0,
       hp,
       credits,
@@ -94,6 +95,12 @@ class Character extends Component {
     const changes = { [skill]: newValue }
     firebase.update(`characters/${idCharacter}/${type}Skills`, changes)
   }
+  handleDeleteCharacter = () => {
+    const { firebase, idCharacter } = this.props
+    this.setState({ loading: true })
+    firebase.remove(`characters/${idCharacter}`)
+    this.context.router.history.push('/characters')
+  }
 
   render() {
     const { characters, idCharacter, skills, ...props } = this.props
@@ -118,8 +125,8 @@ class Character extends Component {
         isProSkillsOpen={this.state.isProSkillsOpen}
         isDeleteModalOpen={this.state.isDeleteModalOpen}
         onOpenDeleteModal={this.handleOpenDeleteModal}
-        onDelete={this.handleDeleteCharacter}
         onCancel={this.handleCloseDeleteModal}
+        onDeleteCharacter={this.handleDeleteCharacter}
         {...props}
       />
     )

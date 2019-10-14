@@ -3,6 +3,12 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import './style.scss'
 
+const LINKS = [
+  { slug: '', label: 'Dashboard' },
+  { slug: 'characters', label: 'Characters' },
+  { slug: 'skills', label: 'Skills' },
+  { slug: 'items', label: 'Items' }
+]
 const Menu = ({ characters, active }) => {
   let heroes = {}
   let foes = {}
@@ -18,26 +24,13 @@ const Menu = ({ characters, active }) => {
         <h1 className="menu--header--title">Welcome to RPG</h1>
       </header>
       <ul className="menu--links">
-        <li>
-          <Link to="/">
-            <div className="menu--link">Dashboard</div>
-          </Link>
-        </li>
-        <li>
-          <Link to="/characters">
-            <div className="menu--link">Characters</div>
-          </Link>
-        </li>
-        <li>
-          <Link to="/skills">
-            <div className="menu--link">Skills</div>
-          </Link>
-        </li>
-        <li>
-          <Link to="/items">
-            <div className="menu--link">Items</div>
-          </Link>
-        </li>
+        {LINKS.map(({ slug, label }) => (
+          <li key={slug}>
+            <Link to={`/${slug}`}>
+              <div className={`menu--link${active === slug ? ' menu--link--active' : ''}`}>{label}</div>
+            </Link>
+          </li>
+        ))}
       </ul>
       <ul className="menu--links">
         <li className="menu--category">Heroes</li>

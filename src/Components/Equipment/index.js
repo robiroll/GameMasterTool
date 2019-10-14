@@ -22,7 +22,7 @@ const ITEMS = [
   'weapon1',
   'weapon2'
 ]
-const Equipment = ({ equipment, onSelect, onUnequip, selectedItem }) => {
+const Equipment = ({ disableActions, equipment, onSelect, onUnequip, selectedItem }) => {
   if (!equipment) return 'You have equipped nothing yet'
   let ttlarmor = 0
   let ttlmagicArmor = 0
@@ -79,11 +79,13 @@ const Equipment = ({ equipment, onSelect, onUnequip, selectedItem }) => {
       {selected && selectedItem && (
         <div className="equipment--single">
           <ItemStats item={selected} />
-          <div className="equipment--single--button">
-            <Button onClick={onUnequip} format="full">
-              Unequip
-            </Button>
-          </div>
+          {!disableActions && (
+            <div className="equipment--single--button">
+              <Button onClick={onUnequip} format="full">
+                Unequip
+              </Button>
+            </div>
+          )}
         </div>
       )}
       <div className="equipment--stats">
@@ -105,6 +107,7 @@ const Equipment = ({ equipment, onSelect, onUnequip, selectedItem }) => {
 }
 
 Equipment.propTypes = {
+  disableActions: PropTypes.bool,
   equipment: PropTypes.object,
   onSelect: PropTypes.func,
   onUnequip: PropTypes.func,

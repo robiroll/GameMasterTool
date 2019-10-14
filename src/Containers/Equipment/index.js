@@ -43,10 +43,11 @@ class Equipment extends PureComponent {
   handleSelectItem = key => () => this.setState({ selected: key })
 
   render() {
-    const { characters, idCharacter } = this.props
+    const { characters, idCharacter, ...props } = this.props
     const { equipment } = characters[idCharacter]
     return (
       <EquipmentComponent
+        {...props}
         equipment={equipment}
         onUnequip={this.handleUnequip}
         onSelect={this.handleSelectItem}
@@ -60,4 +61,7 @@ const mapStateToProps = state => ({
   characters: state.firebase.data.characters
 })
 
-export default compose(firebaseConnect(['characters']), connect(mapStateToProps))(Equipment)
+export default compose(
+  firebaseConnect(['characters']),
+  connect(mapStateToProps)
+)(Equipment)

@@ -269,30 +269,29 @@ const Player = ({
           })}
         </div>
         <h3 className="player--title">Inventaire</h3>
-        <Inventory idCharacter={idCharacter} />
+        <Inventory idCharacter={idCharacter} disableActions />
         <h5 className="player--credits--title">credits: {(credits || 0).toLocaleString('fr')}</h5>
         <h3 className="player--title">Équipement</h3>
-        <Equipment idCharacter={idCharacter} />
+        <Equipment idCharacter={idCharacter} disableActions />
         <div className="player--title--wrapper">
           <h3 className="player--title">Compétences</h3>
+          {combatSkills && (
+            <div className="player--combat-skills">
+              {Object.keys(combatSkills).map(key => {
+                const skill = skills[key]
+                const skillValue = combatSkills[key]
+                const stats = totalStats
+                const props = {
+                  skill,
+                  skillValue,
+                  stats,
+                  weapons
+                }
+                return <SkillSheet key={key} {...props} />
+              })}
+            </div>
+          )}
         </div>
-
-        {combatSkills && (
-          <div className="player--combat-skills">
-            {Object.keys(combatSkills).map(key => {
-              const skill = skills[key]
-              const skillValue = combatSkills[key]
-              const stats = totalStats
-              const props = {
-                skill,
-                skillValue,
-                stats,
-                weapons
-              }
-              return <SkillSheet key={key} {...props} />
-            })}
-          </div>
-        )}
       </div>
     </div>
   )

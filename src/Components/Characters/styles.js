@@ -23,7 +23,9 @@ export const Icon = styled.div`
   }
 `
 export const Items = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(${g(20)}, auto));
+  grid-gap: ${g(2)};
 `
 export const Item = styled.div`
   display: flex;
@@ -40,14 +42,15 @@ export const Item = styled.div`
     `}
 `
 export const LinkContainer = styled.div`
-  margin-right: ${g(2)};
   &:hover {
     ${Item} {
-      border: 1px solid ${colors.primary1};
+      border-color: ${colors.primary1};
     }
   }
 `
 export const Link = styled.span`
+  flex-grow: 1;
   padding: ${g(1)};
   border-right: 1px solid ${rgba(colors.primary1, 0.5)};
+  white-space: nowrap;
 `

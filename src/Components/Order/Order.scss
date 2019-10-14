@@ -3,6 +3,7 @@
 
 .order {
   display: flex;
+  overflow: auto;
 
   &__all {
     overflow: auto;
@@ -11,6 +12,8 @@
       border: 1px solid rgba($neutral-3, 0.5);
       padding: $g1;
       transition: all 300ms linear;
+      min-width: $g1 * 30;
+      white-space: nowrap;
 
       &__playing {
         border-color: rgba($neutral-5, 0.7);
@@ -39,6 +42,7 @@
   &--char {
     position: relative;
     margin-right: $g3;
+    white-space: nowrap;
 
     &--life {
       display: flex;
@@ -73,10 +77,6 @@
       display: flex;
       align-items: center;
       margin-top: $g1;
-
-      &--options {
-        flex: 1 1 100%;
-      }
 
       &--value {
         flex: 0 0 auto;

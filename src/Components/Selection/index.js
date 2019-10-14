@@ -54,7 +54,7 @@ const Selection = ({ characters, selectCharacter, validateCharacters, isValidate
     <h3 className="selection--title">Heroes</h3>
     <div className="selection--content">
       {Object.keys(characters)
-        .filter(id => characters[id].kind === 'hero')
+        .filter(id => characters[id].isFavourite && characters[id].kind === 'hero')
         .map(key => {
           const character = characters[key]
           return <Character key={key} id={key} character={character} selectCharacter={selectCharacter} />
@@ -63,7 +63,7 @@ const Selection = ({ characters, selectCharacter, validateCharacters, isValidate
     <h3 className="selection--title">Foes</h3>
     <div className="selection--content">
       {Object.keys(characters)
-        .filter(id => characters[id].kind === 'foe')
+        .filter(id => characters[id].isFavourite && characters[id].kind === 'foe')
         .map(key => {
           const character = characters[key]
           return <Character key={key} id={key} character={character} selectCharacter={selectCharacter} />

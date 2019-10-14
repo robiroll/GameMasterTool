@@ -66,7 +66,7 @@ const Equipment = ({ equipment, onSelect, onUnequip, selectedItem }) => {
             <div
               key={item}
               className={`equipment--schema--item equipment--schema--item__${item}${isEquippedClass}${isSelectedClass}`}
-              onClick={isEquipped && onSelect(item)}
+              onClick={isEquipped ? onSelect(item) : undefined}
             >
               <Icon
                 name={isEquipped && equipment[item].icon ? equipment[item].icon : MATCH_ICON[item] || item}
